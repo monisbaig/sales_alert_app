@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "797747569275",
+    "project_id": "sales-alert-app",
+    "storage_bucket": "sales-alert-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797747569275:android:e0cec214139fec540478de",
+        "android_client_info": {
+          "package_name": "com.example.sales_alert_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "797747569275-uf3rslge9fb0cu2r9a7sqd0rjbtihgt2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP7tH0abHCDtHN4LZLXt-JzbQp-VcS0fs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797747569275-uf3rslge9fb0cu2r9a7sqd0rjbtihgt2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
