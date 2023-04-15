@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 
 import 'login_screen.dart';
 
@@ -136,8 +135,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       children: [
                         TextFormField(
                           controller: username,
-                          validator: RequiredValidator(
-                              errorText: "Username is required"),
+                          // validator: RequiredValidator(
+                          //     errorText: "Username is required"),
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
                               floatingLabelBehavior:
@@ -154,12 +153,12 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         TextFormField(
                           controller: email,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(errorText: "Email is required"),
-                              EmailValidator(errorText: "Not a valid Email"),
-                            ],
-                          ),
+                          // validator: MultiValidator(
+                          //   [
+                          //     RequiredValidator(errorText: "Email is required"),
+                          //     EmailValidator(errorText: "Not a valid Email"),
+                          //   ],
+                          // ),
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -193,8 +192,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         TextFormField(
                           controller: phone,
-                          validator: RequiredValidator(
-                              errorText: "Number is required"),
+                          // validator: RequiredValidator(
+                          //     errorText: "Number is required"),
                           keyboardType: TextInputType.phone,
                           decoration: const InputDecoration(
                             floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -211,8 +210,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         TextFormField(
                           controller: location,
-                          validator: RequiredValidator(
-                              errorText: "Location is Required"),
+                          // validator: RequiredValidator(
+                          //     errorText: "Location is Required"),
                           decoration: const InputDecoration(
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             prefix: SizedBox(

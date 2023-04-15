@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sales_alert_app/brands/Screens/brand_register.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
 import '../../Common_component/my_TextField.dart';
@@ -30,6 +31,9 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
   }
 
   void login() {
+    setState(() {
+      isLoading = true;
+    });
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
     if (email.isNotEmpty && password.isNotEmpty) {
@@ -41,6 +45,9 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
     } else {
       Fluttertoast.showToast(msg: 'Fill out all the fields!');
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -130,7 +137,7 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                 SizedBox(height: 25.h),
 
                 // sign in button
-                isLoading
+                isLoading == true
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
@@ -138,7 +145,35 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                         label: "Login",
                         onPress: login,
                       ),
-                SizedBox(height: 50.h),
+                SizedBox(height: 10.h),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  margin: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have any account? ",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      InkWell(
+                        child: const Text(
+                          'Sign Up Now',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  const RegisterScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10.h),
                 // or continue with
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -180,7 +215,8 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                 // google sign in button
                 const Center(
                   child: SquareTile(
-                      imagePath: 'lib/Common_images/google_logo.png'),
+                    imagePath: 'lib/Common_images/google_logo.png',
+                  ),
                 ),
               ],
             ),

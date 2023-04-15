@@ -8,7 +8,6 @@ import 'package:sales_alert_app/utils/utils.dart';
 
 import '../../Common_component/my_TextField.dart';
 import '../../Common_component/my_button.dart';
-import 'brand_choice.dart';
 import 'clothing/clothing_categories.dart';
 import 'electronics/electronics_categories.dart';
 import 'furniture/furniture_categories.dart';
@@ -28,7 +27,6 @@ class _BrandDetailsState extends ConsumerState<BrandDetails> {
     "Clothing",
     "Electronics",
     "Furniture",
-    "Other",
   ];
   String? selectedItem = "Clothing";
 
@@ -207,23 +205,14 @@ class _BrandDetailsState extends ConsumerState<BrandDetails> {
                     if (selectedItem == 'Electronics') {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => electronics(),
+                          builder: (_) => const ElectronicsCategories(),
                         ), //signUserIn
                       );
                     }
                     if (selectedItem == 'Furniture') {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => furniture(),
-                        ), //signUserIn
-                      );
-                    }
-                    if (selectedItem == 'Other') {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => BrandChoice(
-                            id: "asbdb",
-                          ),
+                          builder: (_) => const FurnitureCategories(),
                         ), //signUserIn
                       );
                     }

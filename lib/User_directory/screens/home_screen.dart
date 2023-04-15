@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/User_directory/screens/products_brands.dart';
 
-import '../../brands/brands_components/NavBar.dart';
+import '../../brands/brands_components/brand_nav_bar.dart';
 import '../widgets/custom_categories.dart';
 import '../widgets/grid_items.dart';
 import 'favourites.dart';
@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      drawer: const NavBar(),
+      drawer: const BrandNavBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

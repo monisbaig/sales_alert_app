@@ -86,7 +86,7 @@ class ViewOrders extends StatelessWidget {
                                     height: 10.h,
                                   ),
                                   Image.asset(
-                                    'lib/Brand_directory/Brand_images/${products[i]}.png',
+                                    'lib/brands/brand_images/${products[i]}.png',
                                     height: 70.h,
                                     width: 70.w,
                                   ),
@@ -193,7 +193,7 @@ class ViewOrders extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => success(
+                            builder: (context) => Success(
                                 label: 'Orders delivered to the Customers')));
                   })
             ],

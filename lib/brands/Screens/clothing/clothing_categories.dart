@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/brands/Screens/clothing/women_clothing.dart';
-
-import 'Men_clothing.dart';
-import 'kids_clothing.dart';
+import 'package:sales_alert_app/brands/Screens/clothing/kids_category.dart';
+import 'package:sales_alert_app/brands/Screens/clothing/men_category.dart';
+import 'package:sales_alert_app/brands/Screens/clothing/women_category.dart';
 
 class ClothingCategories extends StatelessWidget {
   const ClothingCategories({super.key});
@@ -65,8 +64,13 @@ class ClothingCategories extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (_) => men()));
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const MenCategory(
+                                mainCategory: 'Men',
+                              ),
+                            ),
+                          );
                         },
                       ),
                       SizedBox(height: 20.h),
@@ -93,8 +97,13 @@ class ClothingCategories extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (_) => women()));
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const WomenCategory(
+                                mainCategory: 'Women',
+                              ),
+                            ),
+                          );
                         },
                       ),
                       SizedBox(height: 20.h),
@@ -112,8 +121,8 @@ class ClothingCategories extends StatelessWidget {
             ),
             SizedBox(height: 50.h),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(width: 90.w),
                 Column(
                   children: [
                     GestureDetector(
@@ -127,8 +136,13 @@ class ClothingCategories extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (_) => kids()));
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const KidsCategory(
+                              mainCategory: 'Kids',
+                            ),
+                          ),
+                        );
                       },
                     ),
                     SizedBox(height: 20.h),

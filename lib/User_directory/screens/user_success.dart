@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../Common_component/my_button.dart';
 import 'bottom_navigation.dart';
 
-class success extends StatelessWidget {
+class Success extends StatelessWidget {
   final String label;
-  success({super.key, required this.label});
+  const Success({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +45,11 @@ class success extends StatelessWidget {
             MyButton(
               label: "Main Menu",
               onPress: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => Screens()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const Screens(),
+                  ),
+                );
               },
             ),
           ],

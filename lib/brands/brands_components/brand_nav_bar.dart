@@ -1,42 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
+import '../../Common_component/loader.dart';
 import '../Screens/Account_Details.dart';
-import '../Screens/Add_Products.dart';
 import '../Screens/Request.dart';
 import '../Screens/View_Orders.dart';
-// import '../Screens/inventory/inventory.dart';
+// import '../Screens/inventory/total_inventory.dart';
 
-class NavBar extends StatelessWidget {
-  const NavBar({super.key});
+class BrandNavBar extends ConsumerWidget {
+  const BrandNavBar({super.key});
+
+  void signOut(BuildContext context, WidgetRef ref) {
+    ref.read(brandAuthControllerProvider).signOut(context);
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       child: ListView(
         // Remove padding
         padding: EdgeInsets.zero,
         children: [
-          UserAccountsDrawerHeader(
-            accountName: const Text('Oflutter.com'),
-            accountEmail: const Text('example@gmail.com'),
-            currentAccountPicture: CircleAvatar(
-              child: ClipOval(
-                child: Image.asset(
-                  'lib/Brand_directory/Brand_images/brand1.png',
-                  fit: BoxFit.cover,
-                  width: 90.w,
-                  height: 90.h,
-                ),
-              ),
-            ),
-            decoration: const BoxDecoration(
-              color: Colors.blue,
-              image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: AssetImage('lib/Common_images/nav_cart.PNG')),
-            ),
-          ),
+          FutureBuilder(
+              future: ref.read(brandAuthControllerProvider).getCategoryData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Loader();
+                }
+                return UserAccountsDrawerHeader(
+                  accountName: Text(snapshot.data!.name),
+                  accountEmail: Text(snapshot.data!.email),
+                  currentAccountPicture: CircleAvatar(
+                    child: ClipOval(
+                      child: Image.network(
+                        snapshot.data!.logo,
+                        fit: BoxFit.cover,
+                        width: 90.w,
+                        height: 90.h,
+                      ),
+                    ),
+                  ),
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage('lib/Common_images/nav_cart.PNG')),
+                  ),
+                );
+              }),
           GestureDetector(
             child: ListTile(
               leading: const Icon(Icons.inventory_outlined),
@@ -47,14 +60,10 @@ class NavBar extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.add_business_outlined),
-            title: const Text('Add Products'),
-            iconColor: const Color(0xFFDB3022),
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => AddProducts(
-                      id: "555",
-                    ))),
-          ),
+              leading: const Icon(Icons.add_business_outlined),
+              title: const Text('Add Products'),
+              iconColor: const Color(0xFFDB3022),
+              onTap: () {}),
           ListTile(
             leading: const Icon(Icons.production_quantity_limits_rounded),
             title: const Text('View Orders'),
@@ -94,7 +103,7 @@ class NavBar extends StatelessWidget {
             title: const Text('Log Out'),
             leading: const Icon(Icons.exit_to_app_outlined),
             iconColor: const Color(0xFFDB3022),
-            onTap: () => null,
+            onTap: () => signOut(context, ref),
           ),
           const Padding(
             padding: EdgeInsets.all(105.0),

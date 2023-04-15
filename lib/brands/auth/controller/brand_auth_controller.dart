@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sales_alert_app/brands/auth/repository/brand_auth_repository.dart';
 
 import '../../models/brand_model.dart';
+import '../../models/product_model.dart';
 
 final brandAuthControllerProvider = Provider((ref) {
   return BrandAuthController(
@@ -32,6 +33,13 @@ class BrandAuthController {
     return brand;
   }
 
+  Future<List<SubCategoryDetail>> getCollectionData(String collection) async {
+    List<SubCategoryDetail> subCategoryDetail =
+        await brandAuthRepository.getCollectionData(collection);
+
+    return subCategoryDetail;
+  }
+
   void signUpWithEmail(BuildContext context, String email, String password) {
     brandAuthRepository.signUpWithEmail(
       context: context,
@@ -52,8 +60,8 @@ class BrandAuthController {
     brandAuthRepository.signInWithGoogle();
   }
 
-  void signOut() {
-    brandAuthRepository.signOut();
+  void signOut(BuildContext context) {
+    brandAuthRepository.signOut(context: context);
   }
 
   void saveBrandDataToFirebase(
@@ -64,6 +72,69 @@ class BrandAuthController {
       logo: logo,
       category: category,
       ref: ref,
+    );
+  }
+
+  void saveCategoryDataToFirebase(
+    BuildContext? context,
+    String? mainCategory,
+    String? subCategory,
+    String? name,
+    String? price,
+    File? photo,
+    String? color,
+    String? quantity,
+    String? description,
+    String? size,
+  ) {
+    brandAuthRepository.saveCategoryDataToFirebase(
+      context: context,
+      mainCategory: mainCategory,
+      subCategory: subCategory,
+      name: name,
+      price: price,
+      photo: photo,
+      color: color,
+      quantity: quantity,
+      description: description,
+      size: size,
+      ref: ref,
+    );
+  }
+
+  void updateCategoryDataToFirebase(
+    BuildContext? context,
+    String? collection,
+    String? productId,
+    String? name,
+    String? price,
+    File? photo,
+    String? quantity,
+    String? description,
+  ) {
+    brandAuthRepository.updateCategoryDataToFirebase(
+      context: context,
+      collection: collection,
+      uniqueId: productId,
+      name: name,
+      price: price,
+      photo: photo,
+      quantity: quantity,
+      description: description,
+      ref: ref,
+    );
+  }
+
+  Future<BrandModel?> getCategoryData() async {
+    return await brandAuthRepository.getCategoryData();
+  }
+
+  Future<void> deleteItemById(
+      BuildContext context, String collection, String productId) async {
+    return await brandAuthRepository.deleteItemById(
+      context: context,
+      collection: collection,
+      productId: productId,
     );
   }
 }

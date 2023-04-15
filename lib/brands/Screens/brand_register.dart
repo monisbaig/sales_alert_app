@@ -28,6 +28,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   void register() {
+    setState(() {
+      isLoading = true;
+    });
     var isValid = _form.currentState!.validate();
     if (isValid) {
       String email = emailController.text.trim();
@@ -41,6 +44,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     } else {
       Fluttertoast.showToast(msg: 'Fill out all the fields!');
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -71,94 +77,103 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 key: _form,
                 child: Column(
                   children: [
-                    TextFormField(
-                      controller: nameController,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your full name',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: const BorderSide(color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: TextFormField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your full name',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your name';
+                          }
+                          if (value.contains('0') ||
+                              value.contains('1') ||
+                              value.contains('2') ||
+                              value.contains('3') ||
+                              value.contains('4') ||
+                              value.contains('5') ||
+                              value.contains('6') ||
+                              value.contains('7') ||
+                              value.contains('8') ||
+                              value.contains('9')) {
+                            return 'Please enter a valid name';
+                          }
+                          return null;
+                        },
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your name';
-                        }
-                        if (value.contains('0') ||
-                            value.contains('1') ||
-                            value.contains('2') ||
-                            value.contains('3') ||
-                            value.contains('4') ||
-                            value.contains('5') ||
-                            value.contains('6') ||
-                            value.contains('7') ||
-                            value.contains('8') ||
-                            value.contains('9')) {
-                          return 'Please enter a valid name';
-                        }
-                        return null;
-                      },
                     ),
                     const SizedBox(height: 25),
-                    TextFormField(
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your email address',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: const BorderSide(color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: TextFormField(
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your email address',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your email address';
+                          }
+                          if (!value.contains('@')) {
+                            return 'Please enter valid email address';
+                          }
+                          return null;
+                        },
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your email address';
-                        }
-                        if (!value.contains('@')) {
-                          return 'Please enter valid email address';
-                        }
-                        return null;
-                      },
                     ),
                     const SizedBox(height: 25),
-                    TextFormField(
-                      controller: passwordController,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your password',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: const BorderSide(color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: TextFormField(
+                        controller: passwordController,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your password',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          if (value.length < 6) {
+                            return 'Password must contains at least six characters';
+                          }
+                          return null;
+                        },
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        if (value.length < 6) {
-                          return 'Password must contains at least six characters';
-                        }
-                        return null;
-                      },
                     ),
                     const SizedBox(height: 45),
-                    isLoading
+                    isLoading == true
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
@@ -249,7 +264,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 10.h),
             Padding(
               padding: const EdgeInsets.only(bottom: 60.0),
               child: Image.asset(

@@ -89,7 +89,7 @@ class add_imageState extends State<add_image> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => success(
+                            builder: (context) => Success(
                                 label:
                                     'Your item is successfully added to the Store')));
                   })

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/brands/Screens/electronics/electronic_items.dart';
 
-class ElectronicsCategories extends StatelessWidget {
-  const ElectronicsCategories({super.key});
+import '../inventory/total_inventory.dart';
+
+class ElectronicsInventory extends StatelessWidget {
+  const ElectronicsInventory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class ElectronicsCategories extends StatelessWidget {
             SizedBox(height: 100.h),
             Center(
               child: Text(
-                'Choose a ',
+                'Choose a',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -26,7 +27,7 @@ class ElectronicsCategories extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Subcategory ',
+                'Subcategory',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -37,7 +38,7 @@ class ElectronicsCategories extends StatelessWidget {
             SizedBox(height: 20.h),
             Center(
               child: Text(
-                'Electronic Items ',
+                'Total Inventory',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16.sp,
@@ -63,8 +64,8 @@ class ElectronicsCategories extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => const ElectronicItems(
-                                mainCategory: 'Mobile Phones',
+                              builder: (_) => const TotalInventory(
+                                collection: 'Mobile Phones',
                               ),
                             ),
                           );
@@ -95,8 +96,8 @@ class ElectronicsCategories extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => const ElectronicItems(
-                                mainCategory: 'Head Phones',
+                              builder: (_) => const TotalInventory(
+                                collection: 'Head Phones',
                               ),
                             ),
                           );
@@ -133,8 +134,8 @@ class ElectronicsCategories extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => const ElectronicItems(
-                              mainCategory: 'Laptops',
+                            builder: (_) => const TotalInventory(
+                              collection: 'Laptops',
                             ),
                           ),
                         );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/brands/Screens/brand_login_page.dart';
 
 import '../../Common_component/my_button.dart';
-import '../../brands/Screens/brand_register.dart';
 import '../auth/login_screen.dart';
 import '../screens/bottom_navigation.dart';
 
@@ -31,7 +31,10 @@ class ChooseScreen extends StatelessWidget {
               label: "Yes",
               onPress: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const RegisterScreen()));
+                  MaterialPageRoute(
+                    builder: (_) => const BrandLoginPage(),
+                  ),
+                );
               },
             ),
             SizedBox(height: 40.h),
@@ -39,7 +42,7 @@ class ChooseScreen extends StatelessWidget {
               label: "No",
               onPress: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => Screens()));
+                    .push(MaterialPageRoute(builder: (_) => const Screens()));
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const LoginScreen()));
               },

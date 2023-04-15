@@ -9,21 +9,25 @@ import '../../../Common_component/my_TextField.dart';
 import '../../../Common_component/my_button.dart';
 import '../../../utils/utils.dart';
 
-class FurnitureItems extends ConsumerStatefulWidget {
+class ClothingItems extends ConsumerStatefulWidget {
   final String mainCategory;
+  final String subCategory;
 
-  const FurnitureItems({super.key, required this.mainCategory});
+  const ClothingItems(
+      {super.key, required this.mainCategory, required this.subCategory});
 
   @override
-  ConsumerState<FurnitureItems> createState() => _ItemDetailsState();
+  ConsumerState<ClothingItems> createState() => _ItemDetailsState();
 }
 
-class _ItemDetailsState extends ConsumerState<FurnitureItems> {
+class _ItemDetailsState extends ConsumerState<ClothingItems> {
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final quantityController = TextEditingController();
   final descriptionController = TextEditingController();
   final colorController = TextEditingController();
+  final size = ["small", "medium", "large", "xl", "xxl"];
+  String? selectedSize = "small";
   File? image;
   bool isLoading = false;
 
@@ -39,14 +43,14 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
     ref.read(brandAuthControllerProvider).saveCategoryDataToFirebase(
           context,
           widget.mainCategory,
-          '',
+          widget.subCategory,
           nameController.text.trim(),
           priceController.text.trim(),
           image,
           colorController.text.trim(),
           quantityController.text.trim(),
           descriptionController.text.trim(),
-          '',
+          selectedSize,
         );
     setState(() {
       isLoading = false;
@@ -63,7 +67,7 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
           child: Center(
             child: Column(
               children: [
-                SizedBox(height: 20.h),
+                SizedBox(height: 10.h),
                 Text(
                   '${widget.mainCategory} Details',
                   style: TextStyle(
@@ -72,7 +76,7 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
                     fontSize: 30.sp,
                   ),
                 ),
-                SizedBox(height: 5.h),
+                SizedBox(height: 20.h),
                 image == null
                     ? const CircleAvatar(
                         backgroundImage:
@@ -131,6 +135,52 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
                   alignment: Alignment.topLeft,
                   margin: EdgeInsets.only(left: 30.w),
                   child: Text(
+                    "Sizes",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25.w),
+                  child: DropdownButtonFormField(
+                    value: selectedSize,
+                    items: size
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(
+                              e,
+                              style: const TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (String? val) {
+                      setState(() {
+                        selectedSize = val;
+                      });
+                    },
+                    dropdownColor: Colors.red,
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15.h),
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(left: 30.w),
+                  child: Text(
                     "Quantity",
                     style: TextStyle(
                       color: Colors.white,
@@ -147,38 +197,32 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
                 Container(
                   alignment: Alignment.topLeft,
                   margin: EdgeInsets.only(left: 30.w),
-                  child: Text(
-                    "Description",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.sp,
-                    ),
-                  ),
+                  child: Text("Description",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                      )),
                 ),
                 SizedBox(height: 8.h),
                 MyTextField(
-                  controller: descriptionController,
-                  hintText: '',
-                  obscureText: false,
-                ),
+                    controller: descriptionController,
+                    hintText: '',
+                    obscureText: false),
                 SizedBox(height: 15.h),
                 Container(
                   alignment: Alignment.topLeft,
                   margin: EdgeInsets.only(left: 30.w),
-                  child: Text(
-                    "Colors",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.sp,
-                    ),
-                  ),
+                  child: Text("Colors",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                      )),
                 ),
                 SizedBox(height: 8.h),
                 MyTextField(
-                  controller: colorController,
-                  hintText: '',
-                  obscureText: false,
-                ),
+                    controller: colorController,
+                    hintText: '',
+                    obscureText: false),
                 SizedBox(height: 20.h),
                 isLoading == true
                     ? const Center(
@@ -186,7 +230,9 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
                       )
                     : MyButton(
                         label: 'Done',
-                        onPress: saveCategoryDataToFirebase,
+                        onPress: () {
+                          saveCategoryDataToFirebase();
+                        },
                       ),
                 SizedBox(height: 50.h),
               ],

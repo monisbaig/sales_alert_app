@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:sales_alert_app/User_directory/auth/signup_screen.dart';
 
 import '../screens/bottom_navigation.dart';
@@ -162,12 +161,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         TextFormField(
                           controller: email,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(errorText: "Email is required"),
-                              EmailValidator(errorText: "Not a valid Email"),
-                            ],
-                          ),
+                          // validator: MultiValidator(
+                          //   [
+                          //     RequiredValidator(errorText: "Email is required"),
+                          //     EmailValidator(errorText: "Not a valid Email"),
+                          //   ],
+                          // ),
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
                             floatingLabelBehavior: FloatingLabelBehavior.always,

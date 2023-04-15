@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/Common_component/error_screen.dart';
-import 'package:sales_alert_app/brands/Screens/Brand_Details.dart';
+import 'package:sales_alert_app/brands/Screens/brand_choice.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 import 'package:sales_alert_app/splash/splash_screen.dart';
 
@@ -37,7 +37,7 @@ class MyApp extends ConsumerWidget {
                 if (brand == null) {
                   return const Splash();
                 }
-                return const BrandDetails();
+                return const BrandChoice();
               },
               error: (error, stackTrace) {
                 return ErrorScreen(

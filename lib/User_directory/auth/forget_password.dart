@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 
 class ForgotScreen extends StatefulWidget {
   const ForgotScreen({
@@ -86,8 +85,8 @@ class _ForgotScreenState extends State<ForgotScreen> {
                     // onChanged: (String value) {
                     //   email = value;
                     // },
-                    validator:
-                        RequiredValidator(errorText: "Email is required"),
+                    // validator:
+                    //     RequiredValidator(errorText: "Email is required"),
                   ),
                   const SizedBox(
                     height: 14,

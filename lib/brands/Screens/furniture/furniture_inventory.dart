@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/brands/Screens/electronics/electronic_items.dart';
+import 'package:sales_alert_app/brands/Screens/inventory/total_inventory.dart';
 
-class ElectronicsCategories extends StatelessWidget {
-  const ElectronicsCategories({super.key});
+class FurnitureInventory extends StatelessWidget {
+  const FurnitureInventory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class ElectronicsCategories extends StatelessWidget {
             SizedBox(height: 20.h),
             Center(
               child: Text(
-                'Electronic Items ',
+                'Total Inventory ',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16.sp,
@@ -55,7 +55,7 @@ class ElectronicsCategories extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(26.r),
                           child: Image.asset(
-                            'lib/brands/brand_images/mobile.png',
+                            'lib/brands/brand_images/sofa.png',
                             height: 130.h,
                             fit: BoxFit.cover,
                           ),
@@ -63,8 +63,8 @@ class ElectronicsCategories extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => const ElectronicItems(
-                                mainCategory: 'Mobile Phones',
+                              builder: (_) => const TotalInventory(
+                                collection: 'Sofa Set',
                               ),
                             ),
                           );
@@ -72,7 +72,7 @@ class ElectronicsCategories extends StatelessWidget {
                       ),
                       SizedBox(height: 20.h),
                       Text(
-                        'Mobile Phones',
+                        'Sofa Set',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.sp,
@@ -87,7 +87,7 @@ class ElectronicsCategories extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(26.r),
                           child: Image.asset(
-                            'lib/brands/brand_images/headphones.png',
+                            'lib/brands/brand_images/bed.png',
                             height: 130.h,
                             fit: BoxFit.cover,
                           ),
@@ -95,8 +95,8 @@ class ElectronicsCategories extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => const ElectronicItems(
-                                mainCategory: 'Head Phones',
+                              builder: (_) => const TotalInventory(
+                                collection: 'Bed Set',
                               ),
                             ),
                           );
@@ -104,7 +104,7 @@ class ElectronicsCategories extends StatelessWidget {
                       ),
                       SizedBox(height: 20.h),
                       Text(
-                        'Head Phones',
+                        'Bed Set',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.sp,
@@ -125,7 +125,7 @@ class ElectronicsCategories extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(26.r),
                         child: Image.asset(
-                          'lib/brands/brand_images/laptop.png',
+                          'lib/brands/brand_images/table.png',
                           height: 130.h,
                           fit: BoxFit.cover,
                         ),
@@ -133,8 +133,8 @@ class ElectronicsCategories extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => const ElectronicItems(
-                              mainCategory: 'Laptops',
+                            builder: (_) => const TotalInventory(
+                              collection: 'Table Set',
                             ),
                           ),
                         );
@@ -142,7 +142,7 @@ class ElectronicsCategories extends StatelessWidget {
                     ),
                     SizedBox(height: 20.h),
                     Text(
-                      'Laptops',
+                      'Table Set',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.sp,

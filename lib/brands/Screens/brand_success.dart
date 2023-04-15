@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/brands/Screens/brand_choice.dart';
 
 import '../../Common_component/my_button.dart';
-import 'brand_choice.dart';
 
-class success extends StatelessWidget {
+class BrandSuccess extends StatelessWidget {
   final String label;
-  success({super.key, required this.label});
+  const BrandSuccess({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +45,11 @@ class success extends StatelessWidget {
             MyButton(
               label: "Main Menu",
               onPress: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => BrandChoice(
-                          id: "bahbd",
-                        )));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const BrandChoice(),
+                  ),
+                );
               },
             ),
           ],
