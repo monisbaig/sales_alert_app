@@ -42,6 +42,8 @@ class ViewOrders extends StatelessWidget {
     "Rs.60.55",
     "Rs.50.14",
   ];
+
+  ViewOrders({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

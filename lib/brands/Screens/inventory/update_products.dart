@@ -6,8 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
-import '../../../Common_component/my_TextField.dart';
 import '../../../Common_component/my_button.dart';
+import '../../../Common_component/my_text_field.dart';
 import '../../../utils/utils.dart';
 
 class UpdateProduct extends ConsumerStatefulWidget {

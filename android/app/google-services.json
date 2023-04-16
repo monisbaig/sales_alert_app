@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "797747569275-uf3rslge9fb0cu2r9a7sqd0rjbtihgt2.apps.googleusercontent.com",
+          "client_id": "797747569275-lr2q7in7s3o4d9c271ti9e6gv818tlub.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sales_alert_app",
+            "certificate_hash": "aca4d98c5ca5d51b395516c899ec6c47d3678bcd"
+          }
+        },
+        {
+          "client_id": "797747569275-6o6q8ogt7tonft96ta3sr7hd54bmdio1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +35,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "797747569275-uf3rslge9fb0cu2r9a7sqd0rjbtihgt2.apps.googleusercontent.com",
+              "client_id": "797747569275-6o6q8ogt7tonft96ta3sr7hd54bmdio1.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "797747569275-d2a60a4rscibih6lqcrjp5vrav57t7pg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.salesAlertApp"
+              }
             }
           ]
         }

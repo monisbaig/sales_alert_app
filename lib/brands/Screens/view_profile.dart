@@ -8,8 +8,8 @@ import '../../Common_component/loader.dart';
 import '../brands_components/brand_nav_bar.dart';
 import '../brands_components/get_inventory_data.dart';
 import '../brands_components/profile_menu.dart';
-import 'Account_Details.dart';
-import 'View_Orders.dart';
+import 'account_details.dart';
+import 'view_orders.dart';
 // import 'inventory/total_inventory.dart';
 
 class ViewBrandProfile extends ConsumerStatefulWidget {
@@ -49,10 +49,16 @@ class _ViewBrandProfileState extends ConsumerState<ViewBrandProfile> {
                   return const Loader();
                 }
                 return Center(
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(snapshot.data!.logo),
-                    radius: 70.sp,
-                  ),
+                  child: snapshot.data != null
+                      ? CircleAvatar(
+                          backgroundImage: NetworkImage(snapshot.data!.logo),
+                          radius: 70.sp,
+                        )
+                      : CircleAvatar(
+                          backgroundImage: const AssetImage(
+                              'lib/brands/brand_images/brand1.png'),
+                          radius: 70.sp,
+                        ),
                 );
               },
             ),

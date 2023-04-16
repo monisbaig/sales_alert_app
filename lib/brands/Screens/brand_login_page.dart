@@ -5,10 +5,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sales_alert_app/brands/Screens/brand_register.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
-import '../../Common_component/my_TextField.dart';
 import '../../Common_component/my_button.dart';
-import '../../Common_component/square_tile.dart';
-import 'Forgot_Password.dart';
+import '../../Common_component/my_text_field.dart';
+import 'forgot_password.dart';
 
 class BrandLoginPage extends ConsumerStatefulWidget {
   const BrandLoginPage({super.key});
@@ -48,6 +47,10 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  void signInWithGoogle() {
+    ref.watch(brandAuthControllerProvider).signInWithGoogle(context);
   }
 
   @override
@@ -125,7 +128,8 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                         onTap: () {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                  builder: (BuildContext context) => Forgot()));
+                                  builder: (BuildContext context) =>
+                                      ForgotPassword()));
                         },
                       ),
                       const Icon(Icons.arrow_right_alt,
@@ -213,9 +217,16 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                 ),
                 SizedBox(height: 10.h),
                 // google sign in button
-                const Center(
-                  child: SquareTile(
-                    imagePath: 'lib/Common_images/google_logo.png',
+                GestureDetector(
+                  onTap: () {
+                    signInWithGoogle();
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: const AssetImage(
+                      'lib/Common_images/google_logo.png',
+                    ),
+                    radius: 35.sp,
                   ),
                 ),
               ],

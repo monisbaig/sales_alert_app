@@ -49,6 +49,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     });
   }
 
+  void signInWithGoogle() {
+    ref.watch(brandAuthControllerProvider).signInWithGoogle(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -265,11 +269,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               ),
             ),
             SizedBox(height: 10.h),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 60.0),
-              child: Image.asset(
-                'lib/Common_images/google_logo.png',
-                height: 63.h,
+            GestureDetector(
+              onTap: () {
+                signInWithGoogle();
+              },
+              child: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                backgroundImage: const AssetImage(
+                  'lib/Common_images/google_logo.png',
+                ),
+                radius: 35.sp,
               ),
             ),
           ],

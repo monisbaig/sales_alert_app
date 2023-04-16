@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../Common_component/error_screen.dart';
 import '../../Common_component/loader.dart';
 import '../Screens/brand_details.dart';
 import '../Screens/clothing/clothing_categories.dart';
@@ -18,6 +19,11 @@ class GetData extends ConsumerWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Loader();
+        }
+        if (snapshot.data == null) {
+          return const ErrorScreen(
+            error: 'Please enter your brand details first!',
+          );
         }
         var categoryData = snapshot.data!.category;
         if (categoryData == 'Clothing') {

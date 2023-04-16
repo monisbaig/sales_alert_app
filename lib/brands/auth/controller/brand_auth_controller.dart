@@ -56,8 +56,8 @@ class BrandAuthController {
     );
   }
 
-  void signInWithGoogle() {
-    brandAuthRepository.signInWithGoogle();
+  void signInWithGoogle(BuildContext context) async {
+    await brandAuthRepository.signInWithGoogle(context: context);
   }
 
   void signOut(BuildContext context) {

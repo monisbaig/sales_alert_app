@@ -107,7 +107,7 @@ class BrandAuthRepository {
     }
   }
 
-  Future<void> signInWithGoogle() async {
+  Future<void> signInWithGoogle({required BuildContext context}) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -123,14 +123,12 @@ class BrandAuthRepository {
             await auth.signInWithCredential(credential);
         Fluttertoast.showToast(msg: brandCredential.user!.email!);
 
-        // if(brandCredential.user != null) {
-        //   if(brandCredential.additionalUserInfo!.isNewUser) {
-        //
-        //   }
-        //   else{
-        //
-        //   }
-        // }
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const BrandChoice(),
+          ),
+          (route) => false,
+        );
       }
     } on FirebaseException catch (e) {
       Fluttertoast.showToast(msg: e.message!);

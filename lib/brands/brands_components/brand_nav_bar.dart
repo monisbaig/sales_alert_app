@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
 import '../../Common_component/loader.dart';
-import '../Screens/Account_Details.dart';
-import '../Screens/Request.dart';
-import '../Screens/View_Orders.dart';
+import '../Screens/account_details.dart';
+import '../Screens/request.dart';
+import '../Screens/view_orders.dart';
 // import '../Screens/inventory/total_inventory.dart';
 
 class BrandNavBar extends ConsumerWidget {
@@ -24,32 +24,41 @@ class BrandNavBar extends ConsumerWidget {
         padding: EdgeInsets.zero,
         children: [
           FutureBuilder(
-              future: ref.read(brandAuthControllerProvider).getCategoryData(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Loader();
-                }
-                return UserAccountsDrawerHeader(
-                  accountName: Text(snapshot.data!.name),
-                  accountEmail: Text(snapshot.data!.email),
-                  currentAccountPicture: CircleAvatar(
-                    child: ClipOval(
-                      child: Image.network(
-                        snapshot.data!.logo,
-                        fit: BoxFit.cover,
-                        width: 90.w,
-                        height: 90.h,
-                      ),
-                    ),
+            future: ref.read(brandAuthControllerProvider).getCategoryData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Loader();
+              }
+              return UserAccountsDrawerHeader(
+                accountName: Text(snapshot.data?.name ?? 'Seller Account'),
+                accountEmail: Text(snapshot.data?.email ?? 'seller@gmail.com'),
+                currentAccountPicture: CircleAvatar(
+                  child: ClipOval(
+                    child: snapshot.data != null
+                        ? Image.network(
+                            snapshot.data!.logo,
+                            fit: BoxFit.cover,
+                            width: 90.w,
+                            height: 90.h,
+                          )
+                        : Image.asset(
+                            'lib/brands/brand_images/brand1.png',
+                            fit: BoxFit.cover,
+                            width: 90.w,
+                            height: 90.h,
+                          ),
                   ),
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: AssetImage('lib/Common_images/nav_cart.PNG')),
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage('lib/Common_images/nav_cart.PNG'),
                   ),
-                );
-              }),
+                ),
+              );
+            },
+          ),
           GestureDetector(
             child: ListTile(
               leading: const Icon(Icons.inventory_outlined),

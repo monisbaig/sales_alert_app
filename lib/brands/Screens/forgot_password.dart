@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../Common_component/my_button.dart';
 import 'brand_login_page.dart';
 
-class Forgot extends StatelessWidget {
-  Forgot({super.key});
+class ForgotPassword extends StatelessWidget {
+  const ForgotPassword({super.key});
 
   // sign user in method
   void recoverPass() {}

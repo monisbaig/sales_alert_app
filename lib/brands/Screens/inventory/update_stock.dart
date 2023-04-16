@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../Common_component/my_TextField.dart';
 import '../../../Common_component/my_button.dart';
+import '../../../Common_component/my_text_field.dart';
 
 class UpdateStock extends StatefulWidget {
   const UpdateStock({super.key});
