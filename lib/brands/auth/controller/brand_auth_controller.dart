@@ -108,7 +108,6 @@ class BrandAuthController {
     String? productId,
     String? name,
     String? price,
-    File? photo,
     String? quantity,
     String? description,
   ) {
@@ -118,7 +117,6 @@ class BrandAuthController {
       uniqueId: productId,
       name: name,
       price: price,
-      photo: photo,
       quantity: quantity,
       description: description,
       ref: ref,

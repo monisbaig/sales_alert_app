@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
 import '../../Common_component/loader.dart';
-import '../Screens/account_details.dart';
-import '../Screens/request.dart';
 import '../Screens/view_orders.dart';
+import 'get_data.dart';
+import 'get_inventory_data.dart';
 // import '../Screens/inventory/total_inventory.dart';
 
 class BrandNavBar extends ConsumerWidget {
@@ -64,40 +64,56 @@ class BrandNavBar extends ConsumerWidget {
               leading: const Icon(Icons.inventory_outlined),
               title: const Text('Check Inventory'),
               iconColor: const Color(0xFFDB3022),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const GetInventoryData(),
+                  ),
+                );
+              },
               //  =>Navigator.of(context).push(MaterialPageRoute(builder: (_)=> const inventory())),
             ),
           ),
           ListTile(
-              leading: const Icon(Icons.add_business_outlined),
-              title: const Text('Add Products'),
-              iconColor: const Color(0xFFDB3022),
-              onTap: () {}),
+            leading: const Icon(Icons.add_business_outlined),
+            title: const Text('Add Products'),
+            iconColor: const Color(0xFFDB3022),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const GetData(),
+                ),
+              );
+            },
+          ),
           ListTile(
             leading: const Icon(Icons.production_quantity_limits_rounded),
             title: const Text('View Orders'),
             iconColor: const Color(0xFFDB3022),
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => ViewOrders())),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ViewOrders(),
+              ),
+            ),
           ),
-          ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text('Request'),
-            iconColor: const Color(0xFFDB3022),
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => const Request())),
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.notifications),
+          //   title: const Text('Request'),
+          //   iconColor: const Color(0xFFDB3022),
+          //   onTap: () => Navigator.of(context)
+          //       .push(MaterialPageRoute(builder: (_) => const Request())),
+          // ),
           const Divider(
             thickness: 1,
             color: Color((0xFFDB3022)),
           ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
-            iconColor: const Color(0xFFDB3022),
-            onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const AccountDetails())),
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.settings),
+          //   title: const Text('Settings'),
+          //   iconColor: const Color(0xFFDB3022),
+          //   onTap: () => Navigator.of(context).push(
+          //       MaterialPageRoute(builder: (_) => const AccountDetails())),
+          // ),
           ListTile(
             leading: const Icon(Icons.description),
             title: const Text('About Us'),

@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/Common_component/my_button.dart';
-
-import '../brands/Screens/brand_details.dart';
 
 class ErrorScreen extends StatelessWidget {
   final String error;
@@ -23,17 +19,6 @@ class ErrorScreen extends StatelessWidget {
               fontSize: 30,
               color: Colors.red,
             ),
-          ),
-          SizedBox(height: 20.h),
-          MyButton(
-            label: 'Brand Details',
-            onPress: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const BrandDetails(),
-                  ),
-                  (route) => false);
-            },
           ),
         ],
       ),

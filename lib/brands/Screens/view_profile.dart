@@ -8,7 +8,6 @@ import '../../Common_component/loader.dart';
 import '../brands_components/brand_nav_bar.dart';
 import '../brands_components/get_inventory_data.dart';
 import '../brands_components/profile_menu.dart';
-import 'account_details.dart';
 import 'view_orders.dart';
 // import 'inventory/total_inventory.dart';
 
@@ -95,17 +94,17 @@ class _ViewBrandProfileState extends ConsumerState<ViewBrandProfile> {
                 );
               },
             ),
-            SizedBox(height: 25.h),
-            ProfileMenu(
-              label: "Account Details",
-              onPress: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const AccountDetails(),
-                  ),
-                );
-              },
-            ),
+            // SizedBox(height: 25.h),
+            // ProfileMenu(
+            //   label: "Account Details",
+            //   onPress: () {
+            //     Navigator.of(context).push(
+            //       MaterialPageRoute(
+            //         builder: (_) => const AccountDetails(),
+            //       ),
+            //     );
+            //   },
+            // ),
           ],
         ),
       ),

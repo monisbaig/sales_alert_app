@@ -3,14 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/brands/Screens/brand_choice.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 import 'package:sales_alert_app/utils/utils.dart';
 
 import '../../Common_component/my_button.dart';
 import '../../Common_component/my_text_field.dart';
-import 'clothing/clothing_categories.dart';
-import 'electronics/electronics_categories.dart';
-import 'furniture/furniture_categories.dart';
 
 class BrandDetails extends ConsumerStatefulWidget {
   const BrandDetails({super.key});
@@ -28,7 +26,7 @@ class _BrandDetailsState extends ConsumerState<BrandDetails> {
     "Electronics",
     "Furniture",
   ];
-  String? selectedItem = "Clothing";
+  String? selectedItem;
 
   @override
   void dispose() {
@@ -50,6 +48,11 @@ class _BrandDetailsState extends ConsumerState<BrandDetails> {
             image,
             selectedItem!,
           );
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => const BrandChoice(),
+        ), //signUserIn
+      );
     }
   }
 
@@ -195,27 +198,6 @@ class _BrandDetailsState extends ConsumerState<BrandDetails> {
                   label: "Save",
                   onPress: () {
                     storeUserData();
-                    if (selectedItem == 'Clothing') {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const ClothingCategories(),
-                        ), //signUserIn
-                      );
-                    }
-                    if (selectedItem == 'Electronics') {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const ElectronicsCategories(),
-                        ), //signUserIn
-                      );
-                    }
-                    if (selectedItem == 'Furniture') {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const FurnitureCategories(),
-                        ), //signUserIn
-                      );
-                    }
                   },
                 ),
               ],

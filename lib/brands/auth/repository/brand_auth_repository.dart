@@ -293,7 +293,6 @@ class BrandAuthRepository {
     String? collection,
     String? name,
     String? price,
-    File? photo,
     String? uniqueId,
     String? quantity,
     String? description,
@@ -303,11 +302,11 @@ class BrandAuthRepository {
       String uId = auth.currentUser!.uid;
       String? productPhotoUrl;
 
-      if (photo != null) {
-        productPhotoUrl = await ref!
-            .read(brandFirebaseStorageRepositoryProvider)
-            .storeFileToFirebase('productPhoto/$uId/$uniqueId', photo);
-      }
+      // if (photo != null) {
+      //   productPhotoUrl = await ref!
+      //       .read(brandFirebaseStorageRepositoryProvider)
+      //       .storeFileToFirebase('productPhoto/$uId/$uniqueId', photo);
+      // }
 
       await firestore
           .collection('brandProducts')
@@ -317,7 +316,7 @@ class BrandAuthRepository {
           .update({
         'name': name,
         'price': price,
-        'photo': productPhotoUrl,
+        // 'photo': productPhotoUrl,
         'quantity': quantity,
         'description': description,
       });

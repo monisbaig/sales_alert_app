@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
 import '../../../Common_component/my_button.dart';
@@ -77,20 +76,13 @@ class _UpdateProductState extends ConsumerState<UpdateProduct> {
     setState(() {
       isLoading = true;
     });
-    if (image == null) {
-      Fluttertoast.showToast(msg: 'Please select a image');
-      setState(() {
-        isLoading = false;
-      });
-      return;
-    }
+
     ref.read(brandAuthControllerProvider).updateCategoryDataToFirebase(
           context,
           widget.productCollection,
           widget.productId,
           nameController.text.trim(),
           priceController.text.trim(),
-          image,
           quantityController.text.trim(),
           descriptionController.text.trim(),
         );
@@ -102,7 +94,6 @@ class _UpdateProductState extends ConsumerState<UpdateProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -266,6 +257,7 @@ class _UpdateProductState extends ConsumerState<UpdateProduct> {
                         label: 'Save',
                         onPress: updateCategoryDataToFirebase,
                       ),
+                SizedBox(height: 20.h),
               ],
             ),
           ),

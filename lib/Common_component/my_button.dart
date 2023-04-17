@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyButton extends StatelessWidget {
   final String label;
-  final VoidCallback onPress;
+  final GestureTapCallback? onPress;
   const MyButton({super.key, required this.label, required this.onPress});
   @override
   Widget build(BuildContext context) {

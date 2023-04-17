@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/brands/brands_components/get_data.dart';
+import 'package:sales_alert_app/brands/brands_components/check_brand_data.dart';
 
 import '../brands_components/brand_button.dart';
 import '../brands_components/brand_nav_bar.dart';
@@ -34,14 +34,15 @@ class _BrandChoiceState extends State<BrandChoice> {
             ),
             SizedBox(height: 10.h),
             BrandButton(
-                label: "Add details",
-                onPress: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const GetData(),
-                    ),
-                  );
-                }),
+              label: "Add Details",
+              onPress: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const CheckBrandData(),
+                  ),
+                );
+              },
+            ),
             SizedBox(height: 10.h),
             CircleAvatar(
               radius: 85.sp,

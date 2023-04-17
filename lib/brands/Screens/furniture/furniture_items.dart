@@ -26,6 +26,7 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
   final colorController = TextEditingController();
   File? image;
   bool isLoading = false;
+  bool alreadyPressed = false;
 
   void selectImage() async {
     image = await pickImageFromGallery();
@@ -50,6 +51,7 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
         );
     setState(() {
       isLoading = false;
+      alreadyPressed = true;
     });
   }
 
@@ -186,7 +188,9 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
                       )
                     : MyButton(
                         label: 'Done',
-                        onPress: saveCategoryDataToFirebase,
+                        onPress: alreadyPressed == false
+                            ? saveCategoryDataToFirebase
+                            : null,
                       ),
                 SizedBox(height: 50.h),
               ],

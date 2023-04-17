@@ -127,9 +127,11 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                         ),
                         onTap: () {
                           Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ForgotPassword()));
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  const ForgotPassword(),
+                            ),
+                          );
                         },
                       ),
                       const Icon(Icons.arrow_right_alt,
@@ -139,7 +141,6 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                 ),
 
                 SizedBox(height: 25.h),
-
                 // sign in button
                 isLoading == true
                     ? const Center(

@@ -30,6 +30,7 @@ class _ItemDetailsState extends ConsumerState<ClothingItems> {
   String? selectedSize = "small";
   File? image;
   bool isLoading = false;
+  bool alreadyPressed = false;
 
   void selectImage() async {
     image = await pickImageFromGallery();
@@ -54,6 +55,7 @@ class _ItemDetailsState extends ConsumerState<ClothingItems> {
         );
     setState(() {
       isLoading = false;
+      alreadyPressed = true;
     });
   }
 
@@ -230,9 +232,9 @@ class _ItemDetailsState extends ConsumerState<ClothingItems> {
                       )
                     : MyButton(
                         label: 'Done',
-                        onPress: () {
-                          saveCategoryDataToFirebase();
-                        },
+                        onPress: alreadyPressed == false
+                            ? saveCategoryDataToFirebase
+                            : null,
                       ),
                 SizedBox(height: 50.h),
               ],
