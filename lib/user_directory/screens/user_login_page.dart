@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sales_alert_app/brands/Screens/brand_register.dart';
-import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
+import 'package:sales_alert_app/User_directory/screens/user_register.dart';
 
 import '../../Common_component/my_button.dart';
 import '../../Common_component/my_text_field.dart';
-import 'forgot_password.dart';
+import '../../brands/Screens/forgot_password.dart';
+import '../auth/controller/user_auth_controller.dart';
 
-class BrandLoginPage extends ConsumerStatefulWidget {
-  const BrandLoginPage({super.key});
+class UserLoginPage extends ConsumerStatefulWidget {
+  const UserLoginPage({super.key});
 
   @override
-  ConsumerState<BrandLoginPage> createState() => _BrandLoginPageState();
+  ConsumerState<UserLoginPage> createState() => _BrandLoginPageState();
 }
 
-class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
+class _BrandLoginPageState extends ConsumerState<UserLoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -36,7 +36,7 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
     if (email.isNotEmpty && password.isNotEmpty) {
-      ref.read(brandAuthControllerProvider).loginWithEmail(
+      ref.read(userAuthControllerProvider).loginWithEmail(
             context,
             email,
             password,
@@ -50,14 +50,13 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
   }
 
   void signInWithGoogle() {
-    ref.watch(brandAuthControllerProvider).signInWithGoogle(context);
+    ref.watch(userAuthControllerProvider).signInWithGoogle(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -69,7 +68,6 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                   child: Text(
                     'Log In',
                     style: TextStyle(
-                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 40.sp,
                     ),
@@ -80,11 +78,12 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                 Container(
                   alignment: Alignment.topLeft,
                   margin: const EdgeInsets.only(left: 30),
-                  child: Text("Email",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.sp,
-                      )),
+                  child: Text(
+                    "Email",
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                    ),
+                  ),
                 ),
                 SizedBox(height: 10.h),
                 // username Text_field
@@ -92,6 +91,7 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                   controller: emailController,
                   hintText: 'Enter email',
                   obscureText: false,
+                  color: Colors.black12,
                 ),
 
                 SizedBox(height: 30.h),
@@ -99,11 +99,12 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                 Container(
                   alignment: Alignment.topLeft,
                   margin: const EdgeInsets.only(left: 30),
-                  child: Text("Password",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.sp,
-                      )),
+                  child: Text(
+                    "Password",
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                    ),
+                  ),
                 ),
                 SizedBox(height: 10.h),
                 // password Text_field
@@ -111,6 +112,7 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                   controller: passwordController,
                   hintText: 'Enter password',
                   obscureText: true,
+                  color: Colors.black12,
                 ),
 
                 SizedBox(height: 30.h),
@@ -123,7 +125,6 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                       GestureDetector(
                         child: const Text(
                           'Forgot Password',
-                          style: TextStyle(color: Colors.white),
                         ),
                         onTap: () {
                           Navigator.of(context).pushReplacement(
@@ -134,8 +135,10 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                           );
                         },
                       ),
-                      const Icon(Icons.arrow_right_alt,
-                          color: Color(0xFFDB3022)),
+                      const Icon(
+                        Icons.arrow_right_alt,
+                        color: Color(0xFFDB3022),
+                      ),
                     ],
                   ),
                 ),
@@ -159,7 +162,6 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                     children: [
                       const Text(
                         "Don't have any account? ",
-                        style: TextStyle(color: Colors.white),
                       ),
                       InkWell(
                         child: const Text(
@@ -170,7 +172,7 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  const BrandRegisterScreen(),
+                                  const UserRegisterScreen(),
                             ),
                           );
                         },
@@ -211,7 +213,6 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                   child: Text(
                     "Login with Social account",
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 20.sp,
                     ),
                   ),

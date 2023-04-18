@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/User_directory/screens/user_login_page.dart';
 import 'package:sales_alert_app/brands/Screens/brand_login_page.dart';
 
 import '../../Common_component/my_button.dart';
-import '../auth/login_screen.dart';
-import '../screens/bottom_navigation.dart';
 
 class ChooseScreen extends StatelessWidget {
   const ChooseScreen({Key? key}) : super(key: key);
@@ -41,10 +40,11 @@ class ChooseScreen extends StatelessWidget {
             MyButton(
               label: "No",
               onPress: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => const Screens()));
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const LoginScreen()));
+                  MaterialPageRoute(
+                    builder: (_) => const UserLoginPage(),
+                  ),
+                );
               },
             ),
           ],

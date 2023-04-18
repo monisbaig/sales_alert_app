@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../Common_component/my_button.dart';
-import 'bottom_navigation.dart';
+import 'bottom_navigator.dart';
 
 class Success extends StatelessWidget {
   final String label;
@@ -47,7 +47,7 @@ class Success extends StatelessWidget {
               onPress: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => const Screens(),
+                    builder: (_) => const BottomNavigator(),
                   ),
                 );
               },

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class SplashButton extends StatelessWidget {
   final String label;
-  final VoidCallback onPress;
+  final GestureTapCallback? onPress;
   const SplashButton({super.key, required this.label, required this.onPress});
   @override
   Widget build(BuildContext context) {

@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
-import 'brand_login_page.dart';
+import '../auth/controller/user_auth_controller.dart';
+import 'user_login_page.dart';
 
-class BrandRegisterScreen extends ConsumerStatefulWidget {
-  const BrandRegisterScreen({Key? key}) : super(key: key);
+class UserRegisterScreen extends ConsumerStatefulWidget {
+  const UserRegisterScreen({Key? key}) : super(key: key);
   @override
-  ConsumerState<BrandRegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<UserRegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends ConsumerState<BrandRegisterScreen> {
+class _RegisterScreenState extends ConsumerState<UserRegisterScreen> {
   final _form = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -33,11 +33,13 @@ class _RegisterScreenState extends ConsumerState<BrandRegisterScreen> {
     });
     var isValid = _form.currentState!.validate();
     if (isValid) {
+      String name = nameController.text.trim();
       String email = emailController.text.trim();
       String password = passwordController.text.trim();
 
-      ref.read(brandAuthControllerProvider).signUpWithEmail(
+      ref.read(userAuthControllerProvider).signUpWithEmail(
             context,
+            name,
             email,
             password,
           );
@@ -50,14 +52,13 @@ class _RegisterScreenState extends ConsumerState<BrandRegisterScreen> {
   }
 
   void signInWithGoogle() {
-    ref.watch(brandAuthControllerProvider).signInWithGoogle(context);
+    ref.watch(userAuthControllerProvider).signInWithGoogle(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.black,
       //SafeArea avoid notch area
       body: SingleChildScrollView(
         child: Column(
@@ -68,7 +69,6 @@ class _RegisterScreenState extends ConsumerState<BrandRegisterScreen> {
               child: Text(
                 'Register your Brand',
                 style: TextStyle(
-                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 30.sp,
                 ),
@@ -95,7 +95,7 @@ class _RegisterScreenState extends ConsumerState<BrandRegisterScreen> {
                             borderSide: const BorderSide(color: Colors.white),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          fillColor: Colors.white,
+                          fillColor: Colors.black12,
                           filled: true,
                         ),
                         validator: (value) {
@@ -133,7 +133,7 @@ class _RegisterScreenState extends ConsumerState<BrandRegisterScreen> {
                             borderSide: const BorderSide(color: Colors.white),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          fillColor: Colors.white,
+                          fillColor: Colors.black12,
                           filled: true,
                         ),
                         validator: (value) {
@@ -162,7 +162,7 @@ class _RegisterScreenState extends ConsumerState<BrandRegisterScreen> {
                             borderSide: const BorderSide(color: Colors.white),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          fillColor: Colors.white,
+                          fillColor: Colors.black12,
                           filled: true,
                         ),
                         validator: (value) {
@@ -213,7 +213,6 @@ class _RegisterScreenState extends ConsumerState<BrandRegisterScreen> {
                 children: [
                   const Text(
                     "Already have an account? ",
-                    style: TextStyle(color: Colors.white),
                   ),
                   InkWell(
                     child: const Text(
@@ -224,7 +223,7 @@ class _RegisterScreenState extends ConsumerState<BrandRegisterScreen> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              const BrandLoginPage(),
+                              const UserLoginPage(),
                         ),
                       );
                     },
@@ -263,7 +262,6 @@ class _RegisterScreenState extends ConsumerState<BrandRegisterScreen> {
               child: Text(
                 "Sign Up With Social Account",
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 16.sp,
                 ),
               ),

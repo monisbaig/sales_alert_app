@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/Common_component/error_screen.dart';
-import 'package:sales_alert_app/brands/Screens/brand_choice.dart';
-import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
+import 'package:sales_alert_app/User_directory/screens/bottom_navigator.dart';
 import 'package:sales_alert_app/splash/splash_screen.dart';
 
 import 'Common_component/loader.dart';
+import 'User_directory/auth/controller/user_auth_controller.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -32,12 +32,12 @@ class MyApp extends ConsumerWidget {
       designSize: const Size(393, 851),
       builder: (BuildContext context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: ref.watch(brandDataAuthProvider).when(
-              data: (brand) {
-                if (brand == null) {
+        home: ref.watch(userDataAuthProvider).when(
+              data: (user) {
+                if (user == null) {
                   return const Splash();
                 }
-                return const BrandChoice();
+                return const BottomNavigator();
               },
               error: (error, stackTrace) {
                 return ErrorScreen(
@@ -51,3 +51,18 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
+
+// ref.watch(brandDataAuthProvider).when(
+// data: (brand) {
+// if (brand == null) {
+// return const Splash();
+// }
+// return const BrandChoice();
+// },
+// error: (error, stackTrace) {
+// return ErrorScreen(
+// error: error.toString(),
+// );
+// },
+// loading: () => const Loader(),
+// ),

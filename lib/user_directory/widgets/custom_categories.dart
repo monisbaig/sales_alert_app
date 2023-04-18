@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomCategories extends StatelessWidget {
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
   final String iconImages;
   const CustomCategories({
     super.key,

@@ -1,19 +1,29 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/user_directory/auth/controller/user_auth_controller.dart';
 
-class IconsScreen extends StatelessWidget {
-  const IconsScreen({Key? key}) : super(key: key);
+class ClothingCategoryScreen extends ConsumerStatefulWidget {
+  final String collection;
 
+  const ClothingCategoryScreen({super.key, required this.collection});
+
+  @override
+  ConsumerState<ClothingCategoryScreen> createState() =>
+      _ClothingCategoryScreenState();
+}
+
+class _ClothingCategoryScreenState
+    extends ConsumerState<ClothingCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Clothes"),
+        title: const Text("Clothing Category"),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection("brands").snapshots(),
-        builder: (BuildContext context, snapshot) {
+      body: FutureBuilder(
+        future: ref.watch(userAuthControllerProvider).getBrandData(),
+        builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
@@ -29,16 +39,16 @@ class IconsScreen extends StatelessWidget {
 
                       // physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: snapshot.data?.docs.length,
+                      itemCount: snapshot.data!.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         childAspectRatio: 0.7,
                         crossAxisCount: 2,
                       ),
                       itemBuilder: (context, index) {
-                        DocumentSnapshot Data = snapshot.data!.docs[index];
+                        var data = snapshot.data!.elementAt(index);
                         return Container(
-                          margin: EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             color: const Color(0xFFD4ECF7),
@@ -51,7 +61,7 @@ class IconsScreen extends StatelessWidget {
                             ],
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(12),
                             child: Column(
                               children: [
                                 Row(
@@ -66,11 +76,11 @@ class IconsScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: 15.h),
                                 Padding(
-                                  padding: EdgeInsets.all(8),
+                                  padding: const EdgeInsets.all(8),
                                   child: InkWell(
                                     onTap: () {},
                                     child: Image.network(
-                                      Data["image"],
+                                      data.logo,
                                       height: 100.h,
                                       width: 200.w,
                                     ),
@@ -84,7 +94,7 @@ class IconsScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        Data["title"],
+                                        data.name,
                                         style: TextStyle(
                                           fontSize: 17.sp,
                                           color: Colors.black.withOpacity(0.8),
@@ -95,7 +105,7 @@ class IconsScreen extends StatelessWidget {
                                       Row(
                                         children: [
                                           Text(
-                                            "        ${Data["price"]}",
+                                            "        ${data.name}",
                                             style: TextStyle(
                                               fontSize: 15.sp,
                                               color: Colors.redAccent,
@@ -104,7 +114,7 @@ class IconsScreen extends StatelessWidget {
                                           ),
                                           SizedBox(width: 5.w),
                                           Text(
-                                            "${Data["old"]}",
+                                            "123",
                                             style: TextStyle(
                                               decoration:
                                                   TextDecoration.lineThrough,

@@ -1,30 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../screens/edit_screen.dart';
+import '../../Common_component/loader.dart';
+import '../auth/controller/user_auth_controller.dart';
+import '../screens/edit_profile_page.dart';
 import '../screens/favourites.dart';
 import '../screens/live_chat.dart';
 import '../screens/my_orders.dart';
 import '../screens/notification.dart';
 
-class NavBar extends StatelessWidget {
-  const NavBar({super.key});
+class UserNavBar extends ConsumerWidget {
+  const UserNavBar({super.key});
+
+  void signOut(BuildContext context, WidgetRef ref) {
+    ref.read(userAuthControllerProvider).signOut(context);
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       child: ListView(
         // Remove padding
         padding: EdgeInsets.zero,
         children: [
-          const UserAccountsDrawerHeader(
-            accountName: Text('Salman Baig'),
-            accountEmail: Text('salman@gmail.com'),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: AssetImage('lib/Common_images/nav_cart.PNG')),
-            ),
+          FutureBuilder(
+            future: ref.watch(userAuthControllerProvider).getUserDetails(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Loader();
+              }
+              return UserAccountsDrawerHeader(
+                accountName: Text(snapshot.data?.name ?? 'User Account'),
+                accountEmail: Text(snapshot.data?.email ?? 'user@gmail.com'),
+                currentAccountPicture: CircleAvatar(
+                  child: ClipOval(
+                    child: snapshot.data != null
+                        ? Image.network(
+                            snapshot.data!.profileImage,
+                            fit: BoxFit.cover,
+                            width: 90.w,
+                            height: 90.h,
+                          )
+                        : Image.asset(
+                            'lib/brands/brand_images/brand1.png',
+                            fit: BoxFit.cover,
+                            width: 90.w,
+                            height: 90.h,
+                          ),
+                  ),
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage('lib/Common_images/nav_cart.PNG'),
+                  ),
+                ),
+              );
+            },
           ),
           GestureDetector(
             child: ListTile(
@@ -67,8 +101,8 @@ class NavBar extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Settings'),
                 iconColor: const Color(0xFFDB3022),
-                onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => EditProfilePage()))),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const EditProfilePage()))),
           ),
           ListTile(
             leading: const Icon(Icons.description),
@@ -85,11 +119,11 @@ class NavBar extends StatelessWidget {
               title: const Text('Log Out'),
               leading: const Icon(Icons.exit_to_app_outlined),
               iconColor: const Color(0xFFDB3022),
-              onTap: () => null,
+              onTap: () => signOut(context, ref),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(105.0),
+          SizedBox(height: 60.h),
+          const Center(
             child: Text(
               'Version: 2023\n  Sales Alert ®',
               style: TextStyle(

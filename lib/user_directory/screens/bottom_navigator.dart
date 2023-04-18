@@ -5,22 +5,22 @@ import 'package:line_icons/line_icons.dart';
 
 import 'cart_screen.dart';
 import 'compare_products.dart';
-import 'edit_screen.dart';
+import 'edit_profile_page.dart';
 import 'home_screen.dart';
 
-class Screens extends StatefulWidget {
-  const Screens({super.key});
+class BottomNavigator extends StatefulWidget {
+  const BottomNavigator({super.key});
 
   @override
-  State<Screens> createState() => _ScreensState();
+  State<BottomNavigator> createState() => _BottomNavigatorState();
 }
 
-class _ScreensState extends State<Screens> {
+class _BottomNavigatorState extends State<BottomNavigator> {
   int _selectedIndex = 0;
   static List<Widget> widgetOptions = <Widget>[
-    HomeScreen(),
+    const HomeScreen(),
     CartScreen(),
-    Compare(),
+    const Compare(),
     EditProfilePage(),
   ];
   @override
@@ -48,7 +48,7 @@ class _ScreensState extends State<Screens> {
                 activeColor: Colors.white,
                 iconSize: 25,
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-                duration: Duration(milliseconds: 400),
+                duration: const Duration(milliseconds: 400),
                 tabBackgroundColor: Colors.redAccent,
                 color: Colors.black,
                 tabs: const [

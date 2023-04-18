@@ -1,16 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/User_directory/screens/products_brands.dart';
+import 'package:sales_alert_app/user_directory/widgets/user_nav_bar.dart';
 
-import '../../brands/brands_components/brand_nav_bar.dart';
-import '../widgets/custom_categories.dart';
-import '../widgets/grid_items.dart';
+import '../widgets/all_brands.dart';
 import 'favourites.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     List<Color> Clrs = [
@@ -34,13 +37,16 @@ class HomeScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      drawer: const BrandNavBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+      ),
+      drawer: const UserNavBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 40, left: 15, right: 15),
+              padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -175,104 +181,69 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Top Categories",
+                    "All Brands",
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const Text(
-                    "See All",
-                    style: TextStyle(
-                      color: Colors.black54,
-                    ),
-                  ),
+                  // const Text(
+                  //   "See All",
+                  //   style: TextStyle(
+                  //     color: Colors.black54,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
+            // SizedBox(height: 20.h),
+            // SingleChildScrollView(
+            //   scrollDirection: Axis.horizontal,
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(left: 10),
+            //     child: Row(
+            //       children: [
+            //         CustomCategories(
+            //           onTap: () {
+            //             Navigator.of(context).push(
+            //               MaterialPageRoute(
+            //                 builder: (context) =>
+            //                     const ClothingCategoryScreen(collection: 'Men'),
+            //               ),
+            //             );
+            //           },
+            //           iconImages: iconImageList[0],
+            //         ),
+            //         CustomCategories(
+            //           onTap: () {},
+            //           iconImages: iconImageList[1],
+            //         ),
+            //         CustomCategories(
+            //           onTap: () {},
+            //           iconImages: iconImageList[2],
+            //         ),
+            //         CustomCategories(
+            //           onTap: () {},
+            //           iconImages: iconImageList[3],
+            //         ),
+            //         CustomCategories(
+            //           onTap: () {},
+            //           iconImages: iconImageList[4],
+            //         ),
+            //         CustomCategories(
+            //           onTap: () {},
+            //           iconImages: iconImageList[5],
+            //         ),
+            //         CustomCategories(
+            //           onTap: () {},
+            //           iconImages: iconImageList[6],
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             SizedBox(height: 20.h),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Row(
-                  children: [
-                    CustomCategories(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const IconsScreen(),
-                          ),
-                        );
-                      },
-                      iconImages: iconImageList[0],
-                    ),
-                    CustomCategories(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const IconsScreen(),
-                          ),
-                        );
-                      },
-                      iconImages: iconImageList[1],
-                    ),
-                    CustomCategories(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const IconsScreen(),
-                          ),
-                        );
-                      },
-                      iconImages: iconImageList[2],
-                    ),
-                    CustomCategories(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const IconsScreen(),
-                          ),
-                        );
-                      },
-                      iconImages: iconImageList[3],
-                    ),
-                    CustomCategories(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const IconsScreen(),
-                          ),
-                        );
-                      },
-                      iconImages: iconImageList[4],
-                    ),
-                    CustomCategories(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const IconsScreen(),
-                          ),
-                        );
-                      },
-                      iconImages: iconImageList[5],
-                    ),
-                    CustomCategories(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const IconsScreen(),
-                          ),
-                        );
-                      },
-                      iconImages: iconImageList[6],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
-            GridItems()
+            const AllBrands(),
           ],
         ),
       ),
