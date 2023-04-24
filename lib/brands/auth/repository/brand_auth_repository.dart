@@ -207,7 +207,8 @@ class BrandAuthRepository {
             .storeFileToFirebase('productPhoto/$uId/$uniqueId', photo);
       }
 
-      var productDetail = SubCategoryDetail(
+      var productDetail = ProductModel(
+        mainCategory: mainCategory!,
         productId: uniqueId,
         brandId: auth.currentUser!.uid,
         category: subCategory!,
@@ -223,7 +224,12 @@ class BrandAuthRepository {
       await firestore
           .collection('brandProducts')
           .doc(uId)
-          .collection(mainCategory!)
+          .collection(mainCategory)
+          .doc(uniqueId)
+          .set(productDetail.toMap());
+
+      await firestore
+          .collection('allBrandProducts')
           .doc(uniqueId)
           .set(productDetail.toMap());
 
@@ -243,16 +249,16 @@ class BrandAuthRepository {
     }
   }
 
-  Future<List<SubCategoryDetail>> getCollectionData(String collection) async {
-    List<SubCategoryDetail> subCategoryList = [];
+  Future<List<ProductModel>> getCollectionData(String collection) async {
+    List<ProductModel> subCategoryList = [];
     var brandProductData = await firestore
         .collection('brandProducts')
         .doc(auth.currentUser!.uid)
         .collection(collection)
         .get();
-    SubCategoryDetail? subCategoryDetail;
+    ProductModel? subCategoryDetail;
     for (var document in brandProductData.docs) {
-      subCategoryDetail = SubCategoryDetail.fromMap(document.data());
+      subCategoryDetail = ProductModel.fromMap(document.data());
       subCategoryList.add(subCategoryDetail);
     }
     subCategoryList = subCategoryList;

@@ -1,31 +1,7 @@
 class ProductModel {
-  final String mainCategory;
-  final SubCategoryDetail subCategoryDetail;
-
-  ProductModel({
-    required this.mainCategory,
-    required this.subCategoryDetail,
-  });
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'mainCategory': mainCategory,
-      'subCategoryDetail': subCategoryDetail.toMap(),
-    };
-  }
-
-  factory ProductModel.fromMap(Map<String, dynamic> map) {
-    return ProductModel(
-      mainCategory: map['mainCategory'] as String,
-      subCategoryDetail: SubCategoryDetail.fromMap(
-          map['subCategoryDetail'] as Map<String, dynamic>),
-    );
-  }
-}
-
-class SubCategoryDetail {
   final String productId;
   final String brandId;
+  final String mainCategory;
   final String category;
   final String name;
   final String price;
@@ -35,9 +11,10 @@ class SubCategoryDetail {
   final String description;
   final String size;
 
-  SubCategoryDetail({
+  ProductModel({
     required this.productId,
     required this.brandId,
+    required this.mainCategory,
     required this.category,
     required this.name,
     required this.price,
@@ -52,6 +29,7 @@ class SubCategoryDetail {
     return <String, dynamic>{
       'productId': productId,
       'brandId': brandId,
+      'mainCategory': mainCategory,
       'category': category,
       'name': name,
       'price': price,
@@ -63,10 +41,11 @@ class SubCategoryDetail {
     };
   }
 
-  factory SubCategoryDetail.fromMap(Map<String, dynamic> map) {
-    return SubCategoryDetail(
+  factory ProductModel.fromMap(Map<String, dynamic> map) {
+    return ProductModel(
       productId: map['productId'] as String,
       brandId: map['brandId'] as String,
+      mainCategory: map['mainCategory'] as String,
       category: map['category'] as String,
       name: map['name'] as String,
       price: map['price'] as String,

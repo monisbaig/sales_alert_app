@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sales_alert_app/brands/models/brand_model.dart';
 
+import '../../../brands/models/brand_model.dart';
 import '../../../brands/models/product_model.dart';
+import '../../models/cart_model.dart';
 import '../../models/user_model.dart';
 import '../repository/user_auth_repository.dart';
 
@@ -79,7 +80,7 @@ class UserAuthController {
     return userAuthRepository.getBrandData();
   }
 
-  Future<List<SubCategoryDetail>> getDataByCollection(
+  Future<List<ProductModel>> getDataByCollection(
       String brandId, String collection) {
     return userAuthRepository.getDataByCollection(
       brandId: brandId,
@@ -95,6 +96,7 @@ class UserAuthController {
     String productPrice,
     String productColor,
     String productSize,
+    int orderQuantity,
     String brandId,
     String brandName,
   ) {
@@ -106,9 +108,77 @@ class UserAuthController {
       productPrice: productPrice,
       productColor: productColor,
       productSize: productSize,
+      orderQuantity: orderQuantity,
       brandId: brandId,
       brandName: brandName,
       ref: ref,
     );
+  }
+
+  Future<List<CartModel>> getMyCartData() {
+    return userAuthRepository.getMyCartData();
+  }
+
+  Future<void> deleteMyCartData(String productId) {
+    return userAuthRepository.deleteMyCartData(productId: productId);
+  }
+
+  Future<void> updateCartDataToFirebase(
+    BuildContext context,
+    String productId,
+    String productPrice,
+    int orderQuantity,
+  ) {
+    return userAuthRepository.updateCartDataToFirebase(
+      context: context,
+      productId: productId,
+      productPrice: productPrice,
+      orderQuantity: orderQuantity,
+      ref: ref,
+    );
+  }
+
+  Future<List<ProductModel>> getAllBrandProductsData(String collection) {
+    return userAuthRepository.getAllBrandProductsData(collection: collection);
+  }
+
+  Future<void> getSelectedProductOne(
+    String productName,
+    String productPrice,
+    String productSize,
+    String productImage,
+    String productColor,
+  ) {
+    return userAuthRepository.getSelectedProductOne(
+      productName: productName,
+      productPrice: productPrice,
+      productSize: productSize,
+      productColor: productColor,
+      productImage: productImage,
+    );
+  }
+
+  Future<List<String>?> getSavedProductOne() {
+    return userAuthRepository.getSavedProductOne();
+  }
+
+  Future<void> getSelectedProductTwo(
+    String productName,
+    String productPrice,
+    String productSize,
+    String productImage,
+    String productColor,
+  ) {
+    return userAuthRepository.getSelectedProductTwo(
+      productName: productName,
+      productPrice: productPrice,
+      productSize: productSize,
+      productColor: productColor,
+      productImage: productImage,
+    );
+  }
+
+  Future<List<String>?> getSavedProductTwo() {
+    return userAuthRepository.getSavedProductTwo();
   }
 }

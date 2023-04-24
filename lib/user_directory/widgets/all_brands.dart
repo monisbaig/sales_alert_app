@@ -115,8 +115,7 @@ class AllBrands extends ConsumerWidget {
                       ),
                       SizedBox(height: 16.h),
                       Text(
-                        '${snapshot.data?.elementAt(index).category} Brand' ??
-                            '',
+                        '${snapshot.data?.elementAt(index).category ?? ''} Brand',
                         style: const TextStyle(
                           color: Colors.grey,
                         ),

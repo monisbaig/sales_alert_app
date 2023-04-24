@@ -69,8 +69,8 @@ class ForgotPassword extends StatelessWidget {
             MyButton(
               label: "Send",
               onPress: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => BrandLoginPage()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const BrandLoginPage()));
               },
             ),
           ],

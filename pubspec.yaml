@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^4.5.0
   google_sign_in: ^6.0.2
   flutter_riverpod: ^2.3.4
+  shared_preferences: ^2.1.0
 
   google_fonts: ^4.0.3
   google_nav_bar: ^5.0.6

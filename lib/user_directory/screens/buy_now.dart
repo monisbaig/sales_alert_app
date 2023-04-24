@@ -47,7 +47,7 @@ class _BuyNowState extends State<BuyNow> {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -72,7 +72,7 @@ class _BuyNowState extends State<BuyNow> {
                       ),
                       SizedBox(width: 250.w),
                       GestureDetector(
-                          child: Icon(Icons.edit, color: Colors.white)),
+                          child: const Icon(Icons.edit, color: Colors.white)),
                     ],
                   ),
                   SizedBox(height: 20.h),
@@ -254,8 +254,8 @@ class _BuyNowState extends State<BuyNow> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            Success(label: 'Your order has been Confirmed')));
+                        builder: (context) => const Success(
+                            label: 'Your order has been Confirmed')));
               })
         ],
       ),

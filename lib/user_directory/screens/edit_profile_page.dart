@@ -41,7 +41,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
           );
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (_) => const BottomNavigator(),
+          builder: (_) => BottomNavigator(),
         ), //signUserIn
       );
     } else {

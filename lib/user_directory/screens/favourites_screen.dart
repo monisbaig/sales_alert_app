@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../Common_component/my_button.dart';
 import 'cart_screen.dart';
 
-class Favourites extends StatelessWidget {
+class FavouritesScreen extends StatelessWidget {
   List<String> pNames = [
     "Apple Watch -M2",
     "Ear Headphone",
@@ -18,6 +18,8 @@ class Favourites extends StatelessWidget {
     "S",
     "40",
   ];
+
+  FavouritesScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -72,7 +74,7 @@ class Favourites extends StatelessWidget {
                                     left: 15, top: 20, bottom: 25),
                                 child: Column(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
@@ -110,7 +112,7 @@ class Favourites extends StatelessWidget {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           "Rs.90.55",
@@ -133,11 +135,12 @@ class Favourites extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 30.h),
-              MyButton(label: 'Add to Cart', onPress: ()
-              {
-                Navigator.push(context,MaterialPageRoute(builder: (context) =>CartScreen()));
-              }
-              )
+              MyButton(
+                  label: 'Add to Cart',
+                  onPress: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CartScreen()));
+                  })
             ],
           ),
         ),

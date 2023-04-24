@@ -25,7 +25,7 @@ class ItemScreen extends StatelessWidget {
                     )),
                 child: Stack(
                   children: [
-                    Center(
+                    const Center(
                       child: ProductImageSlider(),
                     ),
                     Padding(
@@ -92,7 +92,7 @@ class ItemScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          "\Rs. 300",
+                          "Rs. 300",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 22.sp,
@@ -136,7 +136,7 @@ class ItemScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 2.5,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color(0xFFFF1300),
+                color: const Color(0xFFFF1300),
               ),
               child: Center(
                   child: Text(
@@ -157,7 +157,7 @@ class ItemScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 2.5,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color(0xFFFA9F00),
+                color: const Color(0xFFFA9F00),
               ),
               child: Center(
                   child: Text(

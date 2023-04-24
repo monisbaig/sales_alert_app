@@ -47,7 +47,7 @@ class Success extends StatelessWidget {
               onPress: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => const BottomNavigator(),
+                    builder: (_) => BottomNavigator(),
                   ),
                 );
               },

@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sales_alert_app/User_directory/auth/repository/user_firebase_storage_repository.dart';
-import 'package:sales_alert_app/brands/models/brand_model.dart';
-import 'package:sales_alert_app/brands/models/product_model.dart';
-import 'package:sales_alert_app/splash/splash_screen.dart';
+import 'package:sales_alert_app/user_directory/auth/repository/user_firebase_storage_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../brands/models/brand_model.dart';
+import '../../../brands/models/product_model.dart';
+import '../../../splash/splash_screen.dart';
+import '../../models/cart_model.dart';
 import '../../models/user_model.dart';
 import '../../screens/bottom_navigator.dart';
 import '../../screens/user_login_page.dart';
@@ -95,7 +97,7 @@ class UserAuthRepository {
 
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => const BottomNavigator(),
+            builder: (context) => BottomNavigator(),
           ),
           (route) => false,
         );
@@ -139,7 +141,7 @@ class UserAuthRepository {
 
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => const BottomNavigator(),
+            builder: (context) => BottomNavigator(),
           ),
           (route) => false,
         );
@@ -213,18 +215,18 @@ class UserAuthRepository {
     return brandList;
   }
 
-  Future<List<SubCategoryDetail>> getDataByCollection({
+  Future<List<ProductModel>> getDataByCollection({
     required String brandId,
     required String collection,
   }) async {
-    List<SubCategoryDetail> productCollectionList = [];
+    List<ProductModel> productCollectionList = [];
     var allProductDataByCollection = await firestore
         .collection('brandProducts')
         .doc(brandId)
         .collection(collection)
         .get();
     for (var document in allProductDataByCollection.docs) {
-      var list = SubCategoryDetail.fromMap(document.data());
+      var list = ProductModel.fromMap(document.data());
       productCollectionList.add(list);
     }
     return productCollectionList;
@@ -238,18 +240,18 @@ class UserAuthRepository {
     required String productPrice,
     required String productColor,
     required String productSize,
+    required int orderQuantity,
     required String brandId,
     required String brandName,
     required ProviderRef ref,
   }) async {
     try {
       String uId = auth.currentUser!.uid;
-      var uniqueId = DateTime.now().millisecondsSinceEpoch.toString();
+      var totalOrderPrice = int.parse(productPrice) * orderQuantity;
 
-      await firestore.collection('orders').doc(uniqueId).set({
+      await firestore.collection('cart').doc(productId).set({
         'buyerId': uId,
         'brandId': brandId,
-        'uniqueId': uniqueId,
         'brandName': brandName,
         'productId': productId,
         'productName': productName,
@@ -257,11 +259,123 @@ class UserAuthRepository {
         'productPrice': productPrice,
         'productColor': productColor,
         'productSize': productSize,
+        'orderQuantity': orderQuantity.toString(),
+        'totalOrderPrice': totalOrderPrice.toString(),
       });
 
       Fluttertoast.showToast(msg: 'Product added to cart successfully!');
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message!);
     }
+  }
+
+  Future<List<CartModel>> getMyCartData() async {
+    List<CartModel> myCartList = [];
+    var allMyCartListData = await firestore
+        .collection('cart')
+        .where('buyerId', isEqualTo: auth.currentUser!.uid)
+        .get();
+    for (var document in allMyCartListData.docs) {
+      var list = CartModel.fromMap(document.data());
+      myCartList.add(list);
+    }
+    return myCartList;
+  }
+
+  Future<void> deleteMyCartData({required String productId}) async {
+    try {
+      await firestore.collection('cart').doc(productId).delete();
+      Fluttertoast.showToast(msg: 'Product deleted successfully!');
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
+
+  Future<void> updateCartDataToFirebase({
+    required BuildContext context,
+    required String productId,
+    required String productPrice,
+    required int orderQuantity,
+    required ProviderRef ref,
+  }) async {
+    try {
+      var totalOrderPrice = int.parse(productPrice) * orderQuantity;
+
+      await firestore.collection('cart').doc(productId).update({
+        'productId': productId,
+        'productPrice': productPrice,
+        'orderQuantity': orderQuantity.toString(),
+        'totalOrderPrice': totalOrderPrice.toString(),
+      });
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(msg: e.message!);
+    }
+  }
+
+  Future<List<ProductModel>> getAllBrandProductsData(
+      {required String collection}) async {
+    List<ProductModel> allProductsList = [];
+
+    var brandData = await firestore
+        .collection('allBrandProducts')
+        .where('mainCategory', isEqualTo: collection)
+        .get();
+    for (var document in brandData.docs) {
+      var list = ProductModel.fromMap(document.data());
+      allProductsList.add(list);
+    }
+    return allProductsList;
+  }
+
+  Future<void> getSelectedProductOne({
+    required String productName,
+    required String productPrice,
+    required String productSize,
+    required String productImage,
+    required String productColor,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList(
+      'productOneList',
+      [
+        productName,
+        productPrice,
+        productSize,
+        productImage,
+        productColor,
+      ],
+    );
+  }
+
+  Future<List<String>?> getSavedProductOne() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var list = prefs.getStringList('productOneList');
+    return list;
+  }
+
+  Future<void> getSelectedProductTwo({
+    required String productName,
+    required String productPrice,
+    required String productSize,
+    required String productImage,
+    required String productColor,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList(
+      'productTwoList',
+      [
+        productName,
+        productPrice,
+        productSize,
+        productImage,
+        productColor,
+      ],
+    );
+  }
+
+  Future<List<String>?> getSavedProductTwo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var list = prefs.getStringList('productTwoList');
+    return list;
   }
 }

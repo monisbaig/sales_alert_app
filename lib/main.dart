@@ -37,7 +37,7 @@ class MyApp extends ConsumerWidget {
                 if (user == null) {
                   return const Splash();
                 }
-                return const BottomNavigator();
+                return BottomNavigator();
               },
               error: (error, stackTrace) {
                 return ErrorScreen(

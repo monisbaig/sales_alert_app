@@ -77,7 +77,7 @@ class ViewOrders extends StatelessWidget {
                           height: 170.h,
                           width: 320.w,
                           decoration: BoxDecoration(
-                            color: Color(0xFFDB3022),
+                            color: const Color(0xFFDB3022),
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Column(
@@ -195,7 +195,7 @@ class ViewOrders extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Success(
+                            builder: (context) => const Success(
                                 label: 'Orders delivered to the Customers')));
                   })
             ],

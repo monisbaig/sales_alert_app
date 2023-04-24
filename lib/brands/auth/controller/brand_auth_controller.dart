@@ -33,8 +33,8 @@ class BrandAuthController {
     return brand;
   }
 
-  Future<List<SubCategoryDetail>> getCollectionData(String collection) async {
-    List<SubCategoryDetail> subCategoryDetail =
+  Future<List<ProductModel>> getCollectionData(String collection) async {
+    List<ProductModel> subCategoryDetail =
         await brandAuthRepository.getCollectionData(collection);
 
     return subCategoryDetail;

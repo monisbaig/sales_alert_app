@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Common_component/loader.dart';
 import '../auth/controller/user_auth_controller.dart';
 import '../screens/edit_profile_page.dart';
-import '../screens/favourites.dart';
+import '../screens/favourites_screen.dart';
 import '../screens/live_chat.dart';
 import '../screens/my_orders.dart';
 import '../screens/notification.dart';
@@ -65,8 +66,8 @@ class UserNavBar extends ConsumerWidget {
                 leading: const Icon(Icons.favorite_sharp),
                 title: const Text('Wishlist'),
                 iconColor: const Color(0xFFDB3022),
-                onTap: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => Favourites()))),
+                onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => FavouritesScreen()))),
           ),
           GestureDetector(
             child: ListTile(
@@ -119,7 +120,12 @@ class UserNavBar extends ConsumerWidget {
               title: const Text('Log Out'),
               leading: const Icon(Icons.exit_to_app_outlined),
               iconColor: const Color(0xFFDB3022),
-              onTap: () => signOut(context, ref),
+              onTap: () async {
+                signOut(context, ref);
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove('productOneList');
+                prefs.remove('productTwoList');
+              },
             ),
           ),
           SizedBox(height: 60.h),

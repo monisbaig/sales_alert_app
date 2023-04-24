@@ -54,14 +54,43 @@ class ElectronicsBrandScreen extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    bottom: 30,
+                    bottom: 80,
                     left: 0,
                     right: 0,
                     child: Text(
                       textAlign: TextAlign.center,
-                      brandCategory,
+                      brandName,
                       style: const TextStyle(
                         fontSize: 45,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 30,
+                    left: 120,
+                    right: 120,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.redAccent,
+                      ),
+                      onPressed: () {},
+                      child: const Text(
+                        "Follow Us",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Positioned(
+                    bottom: 12,
+                    left: 0,
+                    right: 0,
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      'Follow us for continuous updates',
+                      style: TextStyle(
                         color: Colors.white,
                       ),
                     ),

@@ -5,93 +5,44 @@ import 'package:sales_alert_app/User_directory/screens/bottom_navigator.dart';
 
 import '../auth/controller/user_auth_controller.dart';
 
-class AllBrandCollections extends ConsumerStatefulWidget {
-  final String brandId;
-  final String brandName;
-  final String brandImage;
-  final String brandCategory;
-  final String brandCollection;
+class SelectProductOne extends ConsumerStatefulWidget {
+  final String collection;
 
-  const AllBrandCollections({
-    super.key,
-    required this.brandId,
-    required this.brandName,
-    required this.brandImage,
-    required this.brandCategory,
-    required this.brandCollection,
-  });
+  const SelectProductOne({super.key, required this.collection});
 
   @override
-  ConsumerState<AllBrandCollections> createState() =>
-      _AllBrandCollectionsState();
+  ConsumerState<SelectProductOne> createState() => _SelectProductOneState();
 }
 
-class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
-  int? addedToCartIndex;
-  int? orderQuantity;
-
-  void cartDataToFirebase(
-    context,
-    productId,
-    productName,
-    productImage,
-    productPrice,
-    productColor,
-    productSize,
-    orderQuantity,
-    brandId,
-    brandName,
+class _SelectProductOneState extends ConsumerState<SelectProductOne> {
+  void getSelectedProductOne(
+    String productName,
+    String productPrice,
+    String productSize,
+    String productImage,
+    String productColor,
   ) {
-    ref.watch(userAuthControllerProvider).cartDataToFirebase(
-          context,
-          productId,
+    ref.watch(userAuthControllerProvider).getSelectedProductOne(
           productName,
-          productImage,
           productPrice,
-          productColor,
           productSize,
-          orderQuantity,
-          brandId,
-          brandName,
+          productImage,
+          productColor,
         );
-    setState(() {});
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (context) => BottomNavigator(selectPage: 3),
+      ),
+      (route) => false,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.brandCollection} Collection'),
+        title: const Text('Select your Product'),
         backgroundColor: Colors.orangeAccent,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(top: 12, right: 10.w),
-            child: StreamBuilder(
-              stream: ref
-                  .watch(userAuthControllerProvider)
-                  .getMyCartData()
-                  .asStream(),
-              builder: (context, snapshot) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => BottomNavigator(selectPage: 1),
-                      ),
-                    );
-                  },
-                  child: Badge(
-                    label: Text('${snapshot.data?.length ?? 0}'),
-                    child: Icon(
-                      Icons.shopping_cart,
-                      size: 30.sp,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -99,7 +50,7 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
           child: FutureBuilder(
             future: ref
                 .watch(userAuthControllerProvider)
-                .getDataByCollection(widget.brandId, widget.brandCollection),
+                .getAllBrandProductsData(widget.collection),
             builder: (context, snapshot) {
               return GridView.builder(
                 itemCount: snapshot.data?.length ?? 0,
@@ -111,16 +62,7 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                   crossAxisSpacing: 14,
                 ),
                 itemBuilder: (context, index) {
-                  var productId = snapshot.data?.elementAt(index).productId;
-                  var productName = snapshot.data?.elementAt(index).name;
-                  var productImage = snapshot.data?.elementAt(index).photo;
-                  var productPrice = snapshot.data?.elementAt(index).price;
-                  var productQuantity =
-                      snapshot.data?.elementAt(index).quantity;
-                  var productColor = snapshot.data?.elementAt(index).color;
-                  var productSize = snapshot.data?.elementAt(index).size;
-                  var productCategory =
-                      snapshot.data?.elementAt(index).category;
+                  var productData = snapshot.data?.elementAt(index);
 
                   return GestureDetector(
                     onTap: () {},
@@ -146,14 +88,14 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                                 topRight: Radius.circular(15),
                               ),
                               image: DecorationImage(
-                                image: NetworkImage(productImage ?? ''),
+                                image: NetworkImage(productData?.photo ?? ''),
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
                           SizedBox(height: 10.h),
                           Text(
-                            productName ?? '',
+                            productData?.name ?? '',
                             style: TextStyle(
                               fontSize: 18.sp,
                               color: Colors.black.withOpacity(0.8),
@@ -165,7 +107,7 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                productPrice ?? '',
+                                productData?.price ?? '',
                                 style: TextStyle(
                                   color: Colors.redAccent,
                                   fontSize: 18.sp,
@@ -183,7 +125,7 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                           ),
                           SizedBox(height: 10.h),
                           Text(
-                            productSize.toString().toUpperCase(),
+                            productData!.size.toString().toUpperCase(),
                             style: TextStyle(
                               color: Colors.black.withOpacity(0.8),
                               fontWeight: FontWeight.bold,
@@ -191,47 +133,27 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                           ),
                           SizedBox(height: 10.h),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.favorite_border_outlined,
-                                  color: Colors.redAccent,
-                                  size: 25.sp,
-                                ),
-                              ),
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
-                                  backgroundColor: addedToCartIndex == index
-                                      ? Colors.green
-                                      : Colors.redAccent,
+                                  backgroundColor: Colors.redAccent,
                                 ),
                                 onPressed: () {
-                                  addedToCartIndex = index;
-                                  orderQuantity = 1;
-                                  cartDataToFirebase(
-                                    context,
-                                    productId,
-                                    productName,
-                                    productImage,
-                                    productPrice,
-                                    productColor,
-                                    productSize,
-                                    orderQuantity,
-                                    widget.brandId,
-                                    widget.brandName,
+                                  getSelectedProductOne(
+                                    productData.name,
+                                    productData.price,
+                                    productData.size,
+                                    productData.color,
+                                    productData.photo,
                                   );
                                 },
-                                child: Text(
-                                  addedToCartIndex == index
-                                      ? "Added      "
-                                      : "Add to cart",
+                                child: const Text(
+                                  "Select",
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                              SizedBox(width: 8.w),
                             ],
                           ),
                         ],
