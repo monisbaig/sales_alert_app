@@ -22,7 +22,7 @@ class BottomNavigator extends StatefulWidget {
 class _BottomNavigatorState extends State<BottomNavigator> {
   static List<Widget> widgetOptions = <Widget>[
     const HomeScreen(),
-    FavouritesScreen(),
+    const FavouritesScreen(),
     const CartScreen(),
     const CompareProducts(),
     const EditProfilePage(),

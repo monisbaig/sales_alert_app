@@ -28,6 +28,7 @@ class AllBrandCollections extends ConsumerStatefulWidget {
 
 class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
   int? addedToCartIndex;
+  int? addedToFavoriteIndex;
   int? orderQuantity;
 
   void cartDataToFirebase(
@@ -40,7 +41,6 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
     productSize,
     orderQuantity,
     brandId,
-    brandName,
   ) {
     ref.watch(userAuthControllerProvider).cartDataToFirebase(
           context,
@@ -52,7 +52,31 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
           productSize,
           orderQuantity,
           brandId,
-          brandName,
+        );
+    setState(() {});
+  }
+
+  void saveFavoritesToFirebase(
+    context,
+    productId,
+    productName,
+    productImage,
+    productPrice,
+    productColor,
+    productSize,
+    orderQuantity,
+    brandId,
+  ) {
+    ref.watch(userAuthControllerProvider).saveFavoritesToFirebase(
+          context,
+          productId,
+          productName,
+          productImage,
+          productPrice,
+          productColor,
+          productSize,
+          orderQuantity,
+          brandId,
         );
     setState(() {});
   }
@@ -76,7 +100,7 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                   onTap: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => BottomNavigator(selectPage: 1),
+                        builder: (context) => BottomNavigator(selectPage: 2),
                       ),
                     );
                   },
@@ -194,9 +218,25 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  addedToFavoriteIndex = index;
+                                  orderQuantity = 1;
+                                  saveFavoritesToFirebase(
+                                    context,
+                                    productId,
+                                    productName,
+                                    productImage,
+                                    productPrice,
+                                    productColor,
+                                    productSize,
+                                    orderQuantity,
+                                    widget.brandId,
+                                  );
+                                },
                                 icon: Icon(
-                                  Icons.favorite_border_outlined,
+                                  addedToFavoriteIndex == index
+                                      ? Icons.favorite_outlined
+                                      : Icons.favorite_border_outlined,
                                   color: Colors.redAccent,
                                   size: 25.sp,
                                 ),
@@ -220,7 +260,6 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                                     productSize,
                                     orderQuantity,
                                     widget.brandId,
-                                    widget.brandName,
                                   );
                                 },
                                 child: Text(

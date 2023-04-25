@@ -98,7 +98,6 @@ class UserAuthController {
     String productSize,
     int orderQuantity,
     String brandId,
-    String brandName,
   ) {
     return userAuthRepository.cartDataToFirebase(
       context: context,
@@ -110,7 +109,6 @@ class UserAuthController {
       productSize: productSize,
       orderQuantity: orderQuantity,
       brandId: brandId,
-      brandName: brandName,
       ref: ref,
     );
   }
@@ -140,6 +138,10 @@ class UserAuthController {
 
   Future<List<ProductModel>> getAllBrandProductsData(String collection) {
     return userAuthRepository.getAllBrandProductsData(collection: collection);
+  }
+
+  Future<List<ProductModel>> searchAllBrandProducts() {
+    return userAuthRepository.searchAllBrandProducts();
   }
 
   Future<void> getSelectedProductOne(
@@ -180,5 +182,54 @@ class UserAuthController {
 
   Future<List<String>?> getSavedProductTwo() {
     return userAuthRepository.getSavedProductTwo();
+  }
+
+  Future<void> saveFavoritesToFirebase(
+    BuildContext context,
+    String productId,
+    String productName,
+    String productImage,
+    String productPrice,
+    String productColor,
+    String productSize,
+    int orderQuantity,
+    String brandId,
+  ) {
+    return userAuthRepository.saveFavoritesToFirebase(
+      context: context,
+      productId: productId,
+      productName: productName,
+      productImage: productImage,
+      productPrice: productPrice,
+      productColor: productColor,
+      productSize: productSize,
+      orderQuantity: orderQuantity,
+      brandId: brandId,
+      ref: ref,
+    );
+  }
+
+  Future<List<CartModel>> getFavoritesData() {
+    return userAuthRepository.getFavoritesData();
+  }
+
+  Future<void> deleteMyFavoritesData(String productId) {
+    return userAuthRepository.deleteMyFavoritesData(productId: productId);
+  }
+
+  Future<void> followBrand(String brandId, String brandName) {
+    return userAuthRepository.followBrand(
+      brandId: brandId,
+      brandName: brandName,
+      ref: ref,
+    );
+  }
+
+  Stream<bool> getFollowingData(String brandId) {
+    return userAuthRepository.getFollowingData(brandId: brandId);
+  }
+
+  Future<void> unFollowBrand(String brandId) {
+    return userAuthRepository.unFollowBrand(brandId: brandId, ref: ref);
   }
 }

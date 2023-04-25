@@ -1,74 +1,105 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/user_directory/auth/controller/user_auth_controller.dart';
 
-import '../../Common_component/my_button.dart';
-import 'cart_screen.dart';
+class FavouritesScreen extends ConsumerStatefulWidget {
+  const FavouritesScreen({Key? key}) : super(key: key);
 
-class FavouritesScreen extends StatelessWidget {
-  List<String> pNames = [
-    "Apple Watch -M2",
-    "Ear Headphone",
-    "White Tshirt",
-    "Nike Shoe",
-  ];
+  @override
+  ConsumerState<FavouritesScreen> createState() => _FavouritesScreenState();
+}
 
-  List<String> pSizes = [
-    "36",
-    "M",
-    "S",
-    "40",
-  ];
+class _FavouritesScreenState extends ConsumerState<FavouritesScreen> {
+  int? addedToCartIndex;
 
-  FavouritesScreen({super.key});
+  int? orderQuantity;
+
+  void cartDataToFirebase(
+    context,
+    productId,
+    productName,
+    productImage,
+    productPrice,
+    productColor,
+    productSize,
+    orderQuantity,
+    brandId,
+  ) {
+    ref.watch(userAuthControllerProvider).cartDataToFirebase(
+          context,
+          productId,
+          productName,
+          productImage,
+          productPrice,
+          productColor,
+          productSize,
+          orderQuantity,
+          brandId,
+        );
+    setState(() {});
+  }
+
+  void deleteMyFavoritesData(String productId) {
+    ref.watch(userAuthControllerProvider).deleteMyFavoritesData(productId);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 60, left: 15, right: 50),
-          child: Column(
-            children: [
-              Align(
-                child: Text(
-                  "Favourites",
-                  style: TextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.h),
-              Column(
-                children: [
-                  for (int i = 0; i < 4; i++)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 2),
-                          height: 139.h,
-                          width: 325.w,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 248, 248, 248),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(children: [
+    return Column(
+      children: [
+        SizedBox(height: 40.h),
+        Align(
+          child: Text(
+            "Favourites",
+            style: TextStyle(
+              fontSize: 22.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(height: 5.h),
+        FutureBuilder(
+          future: ref.watch(userAuthControllerProvider).getFavoritesData(),
+          builder: (context, snapshot) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height / 1.6,
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const ScrollPhysics(),
+                itemCount: snapshot.data?.length ?? 0,
+                itemBuilder: (context, index) {
+                  var productData = snapshot.data?.elementAt(index);
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 2),
+                        height: 170.h,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        decoration: BoxDecoration(
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                             Container(
-                              margin: const EdgeInsets.only(left: 8),
-                              padding: const EdgeInsets.all(10),
+                              width: 110.w,
+                              height: 120.h,
+                              padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                color: Colors.red,
                                 borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Image.asset(
-                                "lib/User_directory/user_images/${pNames[i]}.png",
-                                height: 70.h,
-                                width: 70.w,
+                                image: DecorationImage(
+                                  image:
+                                      NetworkImage(productData!.productImage),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width / 1.8,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     left: 15, top: 20, bottom: 25),
@@ -78,7 +109,7 @@ class FavouritesScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      pNames[i],
+                                      productData.productName,
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 18.sp,
@@ -95,13 +126,22 @@ class FavouritesScreen extends StatelessWidget {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
+                                        SizedBox(width: 133.w),
+                                        GestureDetector(
+                                          onTap: () => deleteMyFavoritesData(
+                                              productData.productId),
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.redAccent,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     SizedBox(width: 5.w),
                                     Row(
                                       children: [
                                         Text(
-                                          pSizes[i],
+                                          productData.productSize,
                                           style: TextStyle(
                                             color: Colors.black54,
                                             fontSize: 16.sp,
@@ -111,15 +151,51 @@ class FavouritesScreen extends StatelessWidget {
                                       ],
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Rs.90.55",
+                                          productData.totalOrderPrice,
                                           style: TextStyle(
                                             color: Colors.redAccent,
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(width: 65.w),
+                                        OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                            backgroundColor:
+                                                addedToCartIndex == index
+                                                    ? Colors.green
+                                                    : Colors.redAccent,
+                                          ),
+                                          onPressed: () {
+                                            addedToCartIndex = index;
+                                            orderQuantity = 1;
+                                            cartDataToFirebase(
+                                              context,
+                                              productData.productId,
+                                              productData.productName,
+                                              productData.productImage,
+                                              productData.productPrice,
+                                              productData.productColor,
+                                              productData.productSize,
+                                              orderQuantity,
+                                              productData.brandId,
+                                            );
+                                            Future.delayed(
+                                                const Duration(seconds: 3), () {
+                                              deleteMyFavoritesData(
+                                                  productData.productId);
+                                            });
+                                          },
+                                          child: Text(
+                                            addedToCartIndex == index
+                                                ? "Added      "
+                                                : "Add to cart",
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -128,23 +204,17 @@ class FavouritesScreen extends StatelessWidget {
                                 ),
                               ),
                             )
-                          ]),
-                        )
-                      ],
-                    ),
-                ],
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
-              SizedBox(height: 30.h),
-              MyButton(
-                  label: 'Add to Cart',
-                  onPress: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CartScreen()));
-                  })
-            ],
-          ),
+            );
+          },
         ),
-      ),
+      ],
     );
   }
 }

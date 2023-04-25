@@ -242,17 +242,20 @@ class UserAuthRepository {
     required String productSize,
     required int orderQuantity,
     required String brandId,
-    required String brandName,
     required ProviderRef ref,
   }) async {
     try {
       String uId = auth.currentUser!.uid;
       var totalOrderPrice = int.parse(productPrice) * orderQuantity;
 
-      await firestore.collection('cart').doc(productId).set({
+      await firestore
+          .collection('cart')
+          .doc(uId)
+          .collection('myOrders')
+          .doc(productId)
+          .set({
         'buyerId': uId,
         'brandId': brandId,
-        'brandName': brandName,
         'productId': productId,
         'productName': productName,
         'productImage': productImage,
@@ -273,6 +276,8 @@ class UserAuthRepository {
     List<CartModel> myCartList = [];
     var allMyCartListData = await firestore
         .collection('cart')
+        .doc(auth.currentUser!.uid)
+        .collection('myOrders')
         .where('buyerId', isEqualTo: auth.currentUser!.uid)
         .get();
     for (var document in allMyCartListData.docs) {
@@ -284,7 +289,12 @@ class UserAuthRepository {
 
   Future<void> deleteMyCartData({required String productId}) async {
     try {
-      await firestore.collection('cart').doc(productId).delete();
+      await firestore
+          .collection('cart')
+          .doc(auth.currentUser!.uid)
+          .collection('myOrders')
+          .doc(productId)
+          .delete();
       Fluttertoast.showToast(msg: 'Product deleted successfully!');
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
@@ -320,6 +330,17 @@ class UserAuthRepository {
         .collection('allBrandProducts')
         .where('mainCategory', isEqualTo: collection)
         .get();
+    for (var document in brandData.docs) {
+      var list = ProductModel.fromMap(document.data());
+      allProductsList.add(list);
+    }
+    return allProductsList;
+  }
+
+  Future<List<ProductModel>> searchAllBrandProducts() async {
+    List<ProductModel> allProductsList = [];
+
+    var brandData = await firestore.collection('allBrandProducts').get();
     for (var document in brandData.docs) {
       var list = ProductModel.fromMap(document.data());
       allProductsList.add(list);
@@ -377,5 +398,129 @@ class UserAuthRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var list = prefs.getStringList('productTwoList');
     return list;
+  }
+
+  Future<void> saveFavoritesToFirebase({
+    required BuildContext context,
+    required String productId,
+    required String productName,
+    required String productImage,
+    required String productPrice,
+    required String productColor,
+    required String productSize,
+    required int orderQuantity,
+    required String brandId,
+    required ProviderRef ref,
+  }) async {
+    try {
+      String uId = auth.currentUser!.uid;
+      var totalOrderPrice = int.parse(productPrice) * orderQuantity;
+
+      await firestore
+          .collection('userFavorites')
+          .doc(uId)
+          .collection('favorites')
+          .doc(productId)
+          .set({
+        'buyerId': uId,
+        'brandId': brandId,
+        'productId': productId,
+        'productName': productName,
+        'productImage': productImage,
+        'productPrice': productPrice,
+        'productColor': productColor,
+        'productSize': productSize,
+        'orderQuantity': orderQuantity.toString(),
+        'totalOrderPrice': totalOrderPrice.toString(),
+      });
+
+      Fluttertoast.showToast(msg: 'Product added to favorites successfully!');
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(msg: e.message!);
+    }
+  }
+
+  Future<List<CartModel>> getFavoritesData() async {
+    List<CartModel> myFavoriteList = [];
+    var allMyFavoriteListData = await firestore
+        .collection('userFavorites')
+        .doc(auth.currentUser!.uid)
+        .collection('favorites')
+        .where('buyerId', isEqualTo: auth.currentUser!.uid)
+        .get();
+    for (var document in allMyFavoriteListData.docs) {
+      var list = CartModel.fromMap(document.data());
+      myFavoriteList.add(list);
+    }
+    return myFavoriteList;
+  }
+
+  Future<void> deleteMyFavoritesData({required String productId}) async {
+    try {
+      await firestore
+          .collection('userFavorites')
+          .doc(auth.currentUser!.uid)
+          .collection('favorites')
+          .doc(productId)
+          .delete();
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
+
+  Future<void> followBrand({
+    required String brandId,
+    required String brandName,
+    required ProviderRef ref,
+  }) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(auth.currentUser!.uid)
+          .collection('following')
+          .doc(brandId)
+          .set({
+        'brandId': brandId,
+        'brandName': brandName,
+        'follow': true,
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
+
+  Stream<bool> getFollowingData({required String brandId}) {
+    bool follow;
+    return firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('following')
+        .doc(brandId)
+        .snapshots()
+        .map((event) {
+      follow = event.data()!['follow'];
+      return follow;
+    });
+  }
+
+  Future<void> unFollowBrand({
+    required String brandId,
+    required ProviderRef ref,
+  }) async {
+    try {
+      String uId = auth.currentUser!.uid;
+      await firestore
+          .collection('users')
+          .doc(uId)
+          .collection('following')
+          .doc(brandId)
+          .update({
+        'follow': false,
+      });
+
+      Fluttertoast.showToast(msg: 'Unfollowed Successfully');
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(msg: e.message!);
+    }
   }
 }

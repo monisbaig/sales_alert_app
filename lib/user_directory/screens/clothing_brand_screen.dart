@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/user_directory/screens/all_brand_collections.dart';
 
-class ClothingBrandScreen extends StatelessWidget {
+import '../auth/controller/user_auth_controller.dart';
+
+class ClothingBrandScreen extends ConsumerStatefulWidget {
   final String brandId;
   final String brandName;
   final String brandImage;
@@ -15,6 +18,25 @@ class ClothingBrandScreen extends StatelessWidget {
     required this.brandImage,
     required this.brandCategory,
   });
+
+  @override
+  ConsumerState<ClothingBrandScreen> createState() =>
+      _ClothingBrandScreenState();
+}
+
+class _ClothingBrandScreenState extends ConsumerState<ClothingBrandScreen> {
+  void followBrand() {
+    ref.watch(userAuthControllerProvider).followBrand(
+          widget.brandId,
+          widget.brandName,
+        );
+  }
+
+  void unFollowBrand() {
+    ref.watch(userAuthControllerProvider).unFollowBrand(
+          widget.brandId,
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +57,7 @@ class ClothingBrandScreen extends StatelessWidget {
                         bottomRight: Radius.circular(30.r),
                       ),
                       image: DecorationImage(
-                        image: NetworkImage(brandImage),
+                        image: NetworkImage(widget.brandImage),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -58,29 +80,38 @@ class ClothingBrandScreen extends StatelessWidget {
                     right: 0,
                     child: Text(
                       textAlign: TextAlign.center,
-                      brandName,
+                      widget.brandName,
                       style: const TextStyle(
                         fontSize: 45,
                         color: Colors.white,
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 30,
-                    left: 120,
-                    right: 120,
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.redAccent,
-                      ),
-                      onPressed: () {},
-                      child: const Text(
-                        "Follow Us",
-                        style: TextStyle(
-                          color: Colors.white,
+                  StreamBuilder(
+                    stream: ref
+                        .watch(userAuthControllerProvider)
+                        .getFollowingData(widget.brandId),
+                    builder: (context, snapshot) {
+                      var following = snapshot.data;
+                      return Positioned(
+                        bottom: 30,
+                        left: 120,
+                        right: 120,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: Colors.redAccent,
+                          ),
+                          onPressed:
+                              following == true ? unFollowBrand : followBrand,
+                          child: Text(
+                            following == true ? "Following" : 'Follow Us',
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                   const Positioned(
                     bottom: 12,
@@ -130,10 +161,10 @@ class ClothingBrandScreen extends StatelessWidget {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => AllBrandCollections(
-                                brandId: brandId,
-                                brandName: brandName,
-                                brandImage: brandImage,
-                                brandCategory: brandCategory,
+                                brandId: widget.brandId,
+                                brandName: widget.brandName,
+                                brandImage: widget.brandImage,
+                                brandCategory: widget.brandCategory,
                                 brandCollection: 'Men',
                               ),
                             ),
@@ -170,10 +201,10 @@ class ClothingBrandScreen extends StatelessWidget {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => AllBrandCollections(
-                                brandId: brandId,
-                                brandName: brandName,
-                                brandImage: brandImage,
-                                brandCategory: brandCategory,
+                                brandId: widget.brandId,
+                                brandName: widget.brandName,
+                                brandImage: widget.brandImage,
+                                brandCategory: widget.brandCategory,
                                 brandCollection: 'Women',
                               ),
                             ),
@@ -210,10 +241,10 @@ class ClothingBrandScreen extends StatelessWidget {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => AllBrandCollections(
-                                brandId: brandId,
-                                brandName: brandName,
-                                brandImage: brandImage,
-                                brandCategory: brandCategory,
+                                brandId: widget.brandId,
+                                brandName: widget.brandName,
+                                brandImage: widget.brandImage,
+                                brandCategory: widget.brandCategory,
                                 brandCollection: 'Kids',
                               ),
                             ),

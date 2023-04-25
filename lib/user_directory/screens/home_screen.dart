@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/user_directory/screens/search_product_screen.dart';
 import 'package:sales_alert_app/user_directory/widgets/user_nav_bar.dart';
 
 import '../widgets/all_brands.dart';
@@ -83,7 +84,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
-                      child: const Icon(CupertinoIcons.search, size: 28),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const SearchProductScreen(),
+                            ),
+                          );
+                        },
+                        child: const Icon(
+                          CupertinoIcons.search,
+                          size: 28,
+                        ),
+                      ),
                     ),
                   ],
                 ),

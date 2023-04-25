@@ -1,6 +1,5 @@
 class CartModel {
   final String brandId;
-  final String brandName;
   final String buyerId;
   final String productId;
   final String productName;
@@ -13,7 +12,6 @@ class CartModel {
 
   CartModel({
     required this.brandId,
-    required this.brandName,
     required this.buyerId,
     required this.productId,
     required this.productName,
@@ -28,7 +26,6 @@ class CartModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'brandId': brandId,
-      'brandName': brandName,
       'buyerId': buyerId,
       'productId': productId,
       'productName': productName,
@@ -44,7 +41,6 @@ class CartModel {
   factory CartModel.fromMap(Map<String, dynamic> map) {
     return CartModel(
       brandId: map['brandId'] ?? '',
-      brandName: map['brandName'] ?? '',
       buyerId: map['buyerId'] ?? '',
       productId: map['productId'] ?? '',
       productName: map['productName'] ?? '',
