@@ -570,6 +570,7 @@ class UserAuthRepository {
 
       await firestore.collection('confirmOrders').doc(uniqueId).set(
         {
+          'orderId': uniqueId,
           'buyerId': uId,
           'brandId': brandId,
           'orderDate': orderDate.toIso8601String(),
@@ -622,6 +623,7 @@ class UserAuthRepository {
     for (var element in allMyOrderListData.docs) {
       myOrderList.add(
         OrderPlaceModel(
+          orderId: element['orderId'],
           buyerId: element['buyerId'],
           brandId: element['brandId'],
           orderDate: DateTime.parse(element['orderDate']),

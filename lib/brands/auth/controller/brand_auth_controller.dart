@@ -140,4 +140,11 @@ class BrandAuthController {
   Future<List<OrderPlaceModel>> getOrderPlacedData() {
     return brandAuthRepository.getOrderPlacedData();
   }
+
+  Future<void> updateOrderStatus(String orderId, String orderStatus) {
+    return brandAuthRepository.updateOrderStatus(
+      orderId: orderId,
+      orderStatus: orderStatus,
+    );
+  }
 }

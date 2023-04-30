@@ -1,4 +1,5 @@
 class OrderPlaceModel {
+  final String orderId;
   final String buyerId;
   final String brandId;
   final DateTime orderDate;
@@ -9,6 +10,7 @@ class OrderPlaceModel {
   final List<Products> products;
 
   OrderPlaceModel({
+    required this.orderId,
     required this.buyerId,
     required this.brandId,
     required this.orderDate,
@@ -21,6 +23,7 @@ class OrderPlaceModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'orderId': orderId,
       'buyerId': buyerId,
       'brandId': brandId,
       'orderDate': orderDate,
@@ -34,6 +37,7 @@ class OrderPlaceModel {
 
   factory OrderPlaceModel.fromMap(Map<String, dynamic> map) {
     return OrderPlaceModel(
+      orderId: map['orderId'] as String,
       buyerId: map['buyerId'] as String,
       brandId: map['brandId'] as String,
       orderDate: DateTime.parse(map['orderDate']),

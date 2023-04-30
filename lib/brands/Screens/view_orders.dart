@@ -14,6 +14,16 @@ class ViewOrders extends ConsumerStatefulWidget {
 }
 
 class _ViewOrdersState extends ConsumerState<ViewOrders> {
+  void updateOrderStatus({
+    required String orderId,
+    required String orderStatus,
+  }) {
+    ref
+        .watch(brandAuthControllerProvider)
+        .updateOrderStatus(orderId, orderStatus);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +59,7 @@ class _ViewOrdersState extends ConsumerState<ViewOrders> {
                           child: Column(
                             children: [
                               ListTile(
-                                title: Text('Rs: ${productData!.totalAmount}'),
+                                title: Text('Rs: ${productData.totalAmount}'),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -64,7 +74,12 @@ class _ViewOrdersState extends ConsumerState<ViewOrders> {
                                   style: OutlinedButton.styleFrom(
                                     backgroundColor: Colors.redAccent,
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    updateOrderStatus(
+                                      orderId: productData.orderId,
+                                      orderStatus: 'processing',
+                                    );
+                                  },
                                   child: const Text(
                                     "Accept",
                                     textAlign: TextAlign.center,

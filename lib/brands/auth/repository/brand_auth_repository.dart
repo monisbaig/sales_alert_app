@@ -346,6 +346,7 @@ class BrandAuthRepository {
     for (var element in allMyOrderListData.docs) {
       myOrderList.add(
         OrderPlaceModel(
+          orderId: element['orderId'],
           buyerId: element['buyerId'],
           brandId: element['brandId'],
           orderDate: DateTime.parse(element['orderDate']),
@@ -375,5 +376,19 @@ class BrandAuthRepository {
     }
 
     return myOrderList;
+  }
+
+  Future<void> updateOrderStatus({
+    required String orderId,
+    required String orderStatus,
+  }) async {
+    try {
+      await firestore.collection('confirmOrders').doc(orderId).update({
+        'orderStatus': orderStatus,
+      });
+      Fluttertoast.showToast(msg: 'Order Status Updated');
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
   }
 }
