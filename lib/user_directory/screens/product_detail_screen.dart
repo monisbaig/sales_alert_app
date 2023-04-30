@@ -233,7 +233,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 widget.productPrice,
                 widget.productColor,
                 widget.productSize,
-                orderQuantity,
+                orderQuantity.toString(),
                 widget.brandId,
               );
             },

@@ -25,11 +25,13 @@ class _BuyNowState extends ConsumerState<BuyNow> {
 
   void fetchAndSaveOrderPlacedData({
     required String buyerName,
+    required String brandId,
     required String paymentMethod,
     required String totalAmount,
   }) {
     ref.watch(userAuthControllerProvider).fetchAndSaveOrderPlacedData(
           buyerName,
+          brandId,
           paymentMethod,
           totalAmount,
         );
@@ -334,6 +336,7 @@ class _BuyNowState extends ConsumerState<BuyNow> {
                                 onPress: () {
                                   fetchAndSaveOrderPlacedData(
                                     buyerName: username!,
+                                    brandId: cartData.elementAt(index).brandId,
                                     paymentMethod: selectedMethod,
                                     totalAmount: grandTotal.toString(),
                                   );

@@ -107,6 +107,7 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 0.61,
                   crossAxisCount: 2,
+                  mainAxisSpacing: 14,
                   crossAxisSpacing: 14,
                 ),
                 itemBuilder: (context, index) {

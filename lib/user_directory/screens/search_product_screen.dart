@@ -227,7 +227,7 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                       productData.price,
                                       productData.color,
                                       productData.size,
-                                      orderQuantity,
+                                      orderQuantity.toString(),
                                       productData.brandId,
                                     );
                                   },
@@ -255,6 +255,7 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                         childAspectRatio: 0.61,
                         crossAxisCount: 2,
                         crossAxisSpacing: 14,
+                        mainAxisSpacing: 14,
                       ),
                       itemBuilder: (context, index) {
                         var productData = snapshot.data?.elementAt(index);
@@ -361,7 +362,7 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                       productData.price,
                                       productData.color,
                                       productData.size,
-                                      orderQuantity,
+                                      orderQuantity.toString(),
                                       productData.brandId,
                                     );
                                   },

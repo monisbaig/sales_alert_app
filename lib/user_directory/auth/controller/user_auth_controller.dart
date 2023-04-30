@@ -240,11 +240,13 @@ class UserAuthController {
 
   Future<void> fetchAndSaveOrderPlacedData(
     String buyerName,
+    String brandId,
     String paymentMethod,
     String totalAmount,
   ) {
     return userAuthRepository.fetchAndSaveOrderPlacedData(
       buyerName: buyerName,
+      brandId: brandId,
       paymentMethod: paymentMethod,
       totalAmount: totalAmount,
       ref: ref,

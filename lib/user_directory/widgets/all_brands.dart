@@ -27,6 +27,7 @@ class AllBrands extends ConsumerWidget {
             shrinkWrap: true,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 0.8,
+              mainAxisSpacing: 16,
               crossAxisCount: 2,
               crossAxisSpacing: 16,
             ),

@@ -13,6 +13,7 @@ import 'package:sales_alert_app/brands/models/brand_model.dart';
 import 'package:sales_alert_app/brands/models/product_model.dart';
 import 'package:sales_alert_app/splash/splash_screen.dart';
 
+import '../../../user_directory/models/order_place_model.dart';
 import '../../Screens/brand_choice.dart';
 import '../../Screens/brand_login_page.dart';
 import '../../Screens/brand_success.dart';
@@ -333,5 +334,46 @@ class BrandAuthRepository {
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message!);
     }
+  }
+
+  Future<List<OrderPlaceModel>> getOrderPlacedData() async {
+    List<OrderPlaceModel> myOrderList = [];
+    var allMyOrderListData = await firestore
+        .collection('confirmOrders')
+        .where('brandId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    for (var element in allMyOrderListData.docs) {
+      myOrderList.add(
+        OrderPlaceModel(
+          buyerId: element['buyerId'],
+          brandId: element['brandId'],
+          orderDate: DateTime.parse(element['orderDate']),
+          orderStatus: element['orderStatus'],
+          paymentMethod: element['paymentMethod'],
+          deliveryCharges: element['deliveryCharges'],
+          totalAmount: element['totalAmount'],
+          products: (element['products'] as List<dynamic>)
+              .map(
+                (item) => Products(
+                  brandId: item['brandId'],
+                  buyerId: item['buyerId'],
+                  buyerName: item['buyerName'],
+                  productId: item['productId'],
+                  productName: item['productName'],
+                  productImage: item['productImage'],
+                  productPrice: item['productPrice'],
+                  productColor: item['productColor'],
+                  productSize: item['productSize'],
+                  orderQuantity: item['orderQuantity'],
+                  totalOrderPrice: item['totalOrderPrice'],
+                ),
+              )
+              .toList(),
+        ),
+      );
+    }
+
+    return myOrderList;
   }
 }

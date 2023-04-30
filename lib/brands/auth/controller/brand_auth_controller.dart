@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sales_alert_app/brands/auth/repository/brand_auth_repository.dart';
 
+import '../../../user_directory/models/order_place_model.dart';
 import '../../models/brand_model.dart';
 import '../../models/product_model.dart';
 
@@ -134,5 +135,9 @@ class BrandAuthController {
       collection: collection,
       productId: productId,
     );
+  }
+
+  Future<List<OrderPlaceModel>> getOrderPlacedData() {
+    return brandAuthRepository.getOrderPlacedData();
   }
 }

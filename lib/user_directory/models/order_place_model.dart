@@ -1,5 +1,6 @@
 class OrderPlaceModel {
   final String buyerId;
+  final String brandId;
   final DateTime orderDate;
   final String orderStatus;
   final String paymentMethod;
@@ -9,6 +10,7 @@ class OrderPlaceModel {
 
   OrderPlaceModel({
     required this.buyerId,
+    required this.brandId,
     required this.orderDate,
     required this.orderStatus,
     required this.paymentMethod,
@@ -20,7 +22,8 @@ class OrderPlaceModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'buyerId': buyerId,
-      'orderDate': orderDate.millisecondsSinceEpoch,
+      'brandId': brandId,
+      'orderDate': orderDate,
       'orderStatus': orderStatus,
       'paymentMethod': paymentMethod,
       'deliveryCharges': deliveryCharges,
@@ -32,7 +35,8 @@ class OrderPlaceModel {
   factory OrderPlaceModel.fromMap(Map<String, dynamic> map) {
     return OrderPlaceModel(
       buyerId: map['buyerId'] as String,
-      orderDate: DateTime.fromMillisecondsSinceEpoch(map['orderDate'] as int),
+      brandId: map['brandId'] as String,
+      orderDate: DateTime.parse(map['orderDate']),
       orderStatus: map['orderStatus'] as String,
       paymentMethod: map['paymentMethod'] as String,
       deliveryCharges: map['deliveryCharges'] as String,

@@ -546,6 +546,7 @@ class UserAuthRepository {
 
   Future<void> fetchAndSaveOrderPlacedData({
     required String buyerName,
+    required String brandId,
     required String paymentMethod,
     required String totalAmount,
     required ProviderRef ref,
@@ -553,7 +554,7 @@ class UserAuthRepository {
     try {
       String uId = auth.currentUser!.uid;
       var uniqueId = DateTime.now().millisecondsSinceEpoch.toString();
-      DateTime orderDate = DateTime.now();
+      var orderDate = DateTime.now();
 
       List<CartModel> myCartList = [];
       var allMyCartListData = await firestore
@@ -570,7 +571,8 @@ class UserAuthRepository {
       await firestore.collection('confirmOrders').doc(uniqueId).set(
         {
           'buyerId': uId,
-          'orderDate': orderDate,
+          'brandId': brandId,
+          'orderDate': orderDate.toIso8601String(),
           'orderStatus': 'pending',
           'paymentMethod': paymentMethod,
           'deliveryCharges': '250',
@@ -621,6 +623,7 @@ class UserAuthRepository {
       myOrderList.add(
         OrderPlaceModel(
           buyerId: element['buyerId'],
+          brandId: element['brandId'],
           orderDate: DateTime.parse(element['orderDate']),
           orderStatus: element['orderStatus'],
           paymentMethod: element['paymentMethod'],
@@ -646,7 +649,7 @@ class UserAuthRepository {
         ),
       );
     }
-    print(myOrderList);
+
     return myOrderList;
   }
 }
