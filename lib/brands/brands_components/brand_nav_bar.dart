@@ -53,7 +53,7 @@ class BrandNavBar extends ConsumerWidget {
                   color: Colors.blue,
                   image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: AssetImage('lib/Common_images/nav_cart.PNG'),
+                    image: AssetImage('lib/common_images/nav_cart.PNG'),
                   ),
                 ),
               );

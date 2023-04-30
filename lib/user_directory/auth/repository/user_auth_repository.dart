@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sales_alert_app/user_directory/auth/repository/user_firebase_storage_repository.dart';
+import 'package:sales_alert_app/user_directory/models/order_place_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../brands/models/brand_model.dart';
@@ -111,6 +112,16 @@ class UserAuthRepository {
     try {
       auth.currentUser!.sendEmailVerification();
       Fluttertoast.showToast(msg: 'Email verification sent!');
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(msg: e.message!);
+    }
+  }
+
+  Future<void> sendPasswordResetRequest({required String email}) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+
+      Fluttertoast.showToast(msg: 'Password reset request sent!');
     } on FirebaseException catch (e) {
       Fluttertoast.showToast(msg: e.message!);
     }
@@ -240,31 +251,35 @@ class UserAuthRepository {
     required String productPrice,
     required String productColor,
     required String productSize,
-    required int orderQuantity,
+    required String orderQuantity,
     required String brandId,
     required ProviderRef ref,
   }) async {
     try {
       String uId = auth.currentUser!.uid;
-      var totalOrderPrice = int.parse(productPrice) * orderQuantity;
+      var totalOrderPrice = int.parse(productPrice) * int.parse(orderQuantity);
+
+      var productData = CartModel(
+        brandId: brandId,
+        buyerId: uId,
+        productId: productId,
+        productName: productName,
+        productImage: productImage,
+        productPrice: productPrice,
+        productColor: productColor,
+        productSize: productSize,
+        orderQuantity: orderQuantity,
+        totalOrderPrice: totalOrderPrice.toString(),
+      );
 
       await firestore
           .collection('cart')
           .doc(uId)
           .collection('myOrders')
           .doc(productId)
-          .set({
-        'buyerId': uId,
-        'brandId': brandId,
-        'productId': productId,
-        'productName': productName,
-        'productImage': productImage,
-        'productPrice': productPrice,
-        'productColor': productColor,
-        'productSize': productSize,
-        'orderQuantity': orderQuantity.toString(),
-        'totalOrderPrice': totalOrderPrice.toString(),
-      });
+          .set(
+            productData.toMap(),
+          );
 
       Fluttertoast.showToast(msg: 'Product added to cart successfully!');
     } on FirebaseAuthException catch (e) {
@@ -311,7 +326,12 @@ class UserAuthRepository {
     try {
       var totalOrderPrice = int.parse(productPrice) * orderQuantity;
 
-      await firestore.collection('cart').doc(productId).update({
+      await firestore
+          .collection('cart')
+          .doc(auth.currentUser!.uid)
+          .collection('myOrders')
+          .doc(productId)
+          .update({
         'productId': productId,
         'productPrice': productPrice,
         'orderQuantity': orderQuantity.toString(),
@@ -522,5 +542,111 @@ class UserAuthRepository {
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message!);
     }
+  }
+
+  Future<void> fetchAndSaveOrderPlacedData({
+    required String buyerName,
+    required String paymentMethod,
+    required String totalAmount,
+    required ProviderRef ref,
+  }) async {
+    try {
+      String uId = auth.currentUser!.uid;
+      var uniqueId = DateTime.now().millisecondsSinceEpoch.toString();
+      DateTime orderDate = DateTime.now();
+
+      List<CartModel> myCartList = [];
+      var allMyCartListData = await firestore
+          .collection('cart')
+          .doc(uId)
+          .collection('myOrders')
+          .where('buyerId', isEqualTo: uId)
+          .get();
+      for (var document in allMyCartListData.docs) {
+        var list = CartModel.fromMap(document.data());
+        myCartList.add(list);
+      }
+
+      await firestore.collection('confirmOrders').doc(uniqueId).set(
+        {
+          'buyerId': uId,
+          'orderDate': orderDate,
+          'orderStatus': 'pending',
+          'paymentMethod': paymentMethod,
+          'deliveryCharges': '250',
+          'totalAmount': totalAmount,
+          'products': myCartList.map(
+            (item) => Products(
+              brandId: item.brandId,
+              buyerId: item.buyerId,
+              buyerName: buyerName,
+              productId: item.productId,
+              productName: item.productName,
+              productImage: item.productImage,
+              productPrice: item.productPrice,
+              productColor: item.productColor,
+              productSize: item.productSize,
+              orderQuantity: item.orderQuantity,
+              totalOrderPrice: item.totalOrderPrice,
+            ).toMap(),
+          ),
+        },
+      );
+
+      var deleteById = myCartList.map((e) => e.productId).toList();
+
+      for (var i = 0; i <= deleteById.length - 1; i++) {
+        await firestore
+            .collection('cart')
+            .doc(uId)
+            .collection('myOrders')
+            .doc(deleteById[i])
+            .delete();
+      }
+
+      Fluttertoast.showToast(msg: 'Order placed successfully!');
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(msg: e.message!);
+    }
+  }
+
+  Future<List<OrderPlaceModel>> getOrderPlacedData() async {
+    List<OrderPlaceModel> myOrderList = [];
+    var allMyOrderListData = await firestore
+        .collection('confirmOrders')
+        .where('buyerId', isEqualTo: auth.currentUser!.uid)
+        .get();
+
+    for (var element in allMyOrderListData.docs) {
+      myOrderList.add(
+        OrderPlaceModel(
+          buyerId: element['buyerId'],
+          orderDate: DateTime.parse(element['orderDate']),
+          orderStatus: element['orderStatus'],
+          paymentMethod: element['paymentMethod'],
+          deliveryCharges: element['deliveryCharges'],
+          totalAmount: element['totalAmount'],
+          products: (element['products'] as List<dynamic>)
+              .map(
+                (item) => Products(
+                  brandId: item['brandId'],
+                  buyerId: item['buyerId'],
+                  buyerName: item['buyerName'],
+                  productId: item['productId'],
+                  productName: item['productName'],
+                  productImage: item['productImage'],
+                  productPrice: item['productPrice'],
+                  productColor: item['productColor'],
+                  productSize: item['productSize'],
+                  orderQuantity: item['orderQuantity'],
+                  totalOrderPrice: item['totalOrderPrice'],
+                ),
+              )
+              .toList(),
+        ),
+      );
+    }
+    print(myOrderList);
+    return myOrderList;
   }
 }

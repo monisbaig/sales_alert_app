@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class ProductImageSlider extends StatelessWidget {
-  const ProductImageSlider({super.key});
+  final String productImage;
+
+  const ProductImageSlider({super.key, required this.productImage});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +18,11 @@ class ProductImageSlider extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(8),
-          child: Image.asset("lib/User_directory/user_images/p1.png"),
+          child: Image.network(productImage),
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: Image.asset("lib/User_directory/user_images/p2.png"),
+          child: Image.network(productImage),
         ),
       ],
     );

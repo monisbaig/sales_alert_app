@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/user_directory/screens/product_detail_screen.dart';
 
 import '../auth/controller/user_auth_controller.dart';
 import 'bottom_navigator.dart';
@@ -15,7 +16,6 @@ class SearchProductScreen extends ConsumerStatefulWidget {
 
 class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
   int? addedToCartIndex;
-  int? addedToFavoriteIndex;
   int? orderQuantity;
   String? productName;
 
@@ -31,31 +31,6 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
     brandId,
   ) {
     ref.watch(userAuthControllerProvider).cartDataToFirebase(
-          context,
-          productId,
-          productName,
-          productImage,
-          productPrice,
-          productColor,
-          productSize,
-          orderQuantity,
-          brandId,
-        );
-    setState(() {});
-  }
-
-  void saveFavoritesToFirebase(
-    context,
-    productId,
-    productName,
-    productImage,
-    productPrice,
-    productColor,
-    productSize,
-    orderQuantity,
-    brandId,
-  ) {
-    ref.watch(userAuthControllerProvider).saveFavoritesToFirebase(
           context,
           productId,
           productName,
@@ -151,7 +126,22 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                         var productData = searchData?.elementAt(index);
 
                         return GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetailScreen(
+                                  productId: productData!.productId,
+                                  productName: productData.name,
+                                  productPhoto: productData.photo,
+                                  productPrice: productData.price,
+                                  productColor: productData.color,
+                                  productSize: productData.size,
+                                  productDescription: productData.description,
+                                  brandId: productData.brandId,
+                                ),
+                              ),
+                            );
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
@@ -220,68 +210,36 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 10.h),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        addedToFavoriteIndex = index;
-                                        orderQuantity = 1;
-                                        saveFavoritesToFirebase(
-                                          context,
-                                          productData!.productId,
-                                          productData.name,
-                                          productData.photo,
-                                          productData.price,
-                                          productData.color,
-                                          productData.size,
-                                          orderQuantity,
-                                          productData.brandId,
-                                        );
-                                      },
-                                      icon: Icon(
-                                        addedToFavoriteIndex == index
-                                            ? Icons.favorite_outlined
-                                            : Icons.favorite_border_outlined,
-                                        color: Colors.redAccent,
-                                        size: 25.sp,
-                                      ),
-                                    ),
-                                    OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        backgroundColor:
-                                            addedToCartIndex == index
-                                                ? Colors.green
-                                                : Colors.redAccent,
-                                      ),
-                                      onPressed: () {
-                                        addedToCartIndex = index;
-                                        orderQuantity = 1;
-                                        cartDataToFirebase(
-                                          context,
-                                          productData!.productId,
-                                          productData.name,
-                                          productData.photo,
-                                          productData.price,
-                                          productData.color,
-                                          productData.size,
-                                          orderQuantity,
-                                          productData.brandId,
-                                        );
-                                      },
-                                      child: Text(
-                                        addedToCartIndex == index
-                                            ? "Added      "
-                                            : "Add to cart",
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    SizedBox(width: 8.w),
-                                  ],
+                                OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: addedToCartIndex == index
+                                        ? Colors.green
+                                        : Colors.redAccent,
+                                  ),
+                                  onPressed: () {
+                                    addedToCartIndex = index;
+                                    orderQuantity = 1;
+                                    cartDataToFirebase(
+                                      context,
+                                      productData!.productId,
+                                      productData.name,
+                                      productData.photo,
+                                      productData.price,
+                                      productData.color,
+                                      productData.size,
+                                      orderQuantity,
+                                      productData.brandId,
+                                    );
+                                  },
+                                  child: Text(
+                                    addedToCartIndex == index
+                                        ? "Added      "
+                                        : "Add to cart",
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
                                 ),
+                                SizedBox(width: 8.w),
                               ],
                             ),
                           ),
@@ -302,7 +260,22 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                         var productData = snapshot.data?.elementAt(index);
 
                         return GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetailScreen(
+                                  productId: productData!.productId,
+                                  productName: productData.name,
+                                  productPhoto: productData.photo,
+                                  productPrice: productData.price,
+                                  productColor: productData.color,
+                                  productSize: productData.size,
+                                  productDescription: productData.description,
+                                  brandId: productData.brandId,
+                                ),
+                              ),
+                            );
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
@@ -371,68 +344,36 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 10.h),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        addedToFavoriteIndex = index;
-                                        orderQuantity = 1;
-                                        saveFavoritesToFirebase(
-                                          context,
-                                          productData!.productId,
-                                          productData.name,
-                                          productData.photo,
-                                          productData.price,
-                                          productData.color,
-                                          productData.size,
-                                          orderQuantity,
-                                          productData.brandId,
-                                        );
-                                      },
-                                      icon: Icon(
-                                        addedToFavoriteIndex == index
-                                            ? Icons.favorite_outlined
-                                            : Icons.favorite_border_outlined,
-                                        color: Colors.redAccent,
-                                        size: 25.sp,
-                                      ),
-                                    ),
-                                    OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        backgroundColor:
-                                            addedToCartIndex == index
-                                                ? Colors.green
-                                                : Colors.redAccent,
-                                      ),
-                                      onPressed: () {
-                                        addedToCartIndex = index;
-                                        orderQuantity = 1;
-                                        cartDataToFirebase(
-                                          context,
-                                          productData!.productId,
-                                          productData.name,
-                                          productData.photo,
-                                          productData.price,
-                                          productData.color,
-                                          productData.size,
-                                          orderQuantity,
-                                          productData.brandId,
-                                        );
-                                      },
-                                      child: Text(
-                                        addedToCartIndex == index
-                                            ? "Added      "
-                                            : "Add to cart",
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    SizedBox(width: 8.w),
-                                  ],
+                                OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: addedToCartIndex == index
+                                        ? Colors.green
+                                        : Colors.redAccent,
+                                  ),
+                                  onPressed: () {
+                                    addedToCartIndex = index;
+                                    orderQuantity = 1;
+                                    cartDataToFirebase(
+                                      context,
+                                      productData!.productId,
+                                      productData.name,
+                                      productData.photo,
+                                      productData.price,
+                                      productData.color,
+                                      productData.size,
+                                      orderQuantity,
+                                      productData.brandId,
+                                    );
+                                  },
+                                  child: Text(
+                                    addedToCartIndex == index
+                                        ? "Added      "
+                                        : "Add to cart",
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
                                 ),
+                                SizedBox(width: 8.w),
                               ],
                             ),
                           ),

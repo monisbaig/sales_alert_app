@@ -193,7 +193,7 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Image.asset(
-                          'lib/Common_images/OR_logo.png',
+                          'lib/common_images/OR_logo.png',
                           height: 45.h,
                         ),
                       ),
@@ -225,7 +225,7 @@ class _BrandLoginPageState extends ConsumerState<BrandLoginPage> {
                   child: CircleAvatar(
                     backgroundColor: Colors.transparent,
                     backgroundImage: const AssetImage(
-                      'lib/Common_images/google_logo.png',
+                      'lib/common_images/google_logo.png',
                     ),
                     radius: 35.sp,
                   ),

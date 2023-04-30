@@ -1,14 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../Common_component/my_button.dart';
-import 'brand_login_page.dart';
+import '../../Common_component/my_text_field.dart';
+import '../../user_directory/auth/controller/user_auth_controller.dart';
 
-class ForgotPassword extends StatelessWidget {
+class ForgotPassword extends ConsumerStatefulWidget {
   const ForgotPassword({super.key});
 
-  // sign user in method
-  void recoverPass() {}
+  @override
+  ConsumerState<ForgotPassword> createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
+  final emailController = TextEditingController();
+
+  bool isLoading = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+  }
+
+  void sendPasswordResetRequest() {
+    setState(() {
+      isLoading = true;
+    });
+    String email = emailController.text.trim();
+    if (email.isNotEmpty) {
+      ref.read(userAuthControllerProvider).sendPasswordResetRequest(email);
+    } else {
+      Fluttertoast.showToast(msg: 'Fill out all the fields!');
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,35 +73,16 @@ class ForgotPassword extends StatelessWidget {
                   )),
             ),
             SizedBox(height: 20.h),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25),
-              child: TextField(
-                decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(
-                      top: 10,
-                      bottom: 20,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: 'Enter Email',
-                    hintStyle: TextStyle(
-                      color: Color(0xFFDB3022),
-                    )),
-              ),
+            MyTextField(
+              controller: emailController,
+              hintText: 'Enter email',
+              obscureText: false,
+              color: Colors.white,
             ),
             SizedBox(height: 60.h),
             MyButton(
               label: "Send",
-              onPress: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const BrandLoginPage()));
-              },
+              onPress: sendPasswordResetRequest,
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/User_directory/screens/bottom_navigator.dart';
+import 'package:sales_alert_app/user_directory/screens/product_detail_screen.dart';
 
 import '../auth/controller/user_auth_controller.dart';
 
@@ -28,7 +29,6 @@ class AllBrandCollections extends ConsumerStatefulWidget {
 
 class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
   int? addedToCartIndex;
-  int? addedToFavoriteIndex;
   int? orderQuantity;
 
   void cartDataToFirebase(
@@ -43,31 +43,6 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
     brandId,
   ) {
     ref.watch(userAuthControllerProvider).cartDataToFirebase(
-          context,
-          productId,
-          productName,
-          productImage,
-          productPrice,
-          productColor,
-          productSize,
-          orderQuantity,
-          brandId,
-        );
-    setState(() {});
-  }
-
-  void saveFavoritesToFirebase(
-    context,
-    productId,
-    productName,
-    productImage,
-    productPrice,
-    productColor,
-    productSize,
-    orderQuantity,
-    brandId,
-  ) {
-    ref.watch(userAuthControllerProvider).saveFavoritesToFirebase(
           context,
           productId,
           productName,
@@ -135,19 +110,25 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                   crossAxisSpacing: 14,
                 ),
                 itemBuilder: (context, index) {
-                  var productId = snapshot.data?.elementAt(index).productId;
-                  var productName = snapshot.data?.elementAt(index).name;
-                  var productImage = snapshot.data?.elementAt(index).photo;
-                  var productPrice = snapshot.data?.elementAt(index).price;
-                  var productQuantity =
-                      snapshot.data?.elementAt(index).quantity;
-                  var productColor = snapshot.data?.elementAt(index).color;
-                  var productSize = snapshot.data?.elementAt(index).size;
-                  var productCategory =
-                      snapshot.data?.elementAt(index).category;
+                  var productData = snapshot.data?.elementAt(index);
 
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetailScreen(
+                            productId: productData!.productId,
+                            productName: productData.name,
+                            productPhoto: productData.photo,
+                            productPrice: productData.price,
+                            productColor: productData.color,
+                            productSize: productData.size,
+                            productDescription: productData.description,
+                            brandId: widget.brandId,
+                          ),
+                        ),
+                      );
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
@@ -170,14 +151,14 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                                 topRight: Radius.circular(15),
                               ),
                               image: DecorationImage(
-                                image: NetworkImage(productImage ?? ''),
+                                image: NetworkImage(productData?.photo ?? ''),
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
                           SizedBox(height: 10.h),
                           Text(
-                            productName ?? '',
+                            productData?.name ?? '',
                             style: TextStyle(
                               fontSize: 18.sp,
                               color: Colors.black.withOpacity(0.8),
@@ -189,7 +170,7 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                productPrice ?? '',
+                                productData?.price ?? '',
                                 style: TextStyle(
                                   color: Colors.redAccent,
                                   fontSize: 18.sp,
@@ -207,72 +188,43 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
                           ),
                           SizedBox(height: 10.h),
                           Text(
-                            productSize.toString().toUpperCase(),
+                            productData?.size.toString().toUpperCase() ?? '',
                             style: TextStyle(
                               color: Colors.black.withOpacity(0.8),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(height: 10.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  addedToFavoriteIndex = index;
-                                  orderQuantity = 1;
-                                  saveFavoritesToFirebase(
-                                    context,
-                                    productId,
-                                    productName,
-                                    productImage,
-                                    productPrice,
-                                    productColor,
-                                    productSize,
-                                    orderQuantity,
-                                    widget.brandId,
-                                  );
-                                },
-                                icon: Icon(
-                                  addedToFavoriteIndex == index
-                                      ? Icons.favorite_outlined
-                                      : Icons.favorite_border_outlined,
-                                  color: Colors.redAccent,
-                                  size: 25.sp,
-                                ),
-                              ),
-                              OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  backgroundColor: addedToCartIndex == index
-                                      ? Colors.green
-                                      : Colors.redAccent,
-                                ),
-                                onPressed: () {
-                                  addedToCartIndex = index;
-                                  orderQuantity = 1;
-                                  cartDataToFirebase(
-                                    context,
-                                    productId,
-                                    productName,
-                                    productImage,
-                                    productPrice,
-                                    productColor,
-                                    productSize,
-                                    orderQuantity,
-                                    widget.brandId,
-                                  );
-                                },
-                                child: Text(
-                                  addedToCartIndex == index
-                                      ? "Added      "
-                                      : "Add to cart",
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              SizedBox(width: 8.w),
-                            ],
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: addedToCartIndex == index
+                                  ? Colors.green
+                                  : Colors.redAccent,
+                            ),
+                            onPressed: () {
+                              addedToCartIndex = index;
+                              orderQuantity = 1;
+                              cartDataToFirebase(
+                                context,
+                                productData!.productId,
+                                productData.name,
+                                productData.photo,
+                                productData.price,
+                                productData.color,
+                                productData.size,
+                                orderQuantity.toString(),
+                                widget.brandId,
+                              );
+                            },
+                            child: Text(
+                              addedToCartIndex == index
+                                  ? "Added      "
+                                  : "Add to cart",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Colors.white),
+                            ),
                           ),
+                          SizedBox(width: 8.w),
                         ],
                       ),
                     ),

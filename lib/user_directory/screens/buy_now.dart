@@ -1,25 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/user_directory/auth/controller/user_auth_controller.dart';
 
 import '../../Common_component/my_button.dart';
 import 'user_success.dart';
 
-class BuyNow extends StatefulWidget {
+class BuyNow extends ConsumerStatefulWidget {
   const BuyNow({super.key});
 
   @override
-  State<BuyNow> createState() => _BuyNowState();
+  ConsumerState<BuyNow> createState() => _BuyNowState();
 }
 
-final categories = [
-  "Cash on Delivery",
-  "JazzCash",
-  "Easypaisa",
-  "Other",
-];
-String? selectedItem = "Cash on Delivery";
+class _BuyNowState extends ConsumerState<BuyNow> {
+  final categories = [
+    "Cash on Delivery",
+    "JazzCash",
+    "EasyPaisa",
+    "Other",
+  ];
+  String selectedMethod = "Cash on Delivery";
+  String? username;
 
-class _BuyNowState extends State<BuyNow> {
+  void fetchAndSaveOrderPlacedData({
+    required String buyerName,
+    required String paymentMethod,
+    required String totalAmount,
+  }) {
+    ref.watch(userAuthControllerProvider).fetchAndSaveOrderPlacedData(
+          buyerName,
+          paymentMethod,
+          totalAmount,
+        );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Success(
+          label: 'Order placed successfully!',
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,12 +51,14 @@ class _BuyNowState extends State<BuyNow> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 10, top: 70),
-            child: Text("Checkout",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30.sp,
-                )),
+            child: Text(
+              "Checkout",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 30.sp,
+              ),
+            ),
           ),
           SizedBox(height: 50.sp),
           Padding(
@@ -48,53 +73,66 @@ class _BuyNowState extends State<BuyNow> {
             ),
           ),
           const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 200.h,
-              width: 380.w,
-              decoration: BoxDecoration(
-                color: Colors.redAccent,
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20.h),
-                  Row(
-                    children: [
-                      Text(
-                        "Salman Baig",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.sp,
-                        ),
+          StreamBuilder(
+              stream: ref
+                  .watch(userAuthControllerProvider)
+                  .getUserDetails()
+                  .asStream(),
+              builder: (context, snapshot) {
+                var userData = snapshot.data;
+                username = userData?.name ?? '';
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 150.h,
+                    width: 380.w,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 20.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                username!,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.sp,
+                                ),
+                              ),
+                              GestureDetector(
+                                  child: const Icon(Icons.edit,
+                                      color: Colors.white)),
+                            ],
+                          ),
+                          SizedBox(height: 20.h),
+                          Text(
+                            userData?.address ?? '',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                          SizedBox(height: 20.h),
+                          Text(
+                            userData?.email ?? '',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(width: 250.w),
-                      GestureDetector(
-                          child: const Icon(Icons.edit, color: Colors.white)),
-                    ],
-                  ),
-                  SizedBox(height: 20.h),
-                  Text(
-                    "House #CA 31 Satellite town, Pandora, Rawalpindi",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.sp,
                     ),
                   ),
-                  SizedBox(height: 20.h),
-                  Text(
-                    "0331-5042122",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                );
+              }),
           SizedBox(height: 10.h),
           Padding(
             padding: const EdgeInsets.only(right: 140),
@@ -110,7 +148,7 @@ class _BuyNowState extends State<BuyNow> {
           Padding(
             padding: EdgeInsets.all(22.0.r),
             child: DropdownButtonFormField(
-              value: selectedItem,
+              value: selectedMethod,
               items: categories
                   .map(
                     (e) => DropdownMenuItem(
@@ -126,7 +164,7 @@ class _BuyNowState extends State<BuyNow> {
                   .toList(),
               onChanged: (String? val) {
                 setState(() {
-                  selectedItem = val;
+                  selectedMethod = val!;
                 });
               },
               icon: const Icon(
@@ -154,109 +192,160 @@ class _BuyNowState extends State<BuyNow> {
             ),
           ),
           SizedBox(height: 20.h),
-          Padding(
-            padding: const EdgeInsets.only(left: 25.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Total : ",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
+          StreamBuilder(
+            stream: ref
+                .watch(userAuthControllerProvider)
+                .getMyCartData()
+                .asStream(),
+            builder: (context, snapshot) {
+              return snapshot.connectionState == ConnectionState.waiting
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: ListView.builder(
+                        itemCount: 1,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          var cartData = snapshot.data;
+
+                          int total = cartData!
+                              .map<int>((item) =>
+                                  int.parse(item.orderQuantity) *
+                                  int.parse(item.productPrice))
+                              .reduce((value1, value2) => value1 + value2);
+
+                          int grandTotal = total + 250;
+
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Total : ",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 30.h,
+                                    width: 90.w,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                    child: Builder(
+                                      builder: (context) {
+                                        return Text(
+                                          "Rs. $total",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 5.h),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Shipping : ",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 30.h,
+                                    width: 90.w,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                    child: Builder(
+                                      builder: (context) {
+                                        return Text(
+                                          "Rs. 250",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 5.h),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Grand Total : ",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 30.h,
+                                    width: 90.w,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                    child: Builder(
+                                      builder: (context) {
+                                        return Text(
+                                          "Rs. $grandTotal",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 35.h),
+                              MyButton(
+                                label: 'Confirm Order',
+                                onPress: () {
+                                  fetchAndSaveOrderPlacedData(
+                                    buyerName: username!,
+                                    paymentMethod: selectedMethod,
+                                    totalAmount: grandTotal.toString(),
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
                       ),
-                    ),
-                    SizedBox(width: 180.w),
-                    Container(
-                      height: 30.h,
-                      width: 90.w,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Text(
-                        "Rs. 26.00",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5.h),
-                Row(children: [
-                  Text(
-                    "Shipping : ",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(width: 150.w),
-                  Container(
-                    height: 30.h,
-                    width: 90.w,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Text(
-                      "Rs. 16.00",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ]),
-                SizedBox(height: 5.h),
-                Row(children: [
-                  Text(
-                    "Grand Total : ",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(width: 130.w),
-                  Container(
-                    height: 30.h,
-                    width: 90.w,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Text(
-                      "Rs. 42.00",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ]),
-              ],
-            ),
+                    );
+            },
           ),
-          SizedBox(height: 35.h),
-          MyButton(
-              label: 'Confirm Order',
-              onPress: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Success(
-                            label: 'Your order has been Confirmed')));
-              })
         ],
       ),
     );

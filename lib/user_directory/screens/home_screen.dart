@@ -24,9 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
       const Color.fromARGB(255, 63, 208, 143),
     ];
     var imageList = [
-      "lib/User_directory/user_images/slide1.png",
-      "lib/User_directory/user_images/slide3.png",
-      "lib/User_directory/user_images/slide3.png",
+      "lib/user_directory/user_images/slide1.png",
+      "lib/user_directory/user_images/slide3.png",
+      "lib/user_directory/user_images/slide3.png",
     ];
     List iconImageList = [
       "lib/User_directory/user_images/icon1.png",

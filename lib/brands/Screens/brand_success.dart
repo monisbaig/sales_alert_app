@@ -18,7 +18,7 @@ class BrandSuccess extends StatelessWidget {
           children: [
             SizedBox(height: 50.h),
             Center(
-              child: Image.asset('lib/Common_images/sucess.png'),
+              child: Image.asset('lib/common_images/sucess.png'),
             ),
             Center(
               child: Text(

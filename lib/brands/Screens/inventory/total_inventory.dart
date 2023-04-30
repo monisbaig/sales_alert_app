@@ -149,7 +149,7 @@ class _TotalInventoryState extends ConsumerState<TotalInventory> {
                           ),
                           DataCell(
                             Text(
-                              snapshot.data!.elementAt(index).price,
+                              snapshot.data!.elementAt(index).price.toString(),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12.sp,
@@ -160,7 +160,10 @@ class _TotalInventoryState extends ConsumerState<TotalInventory> {
                           ),
                           DataCell(
                             Text(
-                              snapshot.data!.elementAt(index).quantity,
+                              snapshot.data!
+                                  .elementAt(index)
+                                  .quantity
+                                  .toString(),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12.sp,

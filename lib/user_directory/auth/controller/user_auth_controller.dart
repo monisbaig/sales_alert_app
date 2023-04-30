@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sales_alert_app/user_directory/models/order_place_model.dart';
 
 import '../../../brands/models/brand_model.dart';
 import '../../../brands/models/product_model.dart';
@@ -47,6 +48,10 @@ class UserAuthController {
       email: email,
       password: password,
     );
+  }
+
+  void sendPasswordResetRequest(String email) {
+    userAuthRepository.sendPasswordResetRequest(email: email);
   }
 
   void loginWithEmail(BuildContext context, String email, String password) {
@@ -96,7 +101,7 @@ class UserAuthController {
     String productPrice,
     String productColor,
     String productSize,
-    int orderQuantity,
+    String orderQuantity,
     String brandId,
   ) {
     return userAuthRepository.cartDataToFirebase(
@@ -231,5 +236,22 @@ class UserAuthController {
 
   Future<void> unFollowBrand(String brandId) {
     return userAuthRepository.unFollowBrand(brandId: brandId, ref: ref);
+  }
+
+  Future<void> fetchAndSaveOrderPlacedData(
+    String buyerName,
+    String paymentMethod,
+    String totalAmount,
+  ) {
+    return userAuthRepository.fetchAndSaveOrderPlacedData(
+      buyerName: buyerName,
+      paymentMethod: paymentMethod,
+      totalAmount: totalAmount,
+      ref: ref,
+    );
+  }
+
+  Future<List<OrderPlaceModel>> getOrderPlacedData() {
+    return userAuthRepository.getOrderPlacedData();
   }
 }

@@ -4,8 +4,8 @@ class CartModel {
   final String productId;
   final String productName;
   final String productImage;
-  final String productPrice;
   final String productColor;
+  final String productPrice;
   final String productSize;
   final String orderQuantity;
   final String totalOrderPrice;

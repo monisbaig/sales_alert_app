@@ -55,7 +55,7 @@ class UserNavBar extends ConsumerWidget {
                   color: Colors.blue,
                   image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: AssetImage('lib/Common_images/nav_cart.PNG'),
+                    image: AssetImage('lib/common_images/nav_cart.PNG'),
                   ),
                 ),
               );
@@ -66,8 +66,8 @@ class UserNavBar extends ConsumerWidget {
                 leading: const Icon(Icons.favorite_sharp),
                 title: const Text('Wishlist'),
                 iconColor: const Color(0xFFDB3022),
-                onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => FavouritesScreen()))),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const FavouritesScreen()))),
           ),
           GestureDetector(
             child: ListTile(

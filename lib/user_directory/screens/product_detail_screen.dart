@@ -1,11 +1,92 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../auth/controller/user_auth_controller.dart';
 import '../widgets/product_images.dart';
 import 'buy_now.dart';
 
-class ItemScreen extends StatelessWidget {
+class ProductDetailScreen extends ConsumerStatefulWidget {
+  final String productId;
+  final String productName;
+  final String productPhoto;
+  final String productPrice;
+  final String productColor;
+  final String productSize;
+  final String productDescription;
+  final String brandId;
+
+  const ProductDetailScreen({
+    super.key,
+    required this.productId,
+    required this.productName,
+    required this.productPhoto,
+    required this.productPrice,
+    required this.productColor,
+    required this.productSize,
+    required this.productDescription,
+    required this.brandId,
+  });
+
+  @override
+  ConsumerState<ProductDetailScreen> createState() =>
+      _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
+  int? orderQuantity;
+
+  void cartDataToFirebase(
+    context,
+    productId,
+    productName,
+    productImage,
+    productPrice,
+    productColor,
+    productSize,
+    orderQuantity,
+    brandId,
+  ) {
+    ref.watch(userAuthControllerProvider).cartDataToFirebase(
+          context,
+          productId,
+          productName,
+          productImage,
+          productPrice,
+          productColor,
+          productSize,
+          orderQuantity,
+          brandId,
+        );
+    setState(() {});
+  }
+
+  void saveFavoritesToFirebase(
+    context,
+    productId,
+    productName,
+    productImage,
+    productPrice,
+    productColor,
+    productSize,
+    orderQuantity,
+    brandId,
+  ) {
+    ref.watch(userAuthControllerProvider).saveFavoritesToFirebase(
+          context,
+          productId,
+          productName,
+          productImage,
+          productPrice,
+          productColor,
+          productSize,
+          orderQuantity,
+          brandId,
+        );
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,8 +106,10 @@ class ItemScreen extends StatelessWidget {
                     )),
                 child: Stack(
                   children: [
-                    const Center(
-                      child: ProductImageSlider(),
+                    Center(
+                      child: ProductImageSlider(
+                        productImage: widget.productPhoto,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15, top: 20),
@@ -49,42 +132,54 @@ class ItemScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Apple Watch Series 6",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22.sp,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          widget.productName,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22.sp,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            orderQuantity = 1;
+                            saveFavoritesToFirebase(
+                              context,
+                              widget.productId,
+                              widget.productName,
+                              widget.productPhoto,
+                              widget.productPrice,
+                              widget.productColor,
+                              widget.productSize,
+                              orderQuantity,
+                              widget.brandId,
+                            );
+                          },
+                          icon: Icon(
+                            Icons.favorite_outlined,
+                            color: Colors.redAccent,
+                            size: 25.sp,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 10.h),
                     Row(
                       children: [
-                        Container(
-                          child: Row(
-                            children: [
-                              Container(
-                                child: Row(
-                                  children: [
-                                    RatingBar.builder(
-                                      initialRating: 2.5,
-                                      minRating: 1,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      itemSize: 25,
-                                      itemBuilder: (context, _) => const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                      onRatingUpdate: (rating) {},
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    const Text("(450)"),
-                                  ],
-                                ),
-                              ),
-                            ],
+                        RatingBar.builder(
+                          initialRating: 2.5,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 25,
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
                           ),
+                          onRatingUpdate: (rating) {},
                         )
                       ],
                     ),
@@ -92,7 +187,7 @@ class ItemScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          "Rs. 300",
+                          widget.productPrice,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 22.sp,
@@ -110,9 +205,7 @@ class ItemScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 15.h),
                     Text(
-                      "APPLE WATCH SERIES 6 — Your essential companion for a healthy life is now even more powerful. "
-                      "Advanced sensors provide insights to help you better understand your health. New safety "
-                      "features can get you help when you need it.",
+                      widget.productDescription,
                       style: TextStyle(fontSize: 15.sp),
                       textAlign: TextAlign.justify,
                     ),
@@ -130,7 +223,20 @@ class ItemScreen extends StatelessWidget {
             // CartScreen
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           InkWell(
-            onTap: () {},
+            onTap: () {
+              orderQuantity = 1;
+              cartDataToFirebase(
+                context,
+                widget.productId,
+                widget.productName,
+                widget.productPhoto,
+                widget.productPrice,
+                widget.productColor,
+                widget.productSize,
+                orderQuantity,
+                widget.brandId,
+              );
+            },
             child: Container(
               height: 50.h,
               width: MediaQuery.of(context).size.width / 2.5,
