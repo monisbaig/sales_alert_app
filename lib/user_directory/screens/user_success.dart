@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../Common_component/my_button.dart';
+import '../../common_component/my_button.dart';
 import 'bottom_navigator.dart';
 
 class Success extends StatelessWidget {

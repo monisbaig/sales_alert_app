@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/brands/Screens/inventory/total_inventory.dart';
+import 'package:sales_alert_app/brands/screens/inventory/total_inventory.dart';
 
-class ClothingInventory extends StatelessWidget {
-  const ClothingInventory({super.key});
+class FurnitureInventory extends StatelessWidget {
+  const FurnitureInventory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +55,8 @@ class ClothingInventory extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(26.r),
                           child: Image.asset(
-                            'lib/brands/brand_images/men.png',
-                            width: 100.w,
-                            height: 150.h,
+                            'lib/brands/brand_images/sofa.png',
+                            height: 130.h,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -65,7 +64,7 @@ class ClothingInventory extends StatelessWidget {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => const TotalInventory(
-                                collection: 'Men',
+                                collection: 'Sofa Set',
                               ),
                             ),
                           );
@@ -73,7 +72,7 @@ class ClothingInventory extends StatelessWidget {
                       ),
                       SizedBox(height: 20.h),
                       Text(
-                        'Men ',
+                        'Sofa Set',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.sp,
@@ -88,9 +87,8 @@ class ClothingInventory extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(26.r),
                           child: Image.asset(
-                            'lib/brands/brand_images/women.jpg',
-                            width: 100.w,
-                            height: 150.h,
+                            'lib/brands/brand_images/bed.png',
+                            height: 130.h,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -98,7 +96,7 @@ class ClothingInventory extends StatelessWidget {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => const TotalInventory(
-                                collection: 'Women',
+                                collection: 'Bed Set',
                               ),
                             ),
                           );
@@ -106,7 +104,7 @@ class ClothingInventory extends StatelessWidget {
                       ),
                       SizedBox(height: 20.h),
                       Text(
-                        'Women ',
+                        'Bed Set',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.sp,
@@ -127,9 +125,8 @@ class ClothingInventory extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(26.r),
                         child: Image.asset(
-                          'lib/brands/brand_images/kids.jpg',
-                          width: 100.w,
-                          height: 150.h,
+                          'lib/brands/brand_images/table.png',
+                          height: 130.h,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -137,7 +134,7 @@ class ClothingInventory extends StatelessWidget {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => const TotalInventory(
-                              collection: 'Kids',
+                              collection: 'Table Set',
                             ),
                           ),
                         );
@@ -145,7 +142,7 @@ class ClothingInventory extends StatelessWidget {
                     ),
                     SizedBox(height: 20.h),
                     Text(
-                      'Kids ',
+                      'Table Set',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.sp,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/brands/Screens/clothing/kids_category.dart';
-import 'package:sales_alert_app/brands/Screens/clothing/men_category.dart';
-import 'package:sales_alert_app/brands/Screens/clothing/women_category.dart';
+import 'package:sales_alert_app/brands/screens/clothing/kids_category.dart';
+import 'package:sales_alert_app/brands/screens/clothing/men_category.dart';
+import 'package:sales_alert_app/brands/screens/clothing/women_category.dart';
 
 class ClothingCategories extends StatelessWidget {
   const ClothingCategories({super.key});

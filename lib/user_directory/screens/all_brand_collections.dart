@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/User_directory/screens/bottom_navigator.dart';
+import 'package:sales_alert_app/user_directory/screens/bottom_navigator.dart';
 import 'package:sales_alert_app/user_directory/screens/product_detail_screen.dart';
 
 import '../auth/controller/user_auth_controller.dart';
@@ -61,7 +61,7 @@ class _AllBrandCollectionsState extends ConsumerState<AllBrandCollections> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.brandCollection} Collection'),
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: const Color(0xFFDB3022),
         actions: [
           Padding(
             padding: EdgeInsets.only(top: 12, right: 10.w),

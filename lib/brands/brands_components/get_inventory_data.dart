@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../Common_component/loader.dart';
-import '../Screens/brand_details.dart';
-import '../Screens/clothing/clothing_inventory.dart';
-import '../Screens/electronics/electronics_inventory.dart';
-import '../Screens/furniture/furniture_inventory.dart';
+import '../../common_component/loader.dart';
 import '../auth/controller/brand_auth_controller.dart';
+import '../screens/brand_details.dart';
+import '../screens/clothing/clothing_inventory.dart';
+import '../screens/electronics/electronics_inventory.dart';
+import '../screens/furniture/furniture_inventory.dart';
 
 class GetInventoryData extends ConsumerWidget {
   const GetInventoryData({super.key});

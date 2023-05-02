@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/brands/Screens/brand_choice.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
+import 'package:sales_alert_app/brands/screens/brand_choice.dart';
 import 'package:sales_alert_app/utils/utils.dart';
 
-import '../../Common_component/my_button.dart';
-import '../../Common_component/my_text_field.dart';
+import '../../common_component/my_button.dart';
+import '../../common_component/my_text_field.dart';
 
 class BrandDetails extends ConsumerStatefulWidget {
   const BrandDetails({super.key});

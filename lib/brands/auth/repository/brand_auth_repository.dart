@@ -14,9 +14,9 @@ import 'package:sales_alert_app/brands/models/product_model.dart';
 import 'package:sales_alert_app/splash/splash_screen.dart';
 
 import '../../../user_directory/models/order_place_model.dart';
-import '../../Screens/brand_choice.dart';
-import '../../Screens/brand_login_page.dart';
-import '../../Screens/brand_success.dart';
+import '../../screens/brand_choice.dart';
+import '../../screens/brand_login_page.dart';
+import '../../screens/brand_success.dart';
 
 final brandAuthRepositoryProvider = Provider((ref) {
   return BrandAuthRepository(

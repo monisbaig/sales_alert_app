@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
-import '../../Common_component/loader.dart';
-import '../Screens/view_orders.dart';
+import '../../common_component/loader.dart';
+import '../screens/view_orders.dart';
 import 'get_data.dart';
 import 'get_inventory_data.dart';
 // import '../Screens/inventory/total_inventory.dart';

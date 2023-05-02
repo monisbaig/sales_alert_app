@@ -42,7 +42,7 @@ class _SelectProductTwoState extends ConsumerState<SelectProductTwo> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Select your Product'),
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: const Color(0xFFDB3022),
       ),
       body: SingleChildScrollView(
         child: Padding(

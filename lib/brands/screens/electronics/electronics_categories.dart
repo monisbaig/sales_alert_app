@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/brands/Screens/electronics/electronic_items.dart';
+import 'package:sales_alert_app/brands/screens/electronics/electronic_items.dart';
 
 class ElectronicsCategories extends StatelessWidget {
   const ElectronicsCategories({super.key});

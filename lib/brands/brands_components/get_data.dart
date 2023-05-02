@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../Common_component/loader.dart';
-import '../Screens/brand_details.dart';
-import '../Screens/clothing/clothing_categories.dart';
-import '../Screens/electronics/electronics_categories.dart';
-import '../Screens/furniture/furniture_categories.dart';
+import '../../common_component/loader.dart';
 import '../auth/controller/brand_auth_controller.dart';
+import '../screens/brand_details.dart';
+import '../screens/clothing/clothing_categories.dart';
+import '../screens/electronics/electronics_categories.dart';
+import '../screens/furniture/furniture_categories.dart';
 
 class GetData extends ConsumerWidget {
   const GetData({super.key});

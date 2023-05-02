@@ -67,7 +67,7 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
             },
           ),
         ),
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: const Color(0xFFDB3022),
         actions: [
           Padding(
             padding: EdgeInsets.only(top: 12, right: 10.w),
@@ -306,12 +306,16 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 10.h),
-                                Text(
-                                  productData?.name ?? '',
-                                  style: TextStyle(
-                                    fontSize: 18.sp,
-                                    color: Colors.black.withOpacity(0.8),
-                                    fontWeight: FontWeight.bold,
+                                Flexible(
+                                  child: Text(
+                                    productData?.name ?? '',
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(height: 10.h),

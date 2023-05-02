@@ -59,6 +59,7 @@ class UserAuthController {
       context: context,
       email: email,
       password: password,
+      ref: ref,
     );
   }
 

@@ -3,27 +3,33 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
-import '../../../Common_component/my_button.dart';
-import '../../../Common_component/my_text_field.dart';
+import '../../../common_component/my_button.dart';
+import '../../../common_component/my_text_field.dart';
 import '../../../utils/utils.dart';
+import '../../auth/repository/brand_notification_repository.dart';
 
-class ElectronicItems extends ConsumerStatefulWidget {
+class ClothingItems extends ConsumerStatefulWidget {
   final String mainCategory;
+  final String subCategory;
 
-  const ElectronicItems({super.key, required this.mainCategory});
+  const ClothingItems(
+      {super.key, required this.mainCategory, required this.subCategory});
 
   @override
-  ConsumerState<ElectronicItems> createState() => _ItemDetailsState();
+  ConsumerState<ClothingItems> createState() => _ItemDetailsState();
 }
 
-class _ItemDetailsState extends ConsumerState<ElectronicItems> {
+class _ItemDetailsState extends ConsumerState<ClothingItems> {
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final quantityController = TextEditingController();
   final descriptionController = TextEditingController();
   final colorController = TextEditingController();
+  final size = ["small", "medium", "large", "xl", "xxl"];
+  String? selectedSize = "small";
   File? image;
   bool isLoading = false;
   bool alreadyPressed = false;
@@ -37,22 +43,36 @@ class _ItemDetailsState extends ConsumerState<ElectronicItems> {
     setState(() {
       isLoading = true;
     });
-    ref.read(brandAuthControllerProvider).saveCategoryDataToFirebase(
-          context,
-          widget.mainCategory,
-          '',
-          nameController.text.trim(),
-          priceController.text.trim(),
-          image,
-          colorController.text.trim(),
-          quantityController.text.trim(),
-          descriptionController.text.trim(),
-          '',
-        );
+    if (nameController.text.isNotEmpty &&
+        priceController.text.isNotEmpty &&
+        quantityController.text.isNotEmpty &&
+        descriptionController.text.isNotEmpty) {
+      ref.watch(brandAuthControllerProvider).saveCategoryDataToFirebase(
+            context,
+            widget.mainCategory,
+            widget.subCategory,
+            nameController.text.trim(),
+            priceController.text.trim(),
+            image,
+            colorController.text.trim(),
+            quantityController.text.trim(),
+            descriptionController.text.trim(),
+            selectedSize,
+          );
+      getTokenAndSendNotificationToUser();
+      alreadyPressed = true;
+    } else {
+      Fluttertoast.showToast(msg: 'Please fill out all the fields!');
+    }
     setState(() {
       isLoading = false;
-      alreadyPressed = true;
     });
+  }
+
+  void getTokenAndSendNotificationToUser() {
+    ref
+        .read(brandNotificationRepositoryProvider)
+        .getTokenAndSendNotificationToUser();
   }
 
   @override
@@ -65,7 +85,7 @@ class _ItemDetailsState extends ConsumerState<ElectronicItems> {
           child: Center(
             child: Column(
               children: [
-                SizedBox(height: 20.h),
+                SizedBox(height: 10.h),
                 Text(
                   '${widget.mainCategory} Details',
                   style: TextStyle(
@@ -74,7 +94,7 @@ class _ItemDetailsState extends ConsumerState<ElectronicItems> {
                     fontSize: 30.sp,
                   ),
                 ),
-                SizedBox(height: 5.h),
+                SizedBox(height: 20.h),
                 image == null
                     ? const CircleAvatar(
                         backgroundImage:
@@ -133,6 +153,52 @@ class _ItemDetailsState extends ConsumerState<ElectronicItems> {
                   alignment: Alignment.topLeft,
                   margin: EdgeInsets.only(left: 30.w),
                   child: Text(
+                    "Sizes",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25.w),
+                  child: DropdownButtonFormField(
+                    value: selectedSize,
+                    items: size
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(
+                              e,
+                              style: const TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (String? val) {
+                      setState(() {
+                        selectedSize = val;
+                      });
+                    },
+                    dropdownColor: Colors.red,
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15.h),
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(left: 30.w),
+                  child: Text(
                     "Quantity",
                     style: TextStyle(
                       color: Colors.white,
@@ -149,13 +215,11 @@ class _ItemDetailsState extends ConsumerState<ElectronicItems> {
                 Container(
                   alignment: Alignment.topLeft,
                   margin: EdgeInsets.only(left: 30.w),
-                  child: Text(
-                    "Description",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.sp,
-                    ),
-                  ),
+                  child: Text("Description",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                      )),
                 ),
                 SizedBox(height: 8.h),
                 MyTextField(
@@ -166,13 +230,11 @@ class _ItemDetailsState extends ConsumerState<ElectronicItems> {
                 Container(
                   alignment: Alignment.topLeft,
                   margin: EdgeInsets.only(left: 30.w),
-                  child: Text(
-                    "Colors",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.sp,
-                    ),
-                  ),
+                  child: Text("Colors",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                      )),
                 ),
                 SizedBox(height: 8.h),
                 MyTextField(

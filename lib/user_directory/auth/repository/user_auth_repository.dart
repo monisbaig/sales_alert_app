@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sales_alert_app/user_directory/auth/repository/user_firebase_storage_repository.dart';
+import 'package:sales_alert_app/user_directory/auth/repository/user_notification_repository.dart';
 import 'package:sales_alert_app/user_directory/models/order_place_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -83,6 +84,7 @@ class UserAuthRepository {
     required BuildContext context,
     required String email,
     required String password,
+    required ProviderRef ref,
   }) async {
     try {
       await auth.signInWithEmailAndPassword(
@@ -95,6 +97,10 @@ class UserAuthRepository {
         Fluttertoast.showToast(msg: 'Verify Email First');
       } else {
         Fluttertoast.showToast(msg: 'Logged in successfully');
+
+        await ref
+            .read(userNotificationRepositoryProvider)
+            .getDeviceToken(uId: auth.currentUser!.uid);
 
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
@@ -574,7 +580,7 @@ class UserAuthRepository {
           'buyerId': uId,
           'brandId': brandId,
           'orderDate': orderDate.toIso8601String(),
-          'orderStatus': 'pending',
+          'orderStatus': 'processing',
           'paymentMethod': paymentMethod,
           'deliveryCharges': '250',
           'totalAmount': totalAmount,

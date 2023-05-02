@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sales_alert_app/brands/Screens/brand_saved_details.dart';
+import 'package:sales_alert_app/brands/screens/brand_saved_details.dart';
 
-import '../../Common_component/loader.dart';
-import '../Screens/brand_details.dart';
+import '../../common_component/loader.dart';
 import '../auth/controller/brand_auth_controller.dart';
+import '../screens/brand_details.dart';
 
 class CheckBrandData extends ConsumerWidget {
   const CheckBrandData({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/brands/Screens/brand_choice.dart';
+import 'package:sales_alert_app/brands/screens/brand_choice.dart';
 
-import '../../Common_component/my_button.dart';
+import '../../common_component/my_button.dart';
 
 class BrandSuccess extends StatelessWidget {
   final String label;

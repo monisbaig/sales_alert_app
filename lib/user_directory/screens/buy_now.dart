@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/user_directory/auth/controller/user_auth_controller.dart';
 
-import '../../Common_component/my_button.dart';
+import '../../common_component/my_button.dart';
 import 'user_success.dart';
 
 class BuyNow extends ConsumerStatefulWidget {

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sales_alert_app/brands/Screens/brand_register.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
+import 'package:sales_alert_app/brands/screens/brand_register.dart';
 
-import '../../Common_component/my_button.dart';
-import '../../Common_component/my_text_field.dart';
+import '../../common_component/my_button.dart';
+import '../../common_component/my_text_field.dart';
 import 'forgot_password.dart';
 
 class BrandLoginPage extends ConsumerStatefulWidget {

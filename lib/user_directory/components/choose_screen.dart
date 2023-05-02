@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/User_directory/screens/user_login_page.dart';
-import 'package:sales_alert_app/brands/Screens/brand_login_page.dart';
+import 'package:sales_alert_app/brands/screens/brand_login_page.dart';
+import 'package:sales_alert_app/user_directory/screens/user_login_page.dart';
 
-import '../../Common_component/my_button.dart';
+import '../../common_component/my_button.dart';
 
 class ChooseScreen extends StatelessWidget {
   const ChooseScreen({Key? key}) : super(key: key);

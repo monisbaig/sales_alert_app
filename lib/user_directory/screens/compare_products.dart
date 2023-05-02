@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/User_directory/auth/controller/user_auth_controller.dart';
+import 'package:sales_alert_app/user_directory/auth/controller/user_auth_controller.dart';
 import 'package:sales_alert_app/user_directory/screens/product_one_category.dart';
 import 'package:sales_alert_app/user_directory/screens/product_two_category.dart';
 
@@ -18,7 +19,7 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Compare Products'),
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: const Color(0xFFDB3022),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 22.h),
@@ -72,12 +73,20 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                           ),
                           SizedBox(height: 10.h),
                           Row(
-                            children: const [
-                              Icon(Icons.star),
-                              Icon(Icons.star),
-                              Icon(Icons.star),
-                              Icon(Icons.star_border),
-                              Icon(Icons.star_border),
+                            children: [
+                              RatingBar.builder(
+                                initialRating: 2.5,
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemSize: 22,
+                                itemBuilder: (context, _) => const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (rating) {},
+                              ),
                             ],
                           ),
                           SizedBox(
@@ -217,12 +226,20 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                           ),
                           SizedBox(height: 10.h),
                           Row(
-                            children: const [
-                              Icon(Icons.star),
-                              Icon(Icons.star),
-                              Icon(Icons.star),
-                              Icon(Icons.star_border),
-                              Icon(Icons.star_border),
+                            children: [
+                              RatingBar.builder(
+                                initialRating: 3.5,
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemSize: 22,
+                                itemBuilder: (context, _) => const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (rating) {},
+                              ),
                             ],
                           ),
                           SizedBox(

@@ -1,20 +1,26 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/Common_component/error_screen.dart';
-import 'package:sales_alert_app/User_directory/screens/bottom_navigator.dart';
+import 'package:sales_alert_app/common_component/error_screen.dart';
 import 'package:sales_alert_app/splash/splash_screen.dart';
+import 'package:sales_alert_app/user_directory/screens/bottom_navigator.dart';
 
-import 'Common_component/loader.dart';
-import 'User_directory/auth/controller/user_auth_controller.dart';
+import 'common_component/loader.dart';
 import 'firebase_options.dart';
+import 'user_directory/auth/controller/user_auth_controller.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   runApp(
     const ProviderScope(
       child: MyApp(),

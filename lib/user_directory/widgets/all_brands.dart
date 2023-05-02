@@ -6,7 +6,7 @@ import 'package:sales_alert_app/user_directory/screens/clothing_brand_screen.dar
 import 'package:sales_alert_app/user_directory/screens/electronics_brand_screen.dart';
 import 'package:sales_alert_app/user_directory/screens/furniture_brand_screen.dart';
 
-import '../../Common_component/loader.dart';
+import '../../common_component/loader.dart';
 
 class AllBrands extends ConsumerWidget {
   const AllBrands({super.key});

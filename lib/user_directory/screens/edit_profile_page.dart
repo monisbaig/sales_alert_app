@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sales_alert_app/Common_component/my_text_field.dart';
+import 'package:sales_alert_app/common_component/my_text_field.dart';
 import 'package:sales_alert_app/utils/utils.dart';
 
-import '../../Common_component/loader.dart';
+import '../../common_component/loader.dart';
 import '../auth/controller/user_auth_controller.dart';
 import 'bottom_navigator.dart';
 

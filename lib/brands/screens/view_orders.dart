@@ -29,7 +29,7 @@ class _ViewOrdersState extends ConsumerState<ViewOrders> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('View Orders'),
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: const Color(0xFFDB3022),
       ),
       body: FutureBuilder(
         future: ref.watch(brandAuthControllerProvider).getOrderPlacedData(),
@@ -77,11 +77,11 @@ class _ViewOrdersState extends ConsumerState<ViewOrders> {
                                   onPressed: () {
                                     updateOrderStatus(
                                       orderId: productData.orderId,
-                                      orderStatus: 'processing',
+                                      orderStatus: 'shipped',
                                     );
                                   },
                                   child: const Text(
-                                    "Accept",
+                                    "Ship Now",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Colors.white,

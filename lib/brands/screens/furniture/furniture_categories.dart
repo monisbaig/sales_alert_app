@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/brands/Screens/inventory/total_inventory.dart';
+import 'package:sales_alert_app/brands/screens/furniture/furniture_items.dart';
 
-class FurnitureInventory extends StatelessWidget {
-  const FurnitureInventory({super.key});
+class FurnitureCategories extends StatelessWidget {
+  const FurnitureCategories({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class FurnitureInventory extends StatelessWidget {
             SizedBox(height: 20.h),
             Center(
               child: Text(
-                'Total Inventory ',
+                'Furniture Items ',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16.sp,
@@ -63,8 +63,8 @@ class FurnitureInventory extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => const TotalInventory(
-                                collection: 'Sofa Set',
+                              builder: (_) => const FurnitureItems(
+                                mainCategory: 'Sofa Set',
                               ),
                             ),
                           );
@@ -95,8 +95,8 @@ class FurnitureInventory extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => const TotalInventory(
-                                collection: 'Bed Set',
+                              builder: (_) => const FurnitureItems(
+                                mainCategory: 'Bed Set',
                               ),
                             ),
                           );
@@ -133,8 +133,8 @@ class FurnitureInventory extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => const TotalInventory(
-                              collection: 'Table Set',
+                            builder: (_) => const FurnitureItems(
+                              mainCategory: 'Table Set',
                             ),
                           ),
                         );

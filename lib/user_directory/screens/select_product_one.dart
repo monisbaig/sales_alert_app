@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/User_directory/screens/bottom_navigator.dart';
+import 'package:sales_alert_app/user_directory/screens/bottom_navigator.dart';
 
 import '../auth/controller/user_auth_controller.dart';
 
@@ -42,7 +42,7 @@ class _SelectProductOneState extends ConsumerState<SelectProductOne> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Select your Product'),
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: const Color(0xFFDB3022),
       ),
       body: SingleChildScrollView(
         child: Padding(

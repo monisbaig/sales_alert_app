@@ -135,11 +135,14 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          widget.productName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22.sp,
+                        Flexible(
+                          child: Text(
+                            widget.productName,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22.sp,
+                            ),
                           ),
                         ),
                         IconButton(

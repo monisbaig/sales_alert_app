@@ -1,20 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/user_directory/screens/search_product_screen.dart';
 import 'package:sales_alert_app/user_directory/widgets/user_nav_bar.dart';
 
+import '../auth/controller/user_notification_controller.dart';
 import '../widgets/all_brands.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    requestNotificationPermission();
+    firebaseMessagingInit();
+    setupInteractMessage();
+  }
+
+  void requestNotificationPermission() {
+    ref
+        .read(userNotificationControllerProvider)
+        .requestNotificationPermission();
+  }
+
+  void firebaseMessagingInit() {
+    ref.read(userNotificationControllerProvider).firebaseMessagingInit(context);
+  }
+
+  void setupInteractMessage() {
+    ref.read(userNotificationControllerProvider).setupInteractMessage(context);
+  }
 
   @override
   Widget build(BuildContext context) {

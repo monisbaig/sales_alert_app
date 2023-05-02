@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 import 'package:sales_alert_app/brands/brands_components/get_data.dart';
 
-import '../../Common_component/loader.dart';
+import '../../common_component/loader.dart';
 import '../brands_components/brand_nav_bar.dart';
 import '../brands_components/get_inventory_data.dart';
 import '../brands_components/profile_menu.dart';
@@ -67,7 +67,7 @@ class _ViewBrandProfileState extends ConsumerState<ViewBrandProfile> {
               onPress: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => ViewOrders(),
+                    builder: (_) => const ViewOrders(),
                   ),
                 );
               },

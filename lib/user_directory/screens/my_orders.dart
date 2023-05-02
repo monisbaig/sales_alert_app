@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -15,13 +16,14 @@ class MyOrders extends ConsumerStatefulWidget {
 
 class _MyOrdersState extends ConsumerState<MyOrders> {
   var _expanded = false;
+  double rateNow = 0.0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Orders'),
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: const Color(0xFFDB3022),
       ),
       body: FutureBuilder(
         future: ref.watch(userAuthControllerProvider).getOrderPlacedData(),
@@ -61,7 +63,39 @@ class _MyOrdersState extends ConsumerState<MyOrders> {
                                       DateFormat('dd-MM-yyyy hh:mm')
                                           .format(productData.orderDate),
                                     ),
-                                    Text(productData.orderStatus),
+                                    productData.orderStatus == 'shipped'
+                                        ? Row(
+                                            children: [
+                                              Text(productData.orderStatus),
+                                              SizedBox(width: 5.w),
+                                              RatingBar.builder(
+                                                initialRating: 2.5,
+                                                minRating: 1,
+                                                direction: Axis.horizontal,
+                                                allowHalfRating: true,
+                                                itemCount: 5,
+                                                itemSize: 18,
+                                                itemBuilder: (context, _) =>
+                                                    const Icon(
+                                                  Icons.star,
+                                                  color: Colors.amber,
+                                                ),
+                                                onRatingUpdate: (rating) {
+                                                  setState(() {
+                                                    rateNow = rating;
+                                                  });
+                                                },
+                                              ),
+                                              SizedBox(width: 5.w),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  print(rateNow);
+                                                },
+                                                child: const Text('Rate now'),
+                                              ),
+                                            ],
+                                          )
+                                        : Text(productData.orderStatus),
                                   ],
                                 ),
                                 trailing: IconButton(

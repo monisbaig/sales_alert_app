@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../Common_component/my_button.dart';
-import '../../Common_component/my_text_field.dart';
+import '../../common_component/my_button.dart';
+import '../../common_component/my_text_field.dart';
 import '../../user_directory/auth/controller/user_auth_controller.dart';
 
 class ForgotPassword extends ConsumerStatefulWidget {

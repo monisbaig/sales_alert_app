@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/user_directory/screens/bottom_navigator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Common_component/loader.dart';
+import '../../common_component/loader.dart';
 import '../auth/controller/user_auth_controller.dart';
 import '../screens/edit_profile_page.dart';
-import '../screens/favourites_screen.dart';
-import '../screens/live_chat.dart';
 import '../screens/my_orders.dart';
-import '../screens/notification.dart';
 
 class UserNavBar extends ConsumerWidget {
   const UserNavBar({super.key});
@@ -63,28 +61,34 @@ class UserNavBar extends ConsumerWidget {
           ),
           GestureDetector(
             child: ListTile(
-                leading: const Icon(Icons.favorite_sharp),
-                title: const Text('Wishlist'),
-                iconColor: const Color(0xFFDB3022),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => const FavouritesScreen()))),
+              leading: const Icon(Icons.favorite_sharp),
+              title: const Text('Wishlist'),
+              iconColor: const Color(0xFFDB3022),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => BottomNavigator(
+                    selectPage: 1,
+                  ),
+                ),
+              ),
+            ),
           ),
-          GestureDetector(
-            child: ListTile(
-                leading: const Icon(Icons.notification_add_outlined),
-                title: const Text('Notifications'),
-                iconColor: const Color(0xFFDB3022),
-                onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const Notifcations()))),
-          ),
-          GestureDetector(
-            child: ListTile(
-                leading: const Icon(Icons.chat),
-                title: const Text('Live Chat'),
-                iconColor: const Color(0xFFDB3022),
-                onTap: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => const LiveChat()))),
-          ),
+          // GestureDetector(
+          //   child: ListTile(
+          //       leading: const Icon(Icons.notification_add_outlined),
+          //       title: const Text('Notifications'),
+          //       iconColor: const Color(0xFFDB3022),
+          //       onTap: () => Navigator.of(context).push(
+          //           MaterialPageRoute(builder: (_) => const Notifcations()))),
+          // ),
+          // GestureDetector(
+          //   child: ListTile(
+          //       leading: const Icon(Icons.chat),
+          //       title: const Text('Live Chat'),
+          //       iconColor: const Color(0xFFDB3022),
+          //       onTap: () => Navigator.of(context)
+          //           .push(MaterialPageRoute(builder: (_) => const LiveChat()))),
+          // ),
           GestureDetector(
             child: ListTile(
                 leading: const Icon(Icons.production_quantity_limits_rounded),

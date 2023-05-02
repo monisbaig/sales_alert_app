@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/brands/Screens/furniture/furniture_items.dart';
+import 'package:sales_alert_app/brands/screens/inventory/total_inventory.dart';
 
-class FurnitureCategories extends StatelessWidget {
-  const FurnitureCategories({super.key});
+class ClothingInventory extends StatelessWidget {
+  const ClothingInventory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class FurnitureCategories extends StatelessWidget {
             SizedBox(height: 20.h),
             Center(
               child: Text(
-                'Furniture Items ',
+                'Total Inventory ',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16.sp,
@@ -55,16 +55,17 @@ class FurnitureCategories extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(26.r),
                           child: Image.asset(
-                            'lib/brands/brand_images/sofa.png',
-                            height: 130.h,
+                            'lib/brands/brand_images/men.png',
+                            width: 100.w,
+                            height: 150.h,
                             fit: BoxFit.cover,
                           ),
                         ),
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => const FurnitureItems(
-                                mainCategory: 'Sofa Set',
+                              builder: (_) => const TotalInventory(
+                                collection: 'Men',
                               ),
                             ),
                           );
@@ -72,7 +73,7 @@ class FurnitureCategories extends StatelessWidget {
                       ),
                       SizedBox(height: 20.h),
                       Text(
-                        'Sofa Set',
+                        'Men ',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.sp,
@@ -87,16 +88,17 @@ class FurnitureCategories extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(26.r),
                           child: Image.asset(
-                            'lib/brands/brand_images/bed.png',
-                            height: 130.h,
+                            'lib/brands/brand_images/women.jpg',
+                            width: 100.w,
+                            height: 150.h,
                             fit: BoxFit.cover,
                           ),
                         ),
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => const FurnitureItems(
-                                mainCategory: 'Bed Set',
+                              builder: (_) => const TotalInventory(
+                                collection: 'Women',
                               ),
                             ),
                           );
@@ -104,7 +106,7 @@ class FurnitureCategories extends StatelessWidget {
                       ),
                       SizedBox(height: 20.h),
                       Text(
-                        'Bed Set',
+                        'Women ',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.sp,
@@ -125,16 +127,17 @@ class FurnitureCategories extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(26.r),
                         child: Image.asset(
-                          'lib/brands/brand_images/table.png',
-                          height: 130.h,
+                          'lib/brands/brand_images/kids.jpg',
+                          width: 100.w,
+                          height: 150.h,
                           fit: BoxFit.cover,
                         ),
                       ),
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => const FurnitureItems(
-                              mainCategory: 'Table Set',
+                            builder: (_) => const TotalInventory(
+                              collection: 'Kids',
                             ),
                           ),
                         );
@@ -142,7 +145,7 @@ class FurnitureCategories extends StatelessWidget {
                     ),
                     SizedBox(height: 20.h),
                     Text(
-                      'Table Set',
+                      'Kids ',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.sp,

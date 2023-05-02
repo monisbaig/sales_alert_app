@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
-import '../../../Common_component/loader.dart';
+import '../../../common_component/loader.dart';
 import 'update_products.dart';
 
 class TotalInventory extends ConsumerStatefulWidget {
@@ -138,7 +138,7 @@ class _TotalInventoryState extends ConsumerState<TotalInventory> {
                           ),
                           DataCell(
                             Text(
-                              snapshot.data!.elementAt(index).description,
+                              snapshot.data!.elementAt(index).mainCategory,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12.sp,

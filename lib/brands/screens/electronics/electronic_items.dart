@@ -3,22 +3,24 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
-import '../../../Common_component/my_button.dart';
-import '../../../Common_component/my_text_field.dart';
+import '../../../common_component/my_button.dart';
+import '../../../common_component/my_text_field.dart';
 import '../../../utils/utils.dart';
+import '../../auth/repository/brand_notification_repository.dart';
 
-class FurnitureItems extends ConsumerStatefulWidget {
+class ElectronicItems extends ConsumerStatefulWidget {
   final String mainCategory;
 
-  const FurnitureItems({super.key, required this.mainCategory});
+  const ElectronicItems({super.key, required this.mainCategory});
 
   @override
-  ConsumerState<FurnitureItems> createState() => _ItemDetailsState();
+  ConsumerState<ElectronicItems> createState() => _ItemDetailsState();
 }
 
-class _ItemDetailsState extends ConsumerState<FurnitureItems> {
+class _ItemDetailsState extends ConsumerState<ElectronicItems> {
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final quantityController = TextEditingController();
@@ -37,22 +39,36 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
     setState(() {
       isLoading = true;
     });
-    ref.read(brandAuthControllerProvider).saveCategoryDataToFirebase(
-          context,
-          widget.mainCategory,
-          '',
-          nameController.text.trim(),
-          priceController.text.trim(),
-          image,
-          colorController.text.trim(),
-          quantityController.text.trim(),
-          descriptionController.text.trim(),
-          '',
-        );
+    if (nameController.text.isNotEmpty &&
+        priceController.text.isNotEmpty &&
+        quantityController.text.isNotEmpty &&
+        descriptionController.text.isNotEmpty) {
+      ref.watch(brandAuthControllerProvider).saveCategoryDataToFirebase(
+            context,
+            widget.mainCategory,
+            '',
+            nameController.text.trim(),
+            priceController.text.trim(),
+            image,
+            colorController.text.trim(),
+            quantityController.text.trim(),
+            descriptionController.text.trim(),
+            '',
+          );
+      getTokenAndSendNotificationToUser();
+      alreadyPressed = true;
+    } else {
+      Fluttertoast.showToast(msg: 'Please fill out all the fields!');
+    }
     setState(() {
       isLoading = false;
-      alreadyPressed = true;
     });
+  }
+
+  void getTokenAndSendNotificationToUser() {
+    ref
+        .read(brandNotificationRepositoryProvider)
+        .getTokenAndSendNotificationToUser();
   }
 
   @override
@@ -108,9 +124,10 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
                 ),
                 SizedBox(height: 8.h),
                 MyTextField(
-                    controller: nameController,
-                    hintText: '',
-                    obscureText: false),
+                  controller: nameController,
+                  hintText: '',
+                  obscureText: false,
+                ),
                 SizedBox(height: 15.h),
                 Container(
                   alignment: Alignment.topLeft,
@@ -125,9 +142,10 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
                 ),
                 SizedBox(height: 8.h),
                 MyTextField(
-                    controller: priceController,
-                    hintText: '',
-                    obscureText: false),
+                  controller: priceController,
+                  hintText: '',
+                  obscureText: false,
+                ),
                 SizedBox(height: 15.h),
                 Container(
                   alignment: Alignment.topLeft,
@@ -142,9 +160,10 @@ class _ItemDetailsState extends ConsumerState<FurnitureItems> {
                 ),
                 SizedBox(height: 8.h),
                 MyTextField(
-                    controller: quantityController,
-                    hintText: '',
-                    obscureText: false),
+                  controller: quantityController,
+                  hintText: '',
+                  obscureText: false,
+                ),
                 SizedBox(height: 15.h),
                 Container(
                   alignment: Alignment.topLeft,
