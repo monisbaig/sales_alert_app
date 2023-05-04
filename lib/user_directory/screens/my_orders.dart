@@ -18,6 +18,20 @@ class _MyOrdersState extends ConsumerState<MyOrders> {
   var _expanded = false;
   double rateNow = 0.0;
 
+  void productRating({
+    required String brandId,
+    required String buyerId,
+    required String productId,
+    required double productRating,
+  }) {
+    ref.read(userAuthControllerProvider).productRating(
+          brandId,
+          buyerId,
+          productId,
+          productRating,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +59,7 @@ class _MyOrdersState extends ConsumerState<MyOrders> {
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       height: _expanded
-                          ? min(productData!.products.length * 20 + 110, 200)
+                          ? min(productData!.products.length * 20 + 150, 200)
                           : 95,
                       child: Card(
                         color: Colors.white38,
@@ -63,39 +77,7 @@ class _MyOrdersState extends ConsumerState<MyOrders> {
                                       DateFormat('dd-MM-yyyy hh:mm')
                                           .format(productData.orderDate),
                                     ),
-                                    productData.orderStatus == 'shipped'
-                                        ? Row(
-                                            children: [
-                                              Text(productData.orderStatus),
-                                              SizedBox(width: 5.w),
-                                              RatingBar.builder(
-                                                initialRating: 2.5,
-                                                minRating: 1,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: true,
-                                                itemCount: 5,
-                                                itemSize: 18,
-                                                itemBuilder: (context, _) =>
-                                                    const Icon(
-                                                  Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                                onRatingUpdate: (rating) {
-                                                  setState(() {
-                                                    rateNow = rating;
-                                                  });
-                                                },
-                                              ),
-                                              SizedBox(width: 5.w),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  print(rateNow);
-                                                },
-                                                child: const Text('Rate now'),
-                                              ),
-                                            ],
-                                          )
-                                        : Text(productData.orderStatus),
+                                    Text(productData.orderStatus),
                                   ],
                                 ),
                                 trailing: IconButton(
@@ -116,30 +98,80 @@ class _MyOrdersState extends ConsumerState<MyOrders> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 4),
                                 height: _expanded
-                                    ? min(productData.products.length * 20 + 10,
+                                    ? min(productData.products.length * 20 + 50,
                                         100)
                                     : 0,
                                 child: ListView(
                                   children: productData.products
                                       .map(
-                                        (prod) => Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                        (prod) => Column(
                                           children: [
-                                            Text(
-                                              '${prod.productName} (${prod.productColor}, ${prod.productSize})',
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  '${prod.productName} (${prod.productColor}, ${prod.productSize})',
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${prod.orderQuantity}x Rs.${prod.productPrice}',
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              '${prod.orderQuantity}x Rs.${prod.productPrice}',
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
+                                            productData.orderStatus == 'shipped'
+                                                ? Row(
+                                                    children: [
+                                                      RatingBar.builder(
+                                                        initialRating: 0,
+                                                        minRating: 1,
+                                                        direction:
+                                                            Axis.horizontal,
+                                                        allowHalfRating: true,
+                                                        itemCount: 5,
+                                                        itemSize: 18,
+                                                        itemBuilder:
+                                                            (context, _) =>
+                                                                const Icon(
+                                                          Icons.star,
+                                                          color: Colors.amber,
+                                                        ),
+                                                        onRatingUpdate:
+                                                            (rating) {
+                                                          setState(() {
+                                                            rateNow = rating;
+                                                          });
+                                                        },
+                                                      ),
+                                                      SizedBox(width: 5.w),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          productRating(
+                                                            brandId:
+                                                                prod.brandId,
+                                                            buyerId:
+                                                                prod.buyerId,
+                                                            productId:
+                                                                prod.productId,
+                                                            productRating:
+                                                                rateNow,
+                                                          );
+                                                        },
+                                                        child: const Text(
+                                                          'Rate now',
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Text(productData.orderStatus),
                                           ],
                                         ),
                                       )

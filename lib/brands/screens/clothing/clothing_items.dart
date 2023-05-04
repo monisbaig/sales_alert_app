@@ -5,11 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
+import 'package:sales_alert_app/brands/auth/controller/brand_notification_controller.dart';
 
 import '../../../common_component/my_button.dart';
 import '../../../common_component/my_text_field.dart';
 import '../../../utils/utils.dart';
-import '../../auth/repository/brand_notification_repository.dart';
 
 class ClothingItems extends ConsumerStatefulWidget {
   final String mainCategory;
@@ -71,8 +71,8 @@ class _ItemDetailsState extends ConsumerState<ClothingItems> {
 
   void getTokenAndSendNotificationToUser() {
     ref
-        .read(brandNotificationRepositoryProvider)
-        .getTokenAndSendNotificationToUser();
+        .read(brandNotificationControllerProvider)
+        .getTokenAndSendNotificationToUser(nameController.text.trim());
   }
 
   @override

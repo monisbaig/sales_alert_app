@@ -124,6 +124,20 @@ class BrandAuthController {
     );
   }
 
+  void updateDiscountPrice(
+    BuildContext? context,
+    String? collection,
+    String? productId,
+    String? discountPrice,
+  ) {
+    brandAuthRepository.updateDiscountPrice(
+      context: context,
+      discountPrice: discountPrice,
+      collection: collection,
+      uniqueId: productId,
+    );
+  }
+
   Future<BrandModel?> getCategoryData() async {
     return await brandAuthRepository.getCategoryData();
   }

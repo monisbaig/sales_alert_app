@@ -92,7 +92,7 @@ class BrandNavBar extends ConsumerWidget {
             iconColor: const Color(0xFFDB3022),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => ViewOrders(),
+                builder: (_) => const ViewOrders(),
               ),
             ),
           ),
@@ -118,7 +118,7 @@ class BrandNavBar extends ConsumerWidget {
             leading: const Icon(Icons.description),
             title: const Text('About Us'),
             iconColor: const Color(0xFFDB3022),
-            onTap: () => null,
+            onTap: () {},
           ),
           const Divider(
             thickness: 1,

@@ -35,6 +35,8 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                         .getSavedProductOne()
                         .asStream(),
                     builder: (context, snapshot) {
+                      var productId = snapshot.data?[1] ?? '';
+
                       return Column(
                         children: [
                           Container(
@@ -44,7 +46,7 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                               borderRadius: BorderRadius.circular(12.sp),
                               image: DecorationImage(
                                 image: NetworkImage(
-                                  snapshot.data?[4] ??
+                                  snapshot.data?[0] ??
                                       'https://busken.com/wp-content/uploads/2019/09/product_dummy-1.jpg',
                                 ),
                                 fit: BoxFit.cover,
@@ -72,27 +74,38 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                             ),
                           ),
                           SizedBox(height: 10.h),
-                          Row(
-                            children: [
-                              RatingBar.builder(
-                                initialRating: 2.5,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemSize: 22,
-                                itemBuilder: (context, _) => const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
+                          productId == ''
+                              ? Container()
+                              : StreamBuilder(
+                                  stream: ref
+                                      .read(userAuthControllerProvider)
+                                      .getProductRatingData(productId),
+                                  builder: (context, snapshot) {
+                                    var totalRating = snapshot.data;
+                                    return Row(
+                                      children: [
+                                        RatingBar.builder(
+                                          initialRating: totalRating ?? 0,
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: true,
+                                          itemCount: 5,
+                                          itemSize: 25,
+                                          itemBuilder: (context, _) =>
+                                              const Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          onRatingUpdate: (rating) {},
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
-                                onRatingUpdate: (rating) {},
-                              ),
-                            ],
-                          ),
                           SizedBox(
                             width: 170.w,
                             child: DataTable(
-                              columnSpacing: 30,
+                              columnSpacing: 15,
                               columns: <DataColumn>[
                                 const DataColumn(
                                   label: Expanded(
@@ -108,7 +121,7 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                                   label: Expanded(
                                     child: Text(
                                       overflow: TextOverflow.clip,
-                                      snapshot.data?[0] ?? '',
+                                      snapshot.data?[2] ?? '',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                       ),
@@ -130,25 +143,7 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                                     ),
                                     DataCell(
                                       Text(
-                                        snapshot.data?[1] ?? '',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                DataRow(
-                                  cells: <DataCell>[
-                                    const DataCell(
-                                      Text(
-                                        'Size',
-                                        style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Text(
-                                        snapshot.data?[2] ?? '',
+                                        snapshot.data?[3] ?? '',
                                       ),
                                     ),
                                   ],
@@ -166,7 +161,34 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                                     ),
                                     DataCell(
                                       Text(
-                                        snapshot.data?[3] ?? '',
+                                        snapshot.data?[4] ?? '',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                DataRow(
+                                  cells: <DataCell>[
+                                    const DataCell(
+                                      Text(
+                                        'Desc',
+                                        style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                          right: 20.w,
+                                          top: 10.h,
+                                        ),
+                                        width: 115.w,
+                                        child: SingleChildScrollView(
+                                          child: Text(
+                                            snapshot.data?[5] ?? '',
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -188,6 +210,7 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                         .getSavedProductTwo()
                         .asStream(),
                     builder: (context, snapshot) {
+                      var productId = snapshot.data?[1] ?? '';
                       return Column(
                         children: [
                           Container(
@@ -197,7 +220,7 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                               borderRadius: BorderRadius.circular(12.sp),
                               image: DecorationImage(
                                 image: NetworkImage(
-                                  snapshot.data?[4] ??
+                                  snapshot.data?[0] ??
                                       'https://busken.com/wp-content/uploads/2019/09/product_dummy-1.jpg',
                                 ),
                                 fit: BoxFit.cover,
@@ -225,27 +248,38 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                             ),
                           ),
                           SizedBox(height: 10.h),
-                          Row(
-                            children: [
-                              RatingBar.builder(
-                                initialRating: 3.5,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemSize: 22,
-                                itemBuilder: (context, _) => const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
+                          productId == ''
+                              ? Container()
+                              : StreamBuilder(
+                                  stream: ref
+                                      .read(userAuthControllerProvider)
+                                      .getProductRatingData(productId),
+                                  builder: (context, snapshot) {
+                                    var totalRating = snapshot.data;
+                                    return Row(
+                                      children: [
+                                        RatingBar.builder(
+                                          initialRating: totalRating ?? 0,
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: true,
+                                          itemCount: 5,
+                                          itemSize: 25,
+                                          itemBuilder: (context, _) =>
+                                              const Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          onRatingUpdate: (rating) {},
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
-                                onRatingUpdate: (rating) {},
-                              ),
-                            ],
-                          ),
                           SizedBox(
                             width: 170.w,
                             child: DataTable(
-                              columnSpacing: 30,
+                              columnSpacing: 15,
                               columns: <DataColumn>[
                                 const DataColumn(
                                   label: Expanded(
@@ -261,7 +295,7 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                                   label: Expanded(
                                     child: Text(
                                       overflow: TextOverflow.clip,
-                                      snapshot.data?[0] ?? '',
+                                      snapshot.data?[2] ?? '',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                       ),
@@ -283,25 +317,7 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                                     ),
                                     DataCell(
                                       Text(
-                                        snapshot.data?[1] ?? '',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                DataRow(
-                                  cells: <DataCell>[
-                                    const DataCell(
-                                      Text(
-                                        'Size',
-                                        style: TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Text(
-                                        snapshot.data?[2] ?? '',
+                                        snapshot.data?[3] ?? '',
                                       ),
                                     ),
                                   ],
@@ -319,7 +335,34 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                                     ),
                                     DataCell(
                                       Text(
-                                        snapshot.data?[3] ?? '',
+                                        snapshot.data?[4] ?? '',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                DataRow(
+                                  cells: <DataCell>[
+                                    const DataCell(
+                                      Text(
+                                        'Desc',
+                                        style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                          right: 20.w,
+                                          top: 10.h,
+                                        ),
+                                        width: 115.w,
+                                        child: SingleChildScrollView(
+                                          child: Text(
+                                            snapshot.data?[5] ?? '',
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ],

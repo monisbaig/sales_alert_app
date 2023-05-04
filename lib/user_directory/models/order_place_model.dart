@@ -2,6 +2,7 @@ class OrderPlaceModel {
   final String orderId;
   final String buyerId;
   final String brandId;
+  final String buyerAddress;
   final DateTime orderDate;
   final String orderStatus;
   final String paymentMethod;
@@ -13,6 +14,7 @@ class OrderPlaceModel {
     required this.orderId,
     required this.buyerId,
     required this.brandId,
+    required this.buyerAddress,
     required this.orderDate,
     required this.orderStatus,
     required this.paymentMethod,
@@ -26,6 +28,7 @@ class OrderPlaceModel {
       'orderId': orderId,
       'buyerId': buyerId,
       'brandId': brandId,
+      'buyerAddress': buyerAddress,
       'orderDate': orderDate,
       'orderStatus': orderStatus,
       'paymentMethod': paymentMethod,
@@ -40,6 +43,7 @@ class OrderPlaceModel {
       orderId: map['orderId'] as String,
       buyerId: map['buyerId'] as String,
       brandId: map['brandId'] as String,
+      buyerAddress: map['buyerAddress'] as String,
       orderDate: DateTime.parse(map['orderDate']),
       orderStatus: map['orderStatus'] as String,
       paymentMethod: map['paymentMethod'] as String,

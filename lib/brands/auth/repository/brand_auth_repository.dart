@@ -142,7 +142,7 @@ class BrandAuthRepository {
       Fluttertoast.showToast(msg: 'Signed out Successfully!');
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (_) => const Splash(),
+          builder: (_) => const SplashScreen(),
         ),
         (route) => false,
       );
@@ -215,6 +215,7 @@ class BrandAuthRepository {
         category: subCategory!,
         name: name!,
         price: price!,
+        discountPrice: '',
         photo: productPhotoUrl!,
         color: color!,
         quantity: quantity!,
@@ -288,6 +289,9 @@ class BrandAuthRepository {
           .collection(collection)
           .doc(productId)
           .delete();
+
+      await firestore.collection('allBrandProducts').doc(productId).delete();
+
       Fluttertoast.showToast(msg: 'Product deleted successfully!');
       Navigator.of(context).pop();
     } catch (e) {
@@ -328,7 +332,45 @@ class BrandAuthRepository {
         'description': description,
       });
 
+      await firestore.collection('allBrandProducts').doc(uniqueId).update({
+        'name': name,
+        'price': price,
+        // 'photo': productPhotoUrl,
+        'quantity': quantity,
+        'description': description,
+      });
+
       Fluttertoast.showToast(msg: 'Product updated successfully!');
+
+      Navigator.of(context!).pop();
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(msg: e.message!);
+    }
+  }
+
+  Future<void> updateDiscountPrice({
+    BuildContext? context,
+    String? collection,
+    String? discountPrice,
+    String? uniqueId,
+  }) async {
+    try {
+      String uId = auth.currentUser!.uid;
+
+      await firestore
+          .collection('brandProducts')
+          .doc(uId)
+          .collection(collection!)
+          .doc(uniqueId)
+          .update({
+        'discountPrice': discountPrice,
+      });
+
+      await firestore.collection('allBrandProducts').doc(uniqueId).update({
+        'discountPrice': discountPrice,
+      });
+
+      Fluttertoast.showToast(msg: 'Product discount added successfully!');
 
       Navigator.of(context!).pop();
     } on FirebaseAuthException catch (e) {
@@ -349,6 +391,7 @@ class BrandAuthRepository {
           orderId: element['orderId'],
           buyerId: element['buyerId'],
           brandId: element['brandId'],
+          buyerAddress: element['buyerAddress'],
           orderDate: DateTime.parse(element['orderDate']),
           orderStatus: element['orderStatus'],
           paymentMethod: element['paymentMethod'],
@@ -374,7 +417,6 @@ class BrandAuthRepository {
         ),
       );
     }
-
     return myOrderList;
   }
 

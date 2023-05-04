@@ -64,7 +64,7 @@ class UserAuthController {
   }
 
   void signInWithGoogle(BuildContext context) async {
-    await userAuthRepository.signInWithGoogle(context: context);
+    await userAuthRepository.signInWithGoogle(context: context, ref: ref);
   }
 
   void signOut(BuildContext context) {
@@ -151,16 +151,18 @@ class UserAuthController {
   }
 
   Future<void> getSelectedProductOne(
+    String productId,
     String productName,
     String productPrice,
-    String productSize,
+    String productDescription,
     String productImage,
     String productColor,
   ) {
     return userAuthRepository.getSelectedProductOne(
+      productId: productId,
       productName: productName,
       productPrice: productPrice,
-      productSize: productSize,
+      productDescription: productDescription,
       productColor: productColor,
       productImage: productImage,
     );
@@ -171,16 +173,18 @@ class UserAuthController {
   }
 
   Future<void> getSelectedProductTwo(
+    String productId,
     String productName,
     String productPrice,
-    String productSize,
+    String productDescription,
     String productImage,
     String productColor,
   ) {
     return userAuthRepository.getSelectedProductTwo(
+      productId: productId,
       productName: productName,
       productPrice: productPrice,
-      productSize: productSize,
+      productDescription: productDescription,
       productColor: productColor,
       productImage: productImage,
     );
@@ -239,15 +243,38 @@ class UserAuthController {
     return userAuthRepository.unFollowBrand(brandId: brandId, ref: ref);
   }
 
+  Future<void> followProduct(
+    String brandId,
+    String productId,
+    String productName,
+  ) {
+    return userAuthRepository.followProduct(
+      brandId: brandId,
+      productId: productId,
+      productName: productName,
+      ref: ref,
+    );
+  }
+
+  Stream<bool> getFollowingProductData(String brandId) {
+    return userAuthRepository.getFollowingProductData(brandId: brandId);
+  }
+
+  Future<void> unFollowProduct(String brandId) {
+    return userAuthRepository.unFollowProduct(brandId: brandId, ref: ref);
+  }
+
   Future<void> fetchAndSaveOrderPlacedData(
     String buyerName,
     String brandId,
+    String buyerAddress,
     String paymentMethod,
     String totalAmount,
   ) {
     return userAuthRepository.fetchAndSaveOrderPlacedData(
       buyerName: buyerName,
       brandId: brandId,
+      buyerAddress: buyerAddress,
       paymentMethod: paymentMethod,
       totalAmount: totalAmount,
       ref: ref,
@@ -256,5 +283,23 @@ class UserAuthController {
 
   Future<List<OrderPlaceModel>> getOrderPlacedData() {
     return userAuthRepository.getOrderPlacedData();
+  }
+
+  Future<void> productRating(
+    String brandId,
+    String buyerId,
+    String productId,
+    double productRating,
+  ) {
+    return userAuthRepository.productRating(
+      brandId: brandId,
+      buyerId: buyerId,
+      productId: productId,
+      productRating: productRating,
+    );
+  }
+
+  Stream<double> getProductRatingData(String productId) {
+    return userAuthRepository.getProductRatingData(productId: productId);
   }
 }

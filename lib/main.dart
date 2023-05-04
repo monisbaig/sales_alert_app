@@ -3,13 +3,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sales_alert_app/common_component/error_screen.dart';
 import 'package:sales_alert_app/splash/splash_screen.dart';
-import 'package:sales_alert_app/user_directory/screens/bottom_navigator.dart';
 
-import 'common_component/loader.dart';
 import 'firebase_options.dart';
-import 'user_directory/auth/controller/user_auth_controller.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
@@ -28,6 +24,8 @@ void main() async {
   );
 }
 
+bool? isCheck;
+
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
@@ -36,23 +34,9 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ScreenUtilInit(
       designSize: const Size(393, 851),
-      builder: (BuildContext context, child) => MaterialApp(
+      builder: (BuildContext context, child) => const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: ref.watch(userDataAuthProvider).when(
-              data: (user) {
-                if (user == null) {
-                  return const Splash();
-                }
-                return BottomNavigator();
-              },
-              error: (error, stackTrace) {
-                return ErrorScreen(
-                  error: error.toString(),
-                );
-              },
-              loading: () => const Loader(),
-            ),
-        //ChooseScreen(),
+        home: SplashScreen(),
       ),
     );
   }
@@ -64,6 +48,21 @@ class MyApp extends ConsumerWidget {
 // return const Splash();
 // }
 // return const BrandChoice();
+// },
+// error: (error, stackTrace) {
+// return ErrorScreen(
+// error: error.toString(),
+// );
+// },
+// loading: () => const Loader(),
+// ),
+
+// ref.watch(userDataAuthProvider).when(
+// data: (user) {
+// if (user == null) {
+// return const Splash();
+// }
+// return BottomNavigator();
 // },
 // error: (error, stackTrace) {
 // return ErrorScreen(

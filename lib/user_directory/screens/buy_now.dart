@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sales_alert_app/user_directory/auth/controller/user_auth_controller.dart';
+import 'package:sales_alert_app/user_directory/screens/bottom_navigator.dart';
 
 import '../../common_component/my_button.dart';
 import 'user_success.dart';
@@ -22,27 +24,40 @@ class _BuyNowState extends ConsumerState<BuyNow> {
   ];
   String selectedMethod = "Cash on Delivery";
   String? username;
+  String? userAddress;
 
   void fetchAndSaveOrderPlacedData({
     required String buyerName,
+    required String buyerAddress,
     required String brandId,
     required String paymentMethod,
     required String totalAmount,
   }) {
-    ref.watch(userAuthControllerProvider).fetchAndSaveOrderPlacedData(
-          buyerName,
-          brandId,
-          paymentMethod,
-          totalAmount,
-        );
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const Success(
-          label: 'Order placed successfully!',
+    if (buyerAddress != '') {
+      ref.watch(userAuthControllerProvider).fetchAndSaveOrderPlacedData(
+            buyerName,
+            buyerAddress,
+            brandId,
+            paymentMethod,
+            totalAmount,
+          );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Success(
+            label: 'Order placed successfully!',
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      Fluttertoast.showToast(msg: 'We need a shipping address!');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BottomNavigator(selectPage: 4),
+        ),
+      );
+    }
   }
 
   @override
@@ -83,6 +98,7 @@ class _BuyNowState extends ConsumerState<BuyNow> {
               builder: (context, snapshot) {
                 var userData = snapshot.data;
                 username = userData?.name ?? '';
+                userAddress = userData?.address ?? '';
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -97,7 +113,7 @@ class _BuyNowState extends ConsumerState<BuyNow> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 20.h),
+                          SizedBox(height: 25.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -108,9 +124,9 @@ class _BuyNowState extends ConsumerState<BuyNow> {
                                   fontSize: 16.sp,
                                 ),
                               ),
-                              GestureDetector(
-                                  child: const Icon(Icons.edit,
-                                      color: Colors.white)),
+                              // GestureDetector(
+                              //     child: const Icon(Icons.edit,
+                              //         color: Colors.white)),
                             ],
                           ),
                           SizedBox(height: 20.h),
@@ -336,6 +352,7 @@ class _BuyNowState extends ConsumerState<BuyNow> {
                                 onPress: () {
                                   fetchAndSaveOrderPlacedData(
                                     buyerName: username!,
+                                    buyerAddress: userAddress!,
                                     brandId: cartData.elementAt(index).brandId,
                                     paymentMethod: selectedMethod,
                                     totalAmount: grandTotal.toString(),

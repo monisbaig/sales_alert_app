@@ -5,6 +5,7 @@ class ProductModel {
   final String category;
   final String name;
   final String price;
+  final String discountPrice;
   final String photo;
   final String color;
   final String quantity;
@@ -18,6 +19,7 @@ class ProductModel {
     required this.category,
     required this.name,
     required this.price,
+    required this.discountPrice,
     required this.photo,
     required this.color,
     required this.quantity,
@@ -33,6 +35,7 @@ class ProductModel {
       'category': category,
       'name': name,
       'price': price,
+      'discountPrice': discountPrice,
       'photo': photo,
       'color': color,
       'quantity': quantity,
@@ -43,17 +46,18 @@ class ProductModel {
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
-      productId: map['productId'] as String,
-      brandId: map['brandId'] as String,
-      mainCategory: map['mainCategory'] as String,
-      category: map['category'] as String,
-      name: map['name'] as String,
-      price: map['price'] as String,
-      photo: map['photo'] as String,
-      color: map['color'] as String,
-      quantity: map['quantity'] as String,
-      description: map['description'] as String,
-      size: map['size'] as String,
+      productId: map['productId'] ?? '',
+      brandId: map['brandId'] ?? '',
+      mainCategory: map['mainCategory'] ?? '',
+      category: map['category'] ?? '',
+      name: map['name'] ?? '',
+      price: map['price'] ?? '',
+      discountPrice: map['discountPrice'] ?? '',
+      photo: map['photo'] ?? '',
+      color: map['color'] ?? '',
+      quantity: map['quantity'] ?? '',
+      description: map['description'] ?? '',
+      size: map['size'] ?? '',
     );
   }
 }

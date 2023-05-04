@@ -15,17 +15,19 @@ class SelectProductOne extends ConsumerStatefulWidget {
 }
 
 class _SelectProductOneState extends ConsumerState<SelectProductOne> {
-  void getSelectedProductOne(
-    String productName,
-    String productPrice,
-    String productSize,
-    String productImage,
-    String productColor,
-  ) {
+  void getSelectedProductOne({
+    required String productId,
+    required String productName,
+    required String productPrice,
+    required String productDescription,
+    required String productImage,
+    required String productColor,
+  }) {
     ref.watch(userAuthControllerProvider).getSelectedProductOne(
+          productId,
           productName,
           productPrice,
-          productSize,
+          productDescription,
           productImage,
           productColor,
         );
@@ -60,9 +62,13 @@ class _SelectProductOneState extends ConsumerState<SelectProductOne> {
                   childAspectRatio: 0.61,
                   crossAxisCount: 2,
                   crossAxisSpacing: 14,
+                  mainAxisSpacing: 14,
                 ),
                 itemBuilder: (context, index) {
                   var productData = snapshot.data?.elementAt(index);
+                  var orderPrice = productData?.discountPrice == ''
+                      ? productData?.price
+                      : productData?.discountPrice;
 
                   return GestureDetector(
                     onTap: () {},
@@ -94,12 +100,16 @@ class _SelectProductOneState extends ConsumerState<SelectProductOne> {
                             ),
                           ),
                           SizedBox(height: 10.h),
-                          Text(
-                            productData?.name ?? '',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              color: Colors.black.withOpacity(0.8),
-                              fontWeight: FontWeight.bold,
+                          Flexible(
+                            child: Text(
+                              productData?.name ?? '',
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                color: Colors.black.withOpacity(0.8),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           SizedBox(height: 10.h),
@@ -107,16 +117,20 @@ class _SelectProductOneState extends ConsumerState<SelectProductOne> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                productData?.price ?? '',
+                                productData?.discountPrice == ''
+                                    ? productData!.price
+                                    : productData!.discountPrice,
                                 style: TextStyle(
                                   color: Colors.redAccent,
                                   fontSize: 18.sp,
                                 ),
                               ),
                               SizedBox(width: 8.w),
-                              const Text(
-                                '1500',
-                                style: TextStyle(
+                              Text(
+                                productData.discountPrice == ''
+                                    ? productData.discountPrice
+                                    : productData.price,
+                                style: const TextStyle(
                                   color: Colors.grey,
                                   decoration: TextDecoration.lineThrough,
                                 ),
@@ -125,7 +139,7 @@ class _SelectProductOneState extends ConsumerState<SelectProductOne> {
                           ),
                           SizedBox(height: 10.h),
                           Text(
-                            productData!.size.toString().toUpperCase(),
+                            productData.size.toString().toUpperCase(),
                             style: TextStyle(
                               color: Colors.black.withOpacity(0.8),
                               fontWeight: FontWeight.bold,
@@ -141,11 +155,12 @@ class _SelectProductOneState extends ConsumerState<SelectProductOne> {
                                 ),
                                 onPressed: () {
                                   getSelectedProductOne(
-                                    productData.name,
-                                    productData.price,
-                                    productData.size,
-                                    productData.color,
-                                    productData.photo,
+                                    productId: productData.productId,
+                                    productName: productData.name,
+                                    productPrice: orderPrice!,
+                                    productDescription: productData.description,
+                                    productImage: productData.photo,
+                                    productColor: productData.color,
                                   );
                                 },
                                 child: const Text(

@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:app_settings/app_settings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -112,13 +113,19 @@ class UserNotificationRepository {
       sound: true,
     );
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('Permission Granted');
+      if (kDebugMode) {
+        print('Permission Granted');
+      }
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
-      print('Provisional Permission Granted');
+      if (kDebugMode) {
+        print('Provisional Permission Granted');
+      }
     } else {
       AppSettings.openNotificationSettings();
-      print('Permission Denied');
+      if (kDebugMode) {
+        print('Permission Denied');
+      }
     }
   }
 

@@ -113,7 +113,7 @@ class UserNavBar extends ConsumerWidget {
             leading: const Icon(Icons.description),
             title: const Text('About Us'),
             iconColor: const Color(0xFFDB3022),
-            onTap: () => null,
+            onTap: () {},
           ),
           const Divider(
             thickness: 1,

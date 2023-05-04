@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
 import '../../../common_component/my_button.dart';
 import '../../../common_component/my_text_field.dart';
 import '../../../utils/utils.dart';
+import '../../auth/controller/brand_notification_controller.dart';
 
 class UpdateProduct extends ConsumerStatefulWidget {
   final String productCollection;
@@ -15,6 +17,7 @@ class UpdateProduct extends ConsumerStatefulWidget {
   final String productPhoto;
   final String productName;
   final String productPrice;
+  final String productDiscountPrice;
   final String productQuantity;
   final String productDescription;
 
@@ -25,6 +28,7 @@ class UpdateProduct extends ConsumerStatefulWidget {
     required this.productPhoto,
     required this.productName,
     required this.productPrice,
+    required this.productDiscountPrice,
     required this.productQuantity,
     required this.productDescription,
   });
@@ -36,6 +40,7 @@ class UpdateProduct extends ConsumerStatefulWidget {
 class _UpdateProductState extends ConsumerState<UpdateProduct> {
   final nameController = TextEditingController();
   final priceController = TextEditingController();
+  final discountController = TextEditingController();
   final quantityController = TextEditingController();
   final descriptionController = TextEditingController();
   File? image;
@@ -48,6 +53,7 @@ class _UpdateProductState extends ConsumerState<UpdateProduct> {
     super.initState();
     nameController.text = widget.productName;
     priceController.text = widget.productPrice;
+    discountController.text = widget.productDiscountPrice;
     quantityController.text = widget.productQuantity;
     descriptionController.text = widget.productDescription;
     oldImage = widget.productPhoto;
@@ -76,7 +82,6 @@ class _UpdateProductState extends ConsumerState<UpdateProduct> {
     setState(() {
       isLoading = true;
     });
-
     ref.read(brandAuthControllerProvider).updateCategoryDataToFirebase(
           context,
           widget.productCollection,
@@ -89,6 +94,36 @@ class _UpdateProductState extends ConsumerState<UpdateProduct> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  void updateDiscountPrice() {
+    setState(() {
+      isLoading = true;
+    });
+    if (discountController.text.isNotEmpty) {
+      ref.read(brandAuthControllerProvider).updateDiscountPrice(
+            context,
+            widget.productCollection,
+            widget.productId,
+            discountController.text.trim(),
+          );
+      getTokenAndSendNotificationToUserProduct();
+    } else {
+      Fluttertoast.showToast(msg: 'Fill out the field first!');
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void getTokenAndSendNotificationToUserProduct() {
+    ref
+        .read(brandNotificationControllerProvider)
+        .getTokenAndSendNotificationToUserProduct(
+          widget.productId,
+          widget.productName,
+        );
   }
 
   @override
@@ -143,6 +178,8 @@ class _UpdateProductState extends ConsumerState<UpdateProduct> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
+                      width: 40.w,
+                      height: 40.h,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white,
@@ -155,26 +192,79 @@ class _UpdateProductState extends ConsumerState<UpdateProduct> {
                               onTap: deleteItem,
                               child: const Icon(
                                 Icons.delete_forever_rounded,
-                                size: 30,
+                                size: 25,
                                 color: Color(0xFFDB3022),
                               ),
                             ),
                     ),
-                    // SizedBox(width: 25.w),
-                    // Container(
-                    //   decoration: const BoxDecoration(
-                    //     shape: BoxShape.circle,
-                    //     color: Colors.white,
-                    //   ),
-                    //   child: GestureDetector(
-                    //     child: const Icon(
-                    //       Icons.add_business,
-                    //       size: 30,
-                    //       color: Color(0xFFDB3022),
-                    //     ),
-                    //     onTap: () {},
-                    //   ),
-                    // ),
+                    SizedBox(width: 25.w),
+                    Container(
+                      width: 40.w,
+                      height: 40.h,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: GestureDetector(
+                        child: const Icon(
+                          Icons.discount,
+                          size: 25,
+                          color: Color(0xFFDB3022),
+                        ),
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Discount Offer'),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    margin: EdgeInsets.only(left: 27.w),
+                                    child: Text(
+                                      "Discount Price",
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 5.h),
+                                  MyTextField(
+                                    controller: discountController,
+                                    hintText: '',
+                                    obscureText: false,
+                                    color: Colors.grey,
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFFDB3022),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    SizedBox(width: 5.w),
+                                    ElevatedButton(
+                                      onPressed: updateDiscountPrice,
+                                      child: const Text('Submit'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 10.h),

@@ -91,14 +91,8 @@ class _TotalInventoryState extends ConsumerState<TotalInventory> {
                     snapshot.data?.length ?? 0,
                     (index) {
                       var productCollection = widget.collection;
-                      var productId = snapshot.data!.elementAt(index).productId;
-                      var productPhoto = snapshot.data!.elementAt(index).photo;
-                      var productName = snapshot.data!.elementAt(index).name;
-                      var productPrice = snapshot.data!.elementAt(index).price;
-                      var productQuantity =
-                          snapshot.data!.elementAt(index).quantity;
-                      var productDescription =
-                          snapshot.data!.elementAt(index).description;
+                      var productData = snapshot.data!.elementAt(index);
+
                       return DataRow(
                         cells: [
                           DataCell(
@@ -115,12 +109,15 @@ class _TotalInventoryState extends ConsumerState<TotalInventory> {
                                   MaterialPageRoute(
                                     builder: (context) => UpdateProduct(
                                       productCollection: productCollection,
-                                      productId: productId,
-                                      productPhoto: productPhoto,
-                                      productName: productName,
-                                      productPrice: productPrice,
-                                      productQuantity: productQuantity,
-                                      productDescription: productDescription,
+                                      productId: productData.productId,
+                                      productPhoto: productData.photo,
+                                      productDiscountPrice:
+                                          productData.discountPrice,
+                                      productName: productData.name,
+                                      productPrice: productData.price,
+                                      productQuantity: productData.quantity,
+                                      productDescription:
+                                          productData.description,
                                     ),
                                   ),
                                 );

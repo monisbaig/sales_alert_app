@@ -133,7 +133,10 @@ class UserAuthRepository {
     }
   }
 
-  Future<void> signInWithGoogle({required BuildContext context}) async {
+  Future<void> signInWithGoogle({
+    required BuildContext context,
+    required ProviderRef ref,
+  }) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -153,6 +156,10 @@ class UserAuthRepository {
           'name': userCredential.user!.displayName,
           'email': userCredential.user!.email,
         });
+
+        await ref
+            .read(userNotificationRepositoryProvider)
+            .getDeviceToken(uId: auth.currentUser!.uid);
 
         Fluttertoast.showToast(msg: userCredential.user!.email!);
 
@@ -174,7 +181,7 @@ class UserAuthRepository {
       Fluttertoast.showToast(msg: 'Signed out Successfully!');
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (_) => const Splash(),
+          builder: (_) => const SplashScreen(),
         ),
         (route) => false,
       );
@@ -375,9 +382,10 @@ class UserAuthRepository {
   }
 
   Future<void> getSelectedProductOne({
+    required String productId,
     required String productName,
     required String productPrice,
-    required String productSize,
+    required String productDescription,
     required String productImage,
     required String productColor,
   }) async {
@@ -385,11 +393,12 @@ class UserAuthRepository {
     prefs.setStringList(
       'productOneList',
       [
+        productImage,
+        productId,
         productName,
         productPrice,
-        productSize,
-        productImage,
         productColor,
+        productDescription,
       ],
     );
   }
@@ -401,9 +410,10 @@ class UserAuthRepository {
   }
 
   Future<void> getSelectedProductTwo({
+    required String productId,
     required String productName,
     required String productPrice,
-    required String productSize,
+    required String productDescription,
     required String productImage,
     required String productColor,
   }) async {
@@ -411,11 +421,12 @@ class UserAuthRepository {
     prefs.setStringList(
       'productTwoList',
       [
+        productImage,
+        productId,
         productName,
         productPrice,
-        productSize,
-        productImage,
         productColor,
+        productDescription,
       ],
     );
   }
@@ -500,14 +511,31 @@ class UserAuthRepository {
     required ProviderRef ref,
   }) async {
     try {
+      var userData =
+          await firestore.collection('users').doc(auth.currentUser!.uid).get();
+
+      var user = UserModel.fromMap(userData.data()!);
+
       await firestore
           .collection('users')
-          .doc(auth.currentUser!.uid)
+          .doc(user.uId)
           .collection('following')
           .doc(brandId)
           .set({
         'brandId': brandId,
         'brandName': brandName,
+        'follow': true,
+      });
+
+      await firestore
+          .collection('brands')
+          .doc(brandId)
+          .collection('followers')
+          .doc(user.uId)
+          .set({
+        'userId': user.uId,
+        'username': user.name,
+        'fcmToken': user.fcmToken,
         'follow': true,
       });
     } catch (e) {
@@ -540,9 +568,96 @@ class UserAuthRepository {
           .doc(uId)
           .collection('following')
           .doc(brandId)
-          .update({
-        'follow': false,
+          .delete();
+
+      await firestore
+          .collection('brands')
+          .doc(brandId)
+          .collection('followers')
+          .doc(auth.currentUser!.uid)
+          .delete();
+
+      Fluttertoast.showToast(msg: 'Unfollowed Successfully');
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(msg: e.message!);
+    }
+  }
+
+  Future<void> followProduct({
+    required String brandId,
+    required String productId,
+    required String productName,
+    required ProviderRef ref,
+  }) async {
+    try {
+      var userData =
+          await firestore.collection('users').doc(auth.currentUser!.uid).get();
+
+      var user = UserModel.fromMap(userData.data()!);
+
+      await firestore
+          .collection('users')
+          .doc(user.uId)
+          .collection('productFollowing')
+          .doc(brandId)
+          .set({
+        'brandId': brandId,
+        'productId': productId,
+        'productName': productName,
+        'follow': true,
       });
+
+      await firestore
+          .collection('brands')
+          .doc(brandId)
+          .collection('productFollowers')
+          .doc(user.uId)
+          .set({
+        'userId': user.uId,
+        'username': user.name,
+        'productId': productId,
+        'productName': productName,
+        'fcmToken': user.fcmToken,
+        'follow': true,
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
+
+  Stream<bool> getFollowingProductData({required String brandId}) {
+    bool follow;
+    return firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('productFollowing')
+        .doc(brandId)
+        .snapshots()
+        .map((event) {
+      follow = event.data()!['follow'];
+      return follow;
+    });
+  }
+
+  Future<void> unFollowProduct({
+    required String brandId,
+    required ProviderRef ref,
+  }) async {
+    try {
+      String uId = auth.currentUser!.uid;
+      await firestore
+          .collection('users')
+          .doc(uId)
+          .collection('productFollowing')
+          .doc(brandId)
+          .delete();
+
+      await firestore
+          .collection('brands')
+          .doc(brandId)
+          .collection('productFollowers')
+          .doc(auth.currentUser!.uid)
+          .delete();
 
       Fluttertoast.showToast(msg: 'Unfollowed Successfully');
     } on FirebaseAuthException catch (e) {
@@ -552,6 +667,7 @@ class UserAuthRepository {
 
   Future<void> fetchAndSaveOrderPlacedData({
     required String buyerName,
+    required String buyerAddress,
     required String brandId,
     required String paymentMethod,
     required String totalAmount,
@@ -579,6 +695,7 @@ class UserAuthRepository {
           'orderId': uniqueId,
           'buyerId': uId,
           'brandId': brandId,
+          'buyerAddress': buyerAddress,
           'orderDate': orderDate.toIso8601String(),
           'orderStatus': 'processing',
           'paymentMethod': paymentMethod,
@@ -632,6 +749,7 @@ class UserAuthRepository {
           orderId: element['orderId'],
           buyerId: element['buyerId'],
           brandId: element['brandId'],
+          buyerAddress: element['buyerAddress'],
           orderDate: DateTime.parse(element['orderDate']),
           orderStatus: element['orderStatus'],
           paymentMethod: element['paymentMethod'],
@@ -657,7 +775,38 @@ class UserAuthRepository {
         ),
       );
     }
-
     return myOrderList;
+  }
+
+  Future<void> productRating({
+    required String brandId,
+    required String buyerId,
+    required String productId,
+    required double productRating,
+  }) async {
+    try {
+      await firestore.collection('productRatings').doc(productId).set({
+        'brandId': brandId,
+        'buyerId': buyerId,
+        'productId': productId,
+        'productRating': productRating,
+      });
+
+      Fluttertoast.showToast(msg: 'Thanks for choosing us!');
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
+
+  Stream<double> getProductRatingData({required String productId}) {
+    double productRating;
+    return firestore
+        .collection('productRatings')
+        .doc(productId)
+        .snapshots()
+        .map((event) {
+      productRating = event.data()!['productRating'];
+      return productRating;
+    });
   }
 }

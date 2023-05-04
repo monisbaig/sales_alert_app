@@ -13,7 +13,19 @@ class BrandNotificationController {
 
   BrandNotificationController({required this.brandNotificationRepository});
 
-  Future<void> getTokenAndSendNotificationToUser() {
-    return brandNotificationRepository.getTokenAndSendNotificationToUser();
+  Future<void> getTokenAndSendNotificationToUser(String productName) {
+    return brandNotificationRepository.getTokenAndSendNotificationToUser(
+      productName: productName,
+    );
+  }
+
+  Future<void> getTokenAndSendNotificationToUserProduct(
+    String productId,
+    String productName,
+  ) {
+    return brandNotificationRepository.getTokenAndSendNotificationToUserProduct(
+      productId: productId,
+      productName: productName,
+    );
   }
 }

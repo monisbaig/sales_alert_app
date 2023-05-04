@@ -12,6 +12,7 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
   final String productName;
   final String productPhoto;
   final String productPrice;
+  final String productDiscountPrice;
   final String productColor;
   final String productSize;
   final String productDescription;
@@ -23,6 +24,7 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
     required this.productName,
     required this.productPhoto,
     required this.productPrice,
+    required this.productDiscountPrice,
     required this.productColor,
     required this.productSize,
     required this.productDescription,
@@ -87,8 +89,24 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     setState(() {});
   }
 
+  void followProduct() {
+    ref.watch(userAuthControllerProvider).followProduct(
+          widget.brandId,
+          widget.productId,
+          widget.productName,
+        );
+  }
+
+  void unFollowProduct() {
+    ref.watch(userAuthControllerProvider).unFollowProduct(widget.brandId);
+  }
+
   @override
   Widget build(BuildContext context) {
+    var orderPrice = widget.productDiscountPrice == ''
+        ? widget.productPrice
+        : widget.productDiscountPrice;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -99,11 +117,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 height: MediaQuery.of(context).size.height / 2,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                    color: const Color(0xFFD4ECF7),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30.r),
-                      bottomRight: Radius.circular(30.r),
-                    )),
+                  color: const Color(0xFFD4ECF7),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30.r),
+                    bottomRight: Radius.circular(30.r),
+                  ),
+                ),
                 child: Stack(
                   children: [
                     Center(
@@ -133,7 +152,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Flexible(
                           child: Text(
@@ -145,6 +164,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             ),
                           ),
                         ),
+                        SizedBox(width: 135.w),
                         IconButton(
                           onPressed: () {
                             orderQuantity = 1;
@@ -153,7 +173,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                               widget.productId,
                               widget.productName,
                               widget.productPhoto,
-                              widget.productPrice,
+                              orderPrice,
                               widget.productColor,
                               widget.productSize,
                               orderQuantity,
@@ -166,41 +186,74 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             size: 25.sp,
                           ),
                         ),
+                        StreamBuilder(
+                          stream: ref
+                              .watch(userAuthControllerProvider)
+                              .getFollowingProductData(widget.brandId),
+                          builder: (context, snapshot) {
+                            var following = snapshot.data;
+                            return IconButton(
+                              onPressed: following != null
+                                  ? unFollowProduct
+                                  : followProduct,
+                              icon: Icon(
+                                following != null
+                                    ? Icons.add_alert_rounded
+                                    : Icons.add_alert_outlined,
+                                color: Colors.grey,
+                                size: 25.sp,
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ),
                     SizedBox(height: 10.h),
-                    Row(
-                      children: [
-                        RatingBar.builder(
-                          initialRating: 2.5,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemSize: 25,
-                          itemBuilder: (context, _) => const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          onRatingUpdate: (rating) {},
-                        )
-                      ],
+                    StreamBuilder(
+                      stream: ref
+                          .read(userAuthControllerProvider)
+                          .getProductRatingData(widget.productId),
+                      builder: (context, snapshot) {
+                        var totalRating = snapshot.data;
+                        return Row(
+                          children: [
+                            RatingBar.builder(
+                              initialRating: totalRating ?? 0,
+                              minRating: 1,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemSize: 25,
+                              itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              onRatingUpdate: (rating) {},
+                            ),
+                          ],
+                        );
+                      },
                     ),
                     const SizedBox(height: 15),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          widget.productPrice,
+                          widget.productDiscountPrice == ''
+                              ? widget.productPrice
+                              : widget.productDiscountPrice,
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22.sp,
+                            color: Colors.redAccent,
+                            fontSize: 18.sp,
                           ),
                         ),
-                        SizedBox(width: 5.w),
-                        const Text(
-                          "Rs. 500",
-                          style: TextStyle(
-                            color: Colors.black45,
+                        SizedBox(width: 8.w),
+                        Text(
+                          widget.productDiscountPrice == ''
+                              ? widget.productDiscountPrice
+                              : widget.productPrice,
+                          style: const TextStyle(
+                            color: Colors.grey,
                             decoration: TextDecoration.lineThrough,
                           ),
                         ),
@@ -233,7 +286,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 widget.productId,
                 widget.productName,
                 widget.productPhoto,
-                widget.productPrice,
+                orderPrice,
                 widget.productColor,
                 widget.productSize,
                 orderQuantity.toString(),

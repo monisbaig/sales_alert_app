@@ -121,6 +121,7 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                         childAspectRatio: 0.61,
                         crossAxisCount: 2,
                         crossAxisSpacing: 14,
+                        mainAxisSpacing: 14,
                       ),
                       itemBuilder: (context, index) {
                         var productData = searchData?.elementAt(index);
@@ -130,10 +131,12 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => ProductDetailScreen(
-                                  productId: productData!.productId,
+                                  productId: productData.productId,
                                   productName: productData.name,
                                   productPhoto: productData.photo,
                                   productPrice: productData.price,
+                                  productDiscountPrice:
+                                      productData.discountPrice,
                                   productColor: productData.color,
                                   productSize: productData.size,
                                   productDescription: productData.description,
@@ -184,16 +187,20 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      productData?.price ?? '',
+                                      productData?.discountPrice == ''
+                                          ? productData!.price
+                                          : productData!.discountPrice,
                                       style: TextStyle(
                                         color: Colors.redAccent,
                                         fontSize: 18.sp,
                                       ),
                                     ),
                                     SizedBox(width: 8.w),
-                                    const Text(
-                                      '1500',
-                                      style: TextStyle(
+                                    Text(
+                                      productData.discountPrice == ''
+                                          ? productData.discountPrice
+                                          : productData.price,
+                                      style: const TextStyle(
                                         color: Colors.grey,
                                         decoration: TextDecoration.lineThrough,
                                       ),
@@ -202,8 +209,7 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                 ),
                                 SizedBox(height: 10.h),
                                 Text(
-                                  productData?.size.toString().toUpperCase() ??
-                                      '',
+                                  productData.size.toString().toUpperCase(),
                                   style: TextStyle(
                                     color: Colors.black.withOpacity(0.8),
                                     fontWeight: FontWeight.bold,
@@ -217,14 +223,19 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                         : Colors.redAccent,
                                   ),
                                   onPressed: () {
+                                    var orderPrice =
+                                        productData.discountPrice == ''
+                                            ? productData.price
+                                            : productData.discountPrice;
+
                                     addedToCartIndex = index;
                                     orderQuantity = 1;
                                     cartDataToFirebase(
                                       context,
-                                      productData!.productId,
+                                      productData.productId,
                                       productData.name,
                                       productData.photo,
-                                      productData.price,
+                                      orderPrice,
                                       productData.color,
                                       productData.size,
                                       orderQuantity.toString(),
@@ -265,10 +276,12 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => ProductDetailScreen(
-                                  productId: productData!.productId,
+                                  productId: productData.productId,
                                   productName: productData.name,
                                   productPhoto: productData.photo,
                                   productPrice: productData.price,
+                                  productDiscountPrice:
+                                      productData.discountPrice,
                                   productColor: productData.color,
                                   productSize: productData.size,
                                   productDescription: productData.description,
@@ -323,16 +336,20 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      productData?.price ?? '',
+                                      productData?.discountPrice == ''
+                                          ? productData!.price
+                                          : productData!.discountPrice,
                                       style: TextStyle(
                                         color: Colors.redAccent,
                                         fontSize: 18.sp,
                                       ),
                                     ),
                                     SizedBox(width: 8.w),
-                                    const Text(
-                                      '1500',
-                                      style: TextStyle(
+                                    Text(
+                                      productData.discountPrice == ''
+                                          ? productData.discountPrice
+                                          : productData.price,
+                                      style: const TextStyle(
                                         color: Colors.grey,
                                         decoration: TextDecoration.lineThrough,
                                       ),
@@ -341,8 +358,7 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                 ),
                                 SizedBox(height: 10.h),
                                 Text(
-                                  productData?.size.toString().toUpperCase() ??
-                                      '',
+                                  productData.size.toString().toUpperCase(),
                                   style: TextStyle(
                                     color: Colors.black.withOpacity(0.8),
                                     fontWeight: FontWeight.bold,
@@ -356,14 +372,19 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                         : Colors.redAccent,
                                   ),
                                   onPressed: () {
+                                    var orderPrice =
+                                        productData.discountPrice == ''
+                                            ? productData.price
+                                            : productData.discountPrice;
+
                                     addedToCartIndex = index;
                                     orderQuantity = 1;
                                     cartDataToFirebase(
                                       context,
-                                      productData!.productId,
+                                      productData.productId,
                                       productData.name,
                                       productData.photo,
-                                      productData.price,
+                                      orderPrice,
                                       productData.color,
                                       productData.size,
                                       orderQuantity.toString(),

@@ -9,7 +9,7 @@ import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dar
 import '../../../common_component/my_button.dart';
 import '../../../common_component/my_text_field.dart';
 import '../../../utils/utils.dart';
-import '../../auth/repository/brand_notification_repository.dart';
+import '../../auth/controller/brand_notification_controller.dart';
 
 class ElectronicItems extends ConsumerStatefulWidget {
   final String mainCategory;
@@ -67,8 +67,8 @@ class _ItemDetailsState extends ConsumerState<ElectronicItems> {
 
   void getTokenAndSendNotificationToUser() {
     ref
-        .read(brandNotificationRepositoryProvider)
-        .getTokenAndSendNotificationToUser();
+        .read(brandNotificationControllerProvider)
+        .getTokenAndSendNotificationToUser(nameController.text.trim());
   }
 
   @override

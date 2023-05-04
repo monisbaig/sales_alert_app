@@ -102,9 +102,9 @@ class _FurnitureBrandScreenState extends ConsumerState<FurnitureBrandScreen> {
                             backgroundColor: Colors.redAccent,
                           ),
                           onPressed:
-                              following == true ? unFollowBrand : followBrand,
+                              following != null ? unFollowBrand : followBrand,
                           child: Text(
-                            following == true ? "Following" : 'Follow Us',
+                            following != null ? "Following" : 'Follow Us',
                             style: const TextStyle(
                               color: Colors.white,
                             ),
