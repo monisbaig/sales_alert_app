@@ -28,16 +28,16 @@ class _BuyNowState extends ConsumerState<BuyNow> {
 
   void fetchAndSaveOrderPlacedData({
     required String buyerName,
-    required String buyerAddress,
     required String brandId,
+    required String buyerAddress,
     required String paymentMethod,
     required String totalAmount,
   }) {
     if (buyerAddress != '') {
       ref.watch(userAuthControllerProvider).fetchAndSaveOrderPlacedData(
             buyerName,
-            buyerAddress,
             brandId,
+            buyerAddress,
             paymentMethod,
             totalAmount,
           );

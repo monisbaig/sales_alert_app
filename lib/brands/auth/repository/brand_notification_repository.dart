@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:sales_alert_app/common_component/global_variables.dart';
 
+import '../../models/brand_model.dart';
 import '../../models/follower_model.dart';
 
 final brandNotificationRepositoryProvider = Provider((ref) {
@@ -43,12 +44,17 @@ class BrandNotificationRepository {
 
     var userToken = allUserTokens.map((e) => e.fcmToken).toList();
 
+    var brandData =
+        await firestore.collection('brands').doc(auth.currentUser!.uid).get();
+
+    var brand = BrandModel.fromMap(brandData.data()!);
+
     var url = Uri.parse('https://fcm.googleapis.com/fcm/send');
     var data = {
       'registration_ids': userToken,
       'priority': 'high',
       'notification': {
-        'title': productName,
+        'title': '${brand.name} ($productName)',
         'body': 'New stock added go check it out!',
       },
       'data': {
@@ -86,12 +92,17 @@ class BrandNotificationRepository {
 
     var userToken = allUserTokens.map((e) => e.fcmToken).toList();
 
+    var brandData =
+        await firestore.collection('brands').doc(auth.currentUser!.uid).get();
+
+    var brand = BrandModel.fromMap(brandData.data()!);
+
     var url = Uri.parse('https://fcm.googleapis.com/fcm/send');
     var data = {
       'registration_ids': userToken,
       'priority': 'high',
       'notification': {
-        'title': productName,
+        'title': '${brand.name} ($productName)',
         'body': 'Special discount offer!',
       },
       'data': {

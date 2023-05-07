@@ -69,7 +69,7 @@ class KidsCategory extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => ClothingItems(
                       mainCategory: mainCategory,
-                      subCategory: 'Shirt',
+                      subCategory: 'Shirts',
                     ),
                   ),
                 );

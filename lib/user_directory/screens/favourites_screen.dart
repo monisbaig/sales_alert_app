@@ -196,7 +196,7 @@ class _FavouritesScreenState extends ConsumerState<FavouritesScreen> {
                                                     productData.productPrice,
                                                     productData.productColor,
                                                     productData.productSize,
-                                                    orderQuantity,
+                                                    orderQuantity.toString(),
                                                     productData.brandId,
                                                   );
                                                   Future.delayed(

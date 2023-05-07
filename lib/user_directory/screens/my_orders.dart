@@ -105,6 +105,8 @@ class _MyOrdersState extends ConsumerState<MyOrders> {
                                   children: productData.products
                                       .map(
                                         (prod) => Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               mainAxisAlignment:

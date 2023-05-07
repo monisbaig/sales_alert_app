@@ -184,10 +184,10 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                                           top: 10.h,
                                         ),
                                         width: 115.w,
-                                        child: SingleChildScrollView(
-                                          child: Text(
-                                            snapshot.data?[5] ?? '',
-                                          ),
+                                        child: Text(
+                                          maxLines: 12,
+                                          snapshot.data?[5] ?? '',
+                                          overflow: TextOverflow.visible,
                                         ),
                                       ),
                                     ),
@@ -200,9 +200,12 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                       );
                     },
                   ),
-                  const VerticalDivider(
-                    color: Colors.redAccent,
-                    thickness: 2,
+                  Padding(
+                    padding: EdgeInsets.only(top: 100.h),
+                    child: const VerticalDivider(
+                      color: Colors.redAccent,
+                      thickness: 2,
+                    ),
                   ),
                   StreamBuilder(
                     stream: ref
@@ -358,10 +361,10 @@ class _CompareProductsState extends ConsumerState<CompareProducts> {
                                           top: 10.h,
                                         ),
                                         width: 115.w,
-                                        child: SingleChildScrollView(
-                                          child: Text(
-                                            snapshot.data?[5] ?? '',
-                                          ),
+                                        child: Text(
+                                          snapshot.data?[5] ?? '',
+                                          maxLines: 12,
+                                          overflow: TextOverflow.visible,
                                         ),
                                       ),
                                     ),

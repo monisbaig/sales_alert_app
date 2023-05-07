@@ -94,6 +94,10 @@ class UserAuthController {
     );
   }
 
+  Future<List<ProductModel>> getDataByCategory(String category) {
+    return userAuthRepository.getDataByCategory(category: category);
+  }
+
   Future<void> cartDataToFirebase(
     BuildContext context,
     String productId,

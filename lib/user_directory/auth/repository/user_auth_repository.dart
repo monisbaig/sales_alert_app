@@ -98,10 +98,6 @@ class UserAuthRepository {
       } else {
         Fluttertoast.showToast(msg: 'Logged in successfully');
 
-        await ref
-            .read(userNotificationRepositoryProvider)
-            .getDeviceToken(uId: auth.currentUser!.uid);
-
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => BottomNavigator(),
@@ -254,6 +250,20 @@ class UserAuthRepository {
       productCollectionList.add(list);
     }
     return productCollectionList;
+  }
+
+  Future<List<ProductModel>> getDataByCategory(
+      {required String category}) async {
+    List<ProductModel> productCategoryList = [];
+    var allProductDataByCategory = await firestore
+        .collection('allBrandProducts')
+        .where('category', isEqualTo: category)
+        .get();
+    for (var document in allProductDataByCategory.docs) {
+      var list = ProductModel.fromMap(document.data());
+      productCategoryList.add(list);
+    }
+    return productCategoryList;
   }
 
   Future<void> cartDataToFirebase({

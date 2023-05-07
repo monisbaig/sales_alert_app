@@ -46,7 +46,7 @@ class _ItemDetailsState extends ConsumerState<ElectronicItems> {
       ref.watch(brandAuthControllerProvider).saveCategoryDataToFirebase(
             context,
             widget.mainCategory,
-            '',
+            widget.mainCategory,
             nameController.text.trim(),
             priceController.text.trim(),
             image,
