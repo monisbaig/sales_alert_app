@@ -12,6 +12,7 @@ import 'package:sales_alert_app/brands/auth/repository/brand_firebase_storage_re
 import 'package:sales_alert_app/brands/models/brand_model.dart';
 import 'package:sales_alert_app/brands/models/product_model.dart';
 import 'package:sales_alert_app/splash/splash_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../user_directory/models/order_place_model.dart';
 import '../../screens/brand_choice.dart';
@@ -34,18 +35,9 @@ class BrandAuthRepository {
     required this.firestore,
   });
 
-  Future<BrandModel?> getCurrentBrandData() async {
-    var brandData =
-        await firestore.collection('brands').doc(auth.currentUser?.uid).get();
-    BrandModel? brand;
-    if (brandData.data() != null) {
-      brand = BrandModel.fromMap(brandData.data()!);
-    }
-    return brand;
-  }
-
   Future<void> signUpWithEmail({
     required BuildContext context,
+    required String name,
     required String email,
     required String password,
   }) async {
@@ -58,6 +50,12 @@ class BrandAuthRepository {
       await sendEmailVerification();
 
       Fluttertoast.showToast(msg: 'Account created successfully');
+
+      await firestore.collection('brands').doc(auth.currentUser!.uid).set({
+        'uId': auth.currentUser!.uid,
+        'name': name,
+        'email': auth.currentUser!.email,
+      });
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
@@ -85,14 +83,27 @@ class BrandAuthRepository {
         await sendEmailVerification();
         Fluttertoast.showToast(msg: 'Verify Email First');
       } else {
-        Fluttertoast.showToast(msg: 'Logged in successfully');
+        var brandData = await firestore
+            .collection('brands')
+            .doc(auth.currentUser?.uid)
+            .get();
 
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const BrandChoice(),
-          ),
-          (route) => false,
-        );
+        if (brandData.data()?['uId'] != null) {
+          Fluttertoast.showToast(msg: 'Logged in successfully');
+
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool('sellerLoggedIn', true);
+
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const BrandChoice(),
+            ),
+            (route) => false,
+          );
+        } else {
+          Fluttertoast.showToast(msg: 'No record exist with this email');
+          await auth.signOut();
+        }
       }
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message!);
@@ -122,6 +133,19 @@ class BrandAuthRepository {
         );
         UserCredential brandCredential =
             await auth.signInWithCredential(credential);
+
+        await firestore
+            .collection('brands')
+            .doc(brandCredential.user!.uid)
+            .set({
+          'uId': brandCredential.user!.uid,
+          'name': brandCredential.user!.displayName,
+          'email': brandCredential.user!.email,
+        });
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('sellerLoggedIn', true);
+
         Fluttertoast.showToast(msg: brandCredential.user!.email!);
 
         Navigator.of(context).pushAndRemoveUntil(
@@ -139,6 +163,9 @@ class BrandAuthRepository {
   Future<void> signOut({required BuildContext context}) async {
     try {
       await auth.signOut();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('sellerLoggedIn', false);
+
       Fluttertoast.showToast(msg: 'Signed out Successfully!');
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(

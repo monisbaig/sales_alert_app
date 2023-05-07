@@ -33,11 +33,13 @@ class _RegisterScreenState extends ConsumerState<BrandRegisterScreen> {
     });
     var isValid = _form.currentState!.validate();
     if (isValid) {
+      String name = nameController.text.trim();
       String email = emailController.text.trim();
       String password = passwordController.text.trim();
 
       ref.read(brandAuthControllerProvider).signUpWithEmail(
             context,
+            name,
             email,
             password,
           );

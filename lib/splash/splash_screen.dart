@@ -1,10 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sales_alert_app/brands/screens/brand_choice.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../user_directory/components/choose_screen.dart';
-import 'components/splash_content.dart';
+import '../user_directory/screens/bottom_navigator.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -14,6 +21,47 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  void timer() {
+    Timer(
+      const Duration(seconds: 3),
+      () async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        if (prefs.getBool('userLoggedIn') == true &&
+            FirebaseAuth.instance.currentUser != null) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BottomNavigator(),
+            ),
+            (route) => false,
+          );
+        } else if (prefs.getBool('sellerLoggedIn') == true) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BrandChoice(),
+            ),
+            (route) => false,
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ChooseScreen(),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    timer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,16 +87,16 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
           SizedBox(height: 100.h),
-          SplashButton(
-            label: "Continue",
-            onPress: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const ChooseScreen(),
-                ),
-              );
-            },
-          ),
+          // SplashButton(
+          //   label: "Continue",
+          //   onPress: () {
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //         builder: (_) => const ChooseScreen(),
+          //       ),
+          //     );
+          //   },
+          // ),
         ],
       ),
     );

@@ -15,11 +15,6 @@ final brandAuthControllerProvider = Provider((ref) {
   );
 });
 
-final brandDataAuthProvider = FutureProvider((ref) {
-  final brandAuthController = ref.watch(brandAuthControllerProvider);
-  return brandAuthController.getBrandData();
-});
-
 class BrandAuthController {
   final BrandAuthRepository brandAuthRepository;
   final ProviderRef ref;
@@ -29,11 +24,6 @@ class BrandAuthController {
     required this.ref,
   });
 
-  Future<BrandModel?> getBrandData() async {
-    BrandModel? brand = await brandAuthRepository.getCurrentBrandData();
-    return brand;
-  }
-
   Future<List<ProductModel>> getCollectionData(String collection) async {
     List<ProductModel> subCategoryDetail =
         await brandAuthRepository.getCollectionData(collection);
@@ -41,9 +31,15 @@ class BrandAuthController {
     return subCategoryDetail;
   }
 
-  void signUpWithEmail(BuildContext context, String email, String password) {
+  void signUpWithEmail(
+    BuildContext context,
+    String name,
+    String email,
+    String password,
+  ) {
     brandAuthRepository.signUpWithEmail(
       context: context,
+      name: name,
       email: email,
       password: password,
     );

@@ -17,11 +17,6 @@ final userAuthControllerProvider = Provider((ref) {
   );
 });
 
-final userDataAuthProvider = FutureProvider((ref) {
-  final userAuthController = ref.watch(userAuthControllerProvider);
-  return userAuthController.getUserData();
-});
-
 class UserAuthController {
   final UserAuthRepository userAuthRepository;
   final ProviderRef ref;
@@ -30,11 +25,6 @@ class UserAuthController {
     required this.userAuthRepository,
     required this.ref,
   });
-
-  Future<UserModel?> getUserData() async {
-    UserModel? user = await userAuthRepository.getCurrentUserData();
-    return user;
-  }
 
   Future<UserModel?> getUserDetails() async {
     return await userAuthRepository.getUserDetails();

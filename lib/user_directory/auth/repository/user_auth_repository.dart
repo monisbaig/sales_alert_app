@@ -37,16 +37,6 @@ class UserAuthRepository {
     required this.firestore,
   });
 
-  Future<UserModel?> getCurrentUserData() async {
-    var userData =
-        await firestore.collection('users').doc(auth.currentUser?.uid).get();
-    UserModel? user;
-    if (userData.data() != null) {
-      user = UserModel.fromMap(userData.data()!);
-    }
-    return user;
-  }
-
   Future<void> signUpWithEmail({
     required BuildContext context,
     required String name,
@@ -96,14 +86,27 @@ class UserAuthRepository {
         await sendEmailVerification();
         Fluttertoast.showToast(msg: 'Verify Email First');
       } else {
-        Fluttertoast.showToast(msg: 'Logged in successfully');
+        var userData = await firestore
+            .collection('users')
+            .doc(auth.currentUser?.uid)
+            .get();
 
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => BottomNavigator(),
-          ),
-          (route) => false,
-        );
+        if (userData.data()?['uId'] != null) {
+          Fluttertoast.showToast(msg: 'Logged in successfully');
+
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool('userLoggedIn', true);
+
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => BottomNavigator(),
+            ),
+            (route) => false,
+          );
+        } else {
+          Fluttertoast.showToast(msg: 'No record exist with this email');
+          await auth.signOut();
+        }
       }
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message!);
@@ -157,6 +160,9 @@ class UserAuthRepository {
             .read(userNotificationRepositoryProvider)
             .getDeviceToken(uId: auth.currentUser!.uid);
 
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('userLoggedIn', true);
+
         Fluttertoast.showToast(msg: userCredential.user!.email!);
 
         Navigator.of(context).pushAndRemoveUntil(
@@ -174,6 +180,9 @@ class UserAuthRepository {
   Future<void> signOut({required BuildContext context}) async {
     try {
       await auth.signOut();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('userLoggedIn', false);
+
       Fluttertoast.showToast(msg: 'Signed out Successfully!');
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(

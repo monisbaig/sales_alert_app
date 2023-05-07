@@ -87,7 +87,6 @@ class UserNotificationRepository {
         message.notification!.body,
         notificationDetails,
       );
-      print(message.notification!.title);
     });
   }
 
