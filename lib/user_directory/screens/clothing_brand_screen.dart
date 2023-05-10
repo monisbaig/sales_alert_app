@@ -70,6 +70,7 @@ class _ClothingBrandScreenState extends ConsumerState<ClothingBrandScreen> {
                       },
                       child: const Icon(
                         Icons.arrow_back_ios_new,
+                        color: Colors.white,
                         size: 30,
                       ),
                     ),

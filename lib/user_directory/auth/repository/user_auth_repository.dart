@@ -97,6 +97,10 @@ class UserAuthRepository {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setBool('userLoggedIn', true);
 
+          await ref
+              .read(userNotificationRepositoryProvider)
+              .getDeviceToken(uId: auth.currentUser!.uid);
+
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => BottomNavigator(),

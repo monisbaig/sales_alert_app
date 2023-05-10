@@ -100,7 +100,8 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          padding:
+              const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
           child: StreamBuilder(
             stream: ref
                 .watch(userAuthControllerProvider)
@@ -111,6 +112,7 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                   .toLowerCase()
                   .replaceAll(' ', '')
                   .contains(productName!));
+
               return productName != null
                   ? GridView.builder(
                       itemCount: searchData?.length ?? 0,
@@ -174,12 +176,16 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 10.h),
-                                Text(
-                                  productData?.name ?? '',
-                                  style: TextStyle(
-                                    fontSize: 18.sp,
-                                    color: Colors.black.withOpacity(0.8),
-                                    fontWeight: FontWeight.bold,
+                                Flexible(
+                                  child: Text(
+                                    productData?.name ?? '',
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(height: 10.h),

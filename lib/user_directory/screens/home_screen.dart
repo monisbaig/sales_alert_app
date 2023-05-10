@@ -179,10 +179,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Winter Sale Collection",
+                                    "Summer Sale Collection",
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 25.sp,
+                                      fontSize: 22.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -336,6 +336,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               SizedBox(height: 20.h),
               const AllBrands(),
+              SizedBox(height: 20.h),
             ],
           ),
         ),

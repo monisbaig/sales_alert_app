@@ -164,7 +164,6 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 135.w),
                         IconButton(
                           onPressed: () {
                             orderQuantity = 1;

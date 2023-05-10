@@ -70,6 +70,7 @@ class _FurnitureBrandScreenState extends ConsumerState<FurnitureBrandScreen> {
                       },
                       child: const Icon(
                         Icons.arrow_back_ios_new,
+                        color: Colors.white,
                         size: 30,
                       ),
                     ),
@@ -153,7 +154,7 @@ class _FurnitureBrandScreenState extends ConsumerState<FurnitureBrandScreen> {
                               image: AssetImage(
                                 'lib/brands/brand_images/sofa.png',
                               ),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
@@ -193,7 +194,7 @@ class _FurnitureBrandScreenState extends ConsumerState<FurnitureBrandScreen> {
                               image: AssetImage(
                                 'lib/brands/brand_images/bed.png',
                               ),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
@@ -233,7 +234,7 @@ class _FurnitureBrandScreenState extends ConsumerState<FurnitureBrandScreen> {
                               image: AssetImage(
                                 'lib/brands/brand_images/table.png',
                               ),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),

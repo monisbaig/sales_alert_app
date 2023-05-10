@@ -31,10 +31,13 @@ class UserNotificationRepository {
     required this.plugin,
   });
 
+  // Step Three for receive notification
+
   Future<void> initLocalNotifications(
       BuildContext context, RemoteMessage message) async {
     var androidInitializationSettings =
         const AndroidInitializationSettings('@mipmap/ic_launcher');
+
     var iosInitializationSettings = const DarwinInitializationSettings();
 
     var initializationSettings = InitializationSettings(
@@ -49,6 +52,8 @@ class UserNotificationRepository {
       },
     );
   }
+
+  // Step Four show messages
 
   Future<void> showNotification(RemoteMessage message) async {
     AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -90,6 +95,8 @@ class UserNotificationRepository {
     });
   }
 
+  // Step Five controlling notification on Screen
+
   Future<void> firebaseMessagingInit({required BuildContext context}) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (Platform.isAndroid) {
@@ -100,6 +107,8 @@ class UserNotificationRepository {
       }
     });
   }
+
+  // Step One for request notification permission
 
   Future<void> requestNotificationPermission() async {
     final NotificationSettings settings;
@@ -139,6 +148,8 @@ class UserNotificationRepository {
     });
   }
 
+  // Step Six handle messages on screen
+
   Future<void> handleMessage(
       BuildContext context, RemoteMessage message) async {
     if (message.data['type'] == 'msg') {
@@ -149,6 +160,8 @@ class UserNotificationRepository {
       );
     }
   }
+
+  // Step Two for get user device token
 
   Future<void> getDeviceToken({required String uId}) async {
     var token = await messaging.getToken();

@@ -24,12 +24,12 @@ void main() async {
   );
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(393, 851),
       builder: (BuildContext context, child) => const MaterialApp(

@@ -71,6 +71,7 @@ class _ElectronicsBrandScreenState
                       },
                       child: const Icon(
                         Icons.arrow_back_ios_new,
+                        color: Colors.white,
                         size: 30,
                       ),
                     ),
@@ -154,7 +155,7 @@ class _ElectronicsBrandScreenState
                               image: AssetImage(
                                 'lib/brands/brand_images/mobile.png',
                               ),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
@@ -194,7 +195,7 @@ class _ElectronicsBrandScreenState
                               image: AssetImage(
                                 'lib/brands/brand_images/headphones.png',
                               ),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
@@ -234,7 +235,7 @@ class _ElectronicsBrandScreenState
                               image: AssetImage(
                                 'lib/brands/brand_images/laptop.png',
                               ),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
