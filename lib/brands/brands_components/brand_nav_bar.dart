@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sales_alert_app/brands/auth/controller/brand_auth_controller.dart';
 
+import '../../common_component/about_us.dart';
 import '../../common_component/loader.dart';
 import '../screens/view_orders.dart';
 import 'get_data.dart';
@@ -118,7 +119,13 @@ class BrandNavBar extends ConsumerWidget {
             leading: const Icon(Icons.description),
             title: const Text('About Us'),
             iconColor: const Color(0xFFDB3022),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const AboutUs(),
+                ),
+              );
+            },
           ),
           const Divider(
             thickness: 1,

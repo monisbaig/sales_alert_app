@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sales_alert_app/common_component/about_us.dart';
 import 'package:sales_alert_app/user_directory/screens/bottom_navigator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -103,17 +104,27 @@ class UserNavBar extends ConsumerWidget {
           ),
           GestureDetector(
             child: ListTile(
-                leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
-                iconColor: const Color(0xFFDB3022),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => const EditProfilePage()))),
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              iconColor: const Color(0xFFDB3022),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const EditProfilePage(),
+                ),
+              ),
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.description),
             title: const Text('About Us'),
             iconColor: const Color(0xFFDB3022),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const AboutUs(),
+                ),
+              );
+            },
           ),
           const Divider(
             thickness: 1,

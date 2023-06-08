@@ -152,7 +152,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
                           child: Text(
@@ -164,46 +164,50 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             ),
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            orderQuantity = 1;
-                            saveFavoritesToFirebase(
-                              context,
-                              widget.productId,
-                              widget.productName,
-                              widget.productPhoto,
-                              orderPrice,
-                              widget.productColor,
-                              widget.productSize,
-                              orderQuantity,
-                              widget.brandId,
-                            );
-                          },
-                          icon: Icon(
-                            Icons.favorite_outlined,
-                            color: Colors.redAccent,
-                            size: 25.sp,
-                          ),
-                        ),
-                        StreamBuilder(
-                          stream: ref
-                              .watch(userAuthControllerProvider)
-                              .getFollowingProductData(widget.brandId),
-                          builder: (context, snapshot) {
-                            var following = snapshot.data;
-                            return IconButton(
-                              onPressed: following != null
-                                  ? unFollowProduct
-                                  : followProduct,
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                orderQuantity = 1;
+                                saveFavoritesToFirebase(
+                                  context,
+                                  widget.productId,
+                                  widget.productName,
+                                  widget.productPhoto,
+                                  orderPrice,
+                                  widget.productColor,
+                                  widget.productSize,
+                                  orderQuantity,
+                                  widget.brandId,
+                                );
+                              },
                               icon: Icon(
-                                following != null
-                                    ? Icons.add_alert_rounded
-                                    : Icons.add_alert_outlined,
-                                color: Colors.grey,
+                                Icons.favorite_outlined,
+                                color: Colors.redAccent,
                                 size: 25.sp,
                               ),
-                            );
-                          },
+                            ),
+                            StreamBuilder(
+                              stream: ref
+                                  .watch(userAuthControllerProvider)
+                                  .getFollowingProductData(widget.brandId),
+                              builder: (context, snapshot) {
+                                var following = snapshot.data;
+                                return IconButton(
+                                  onPressed: following != null
+                                      ? unFollowProduct
+                                      : followProduct,
+                                  icon: Icon(
+                                    following != null
+                                        ? Icons.add_alert_rounded
+                                        : Icons.add_alert_outlined,
+                                    color: Colors.grey,
+                                    size: 25.sp,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),

@@ -338,7 +338,7 @@ class BrandAuthRepository {
   }) async {
     try {
       String uId = auth.currentUser!.uid;
-      String? productPhotoUrl;
+      // String? productPhotoUrl;
 
       // if (photo != null) {
       //   productPhotoUrl = await ref!
